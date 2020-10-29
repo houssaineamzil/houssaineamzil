@@ -1,16 +1,22 @@
-### Hi there 👋
+# Hi there, I'm Høussaine 👋🏻
+I'm a Front End Developer studying at <strong>Moulay Ismail University</strong> as a Senior.
 
-<!--
-**houssaineamzil/houssaineamzil** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+## Current Projects <br/>
+> 
 
-Here are some ideas to get you started:
+## My Values
+♚ Dreams ↝ Goals
+♛ Thoughtful & Inclusive Development <br/>
+♜ Authentic Expression <br/>
+♝ Mindset of Learning & Curiosity <br/>
+♞ Teamwork & Communication
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+## Hobbies
+☕️ Espresso Enthusiast <br/>
+🛏️ and of course sleeping who don't like that
+
+## Connect with Me
+- [Portfolio](https://houssaineamzil.netlify.com) <br/>
+- [Instagram](https://www.instagram.com/houssaineamzil18) <br/>
+- [Linkedin](https://www.linkedin.com/in/juliacodes/) <br/>
+- [Twitter](https://twitter.com/houssaineamzil) <br/>
