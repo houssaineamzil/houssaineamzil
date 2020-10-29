@@ -18,5 +18,4 @@ I'm a Front End Developer studying at <strong>Moulay Ismail University</strong> 
 ## Connect with Me
 - [Portfolio](https://houssaineamzil.netlify.com) <br/>
 - [Instagram](https://www.instagram.com/houssaineamzil18) <br/>
-- [Linkedin](https://www.linkedin.com/in/juliacodes/) <br/>
 - [Twitter](https://twitter.com/houssaineamzil) <br/>
