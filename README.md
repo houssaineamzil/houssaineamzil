@@ -1,3 +1,4 @@
+```
 # Hi there, I'm Høussaine 👋🏻
 I'm a Front End Developer studying at <strong>Moulay Ismail University</strong> as a Senior. I'm actually don't look for a full-time job for now because of personal reasons but a part-time or intership will be great for me
 
@@ -33,3 +34,4 @@ I'm a Front End Developer studying at <strong>Moulay Ismail University</strong> 
 ○ [Twitter](https://twitter.com/houssaineamzil) <br/>
 ○ [Dribbble](http://dribbble.com/houssaineamzil) <br/>
 ○ [Behance](http://behance.com/houssaineamzil)
+```
