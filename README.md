@@ -29,7 +29,7 @@ I'm a Front End Developer studying at <strong>Moulay Ismail University</strong> 
 
 ## Connect with Me
 ♙ [Portfolio](https://houssaineamzil.netlify.com) <br/>
-♙ [Instagram](https://www.instagram.com/houssaineamzil18) <br/>
+♙ [Instagram](https://instagram.com/houssaineamzil18) <br/>
 ♙ [Twitter](https://twitter.com/houssaineamzil) <br/>
 ♙ [Dribbble](https://dribbble.com/houssaineamzil) <br/>
 ♙ [Behance](https://behance.com/houssaineamzil)
