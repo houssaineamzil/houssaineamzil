@@ -5,7 +5,7 @@ I'm a Front End Developer studying at <strong>Moulay Ismail University</strong> 
 > 
 
 ## My Values
-♚ Dreams ↝ Goals
+♚ Dreams ↝ Goals <br/>
 ♛ Thoughtful & Inclusive Development <br/>
 ♜ Authentic Expression <br/>
 ♝ Mindset of Learning & Curiosity <br/>
