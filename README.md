@@ -1,6 +1,6 @@
 # Hi there, I'm Høussaine ♔
 
-I'm a Front End Developer studying at Moulay Ismail University as a senior. I'm actually don't look for a full-time job for now because of personal reasons but a part-time or intership will be great for me
+I'm a Front End Developer studying at Moulay Ismail University as a senior. I'm actually don't look for a full-time job for now because of personal reasons but a part-time or internship will be great for me
 
 ## Current Projects
 
