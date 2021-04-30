@@ -1,6 +1,10 @@
 # Hi there, I'm Høussaine ♔
 
-I'm a Front End Developer studying at Moulay Ismail University as a senior. I'm actually don't look for a full-time job for now because of personal reasons but a part-time or internship will be great for me
+I am a 19-year-old self-taught front-end developer and student at Moulay Ismail University, currently studying Mathematics and Computer Science. <br />
+ <br />
+I enjoy developing things that live on the internet, whether that be websites or web applications. My goal is to build products that satisfy customer's needs and desires. <br />
+ <br />
+Currently, I do not have any certificates that can prove my experience. Although, I believe in myself and my abilities. <br />
 
 ## Current Projects
 
