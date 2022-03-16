@@ -1,0 +1,40 @@
+{
+  "schema": [
+    {
+      "name": "book",
+      "color": "black"
+    },
+    {
+      "name": "article",
+      "color": "blue"
+    },
+    {
+      "name": "blog",
+      "color": "red"
+    },
+    {
+      "name": "video",
+      "color": "indigo"
+    }
+  ],
+  "data": [
+    {
+      "title": "Clean Code",
+      "description": "Even bad code can function. But if code isn't clean, it can bring a development organization to its knees. Every year, countless hours and significant resources are lost because of poorly written code",
+      "url": "https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship-dp-0132350882/dp/0132350882/",
+      "key": "book"
+    },
+    {
+      "title": "Don’t Make Me Think",
+      "description": "Don't Make Me Think is a book by Steve Krug about human–computer interaction and web usability. The book's premise is that a good software program or web site should let users accomplish their intended tasks as easily and directly as possible.",
+      "url": "https://www.amazon.com/Dont-Make-Think-Revisited-Usability/dp/0321965515",
+      "key": "book"
+    },
+    {
+      "title": "Finish What You Start",
+      "description": "Practical tactics to grow your willpower, stop procrastination, focus like a laser, and achieve whatever you set your mind to. Following through and finishing what you start- more valuable skills than you realize.",
+      "url": "https://www.amazon.com/Finish-What-You-Start-Self-Discipline/dp/1986622312/",
+      "key": "book"
+    }
+  ]
+}

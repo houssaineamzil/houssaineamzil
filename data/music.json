@@ -1,0 +1,32 @@
+{
+  "schema": [
+    {
+      "name": "lo-fi",
+      "color": "green"
+    },
+    {
+      "name": "rap",
+      "color": "blue"
+    },
+    {
+      "name": "other",
+      "color": "indigo"
+    }
+  ],
+  "data": [
+    {
+      "title": "Tikka",
+      "description": "Lartiste, Heuss L'enfoiré",
+      "image": "https://i.scdn.co/image/ab67616d00001e02bf2997079c54377a36ca407c",
+      "url": "https://open.spotify.com/track/04j1J1lbAXEfjNaMcb1ar8?si=965aae3e90f94a68",
+      "key": "rap"
+    },
+    {
+      "title": "Salade Coco",
+      "description": "ElGrandeToto",
+      "image": "https://i.scdn.co/image/ab67616d00001e02d8fa70e304acb3e6ae9b00ed",
+      "url": "https://open.spotify.com/track/71k5nrJuZcr9j3X0YIBwWh?si=c47e9b3f78c94ec0",
+      "key": "rap"
+    }
+  ]
+}

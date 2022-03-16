@@ -1,0 +1,86 @@
+{
+  "name": "houssaineamzil",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Høussaine Amzil personal website",
+  "author": "Høussaine Amzil",
+  "keywords": [
+    "react",
+    "gatsby",
+    "styled-components",
+    "personal",
+    "personal website"
+  ],
+  "scripts": {
+    "lint": "eslint . && prettier --write . --loglevel warn",
+    "dev": "next -p 8000",
+    "build": "yarn lint && yarn rss && next build",
+    "rss": "node lib/rss",
+    "new": "node lib/db"
+  },
+  "pre-commit": "lint",
+  "license": "MIT",
+  "dependencies": {
+    "@reach/auto-id": "^0.16.0",
+    "@reach/dialog": "^0.16.2",
+    "classnames": "^2.2.6",
+    "cmdk": "^0.0.4",
+    "intersection-observer": "^0.12.0",
+    "lodash.debounce": "^4.0.8",
+    "match-sorter": "^6.3.1",
+    "next": "^12.0.0",
+    "next-themes": "^0.1.1",
+    "nprogress": "^0.2.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-intersection-observer": "^8.24.2",
+    "swr": "^1.2.2",
+    "use-delayed-render": "^0.0.7"
+  },
+  "devDependencies": {
+    "@types/body-scroll-lock": "^3.1.0",
+    "@types/classnames": "^2.2.10",
+    "@types/lodash.debounce": "^4.0.6",
+    "@types/match-sorter": "^6.0.0",
+    "@types/nprogress": "^0.2.0",
+    "@types/react": "^17.0.40",
+    "@types/react-transition-group": "^4.2.4",
+    "@typescript-eslint/eslint-plugin": "^5.14.0",
+    "@typescript-eslint/parser": "^5.14.0",
+    "babel-eslint": "^10.0.2",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "eslint": "^8.11.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "gray-matter": "^4.0.2",
+    "lowdb": "^3.0.0",
+    "marked": "^4.0.12",
+    "next-unused": "^0.0.6",
+    "open-graph-scraper": "^4.11.0",
+    "postcss-flexbugs-fixes": "^5.0.2",
+    "postcss-hover-media-feature": "^1.0.0",
+    "postcss-preset-env": "^7.4.2",
+    "prettier": "^2.5.1",
+    "prism-react-renderer": "^1.1.1",
+    "prompts": "^2.2.1",
+    "rss": "^1.2.2",
+    "typescript": "^4.6.2"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": false
+  },
+  "next-unused": {
+    "alias": {
+      "@components": "components/",
+      "@data": "data/",
+      "@lib": "lib/",
+      "@styles": "styles/"
+    },
+    "include": [
+      "components",
+      "lib"
+    ]
+  }
+}
