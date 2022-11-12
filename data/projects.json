@@ -27,8 +27,16 @@
       "description": "design system and React UI components",
       "image": null,
       "url": "https://github.com/houssaineamzil/poseidon",
-      "position": "top",
+      "position": "center",
       "key": "paused"
+    },
+    {
+      "title": "Bloggo",
+      "description": "A simple blog template build with next.js",
+      "image": "/images/projects/bloggoHero.png",
+      "url": "http://bloggo-houssaineamzil.vercel.app/",
+      "position": "center",
+      "key": "ongoing"
     }
   ]
 }
