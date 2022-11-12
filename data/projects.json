@@ -33,7 +33,7 @@
     {
       "title": "Bloggo",
       "description": "A simple blog template build with next.js",
-      "image": "/images/projects/bloggoHero.png",
+      "image": "..//images/projects/bloggoHero.png",
       "url": "http://bloggo-houssaineamzil.vercel.app/",
       "position": "center",
       "key": "ongoing"
