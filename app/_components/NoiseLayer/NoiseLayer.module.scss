@@ -1,0 +1,14 @@
+.noiseLayer {
+  top: 0%;
+  left: 0%;
+  right: 0%;
+  bottom: 0%;
+  opacity: 0.1;
+  z-index: 9999;
+  display: block;
+  position: fixed;
+  pointer-events: none;
+  background-size: 125px;
+  background-position: 0 0;
+  background-image: url("/assets/images/noise.gif");
+}

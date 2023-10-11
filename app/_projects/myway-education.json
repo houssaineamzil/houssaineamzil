@@ -1,0 +1,22 @@
+{
+  "title": "MyWay Education",
+  "url": "/cases/myway-education",
+  "cover": "/assets/images/project03.png",
+  "info": {
+    "client": "-",
+    "year": 2022,
+    "role": "UI Designer",
+    "service": "Website Redesign"
+  },
+  "description_short": "A digital experience rooted in a strong story and brand purpose",
+  "description_full": "Lorem ipsum dolor sit amet consectetur. Scelerisque viverra ultrices eget id. Fermentum adipiscing aliquet nec maecenas. In enim turpis cursus pretium id.",
+  "images": [
+    "/assets/images/cases/plain/image01.png",
+    "/assets/images/cases/plain/image02.png",
+    "/assets/images/cases/plain/image03.png",
+    "/assets/images/cases/plain/image04.png",
+    "/assets/images/cases/plain/image05.png",
+    "/assets/images/cases/plain/image06.png"
+  ],
+  "related": ["finwind", "mrc", "plain"]
+}

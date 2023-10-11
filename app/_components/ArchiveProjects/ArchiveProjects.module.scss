@@ -1,0 +1,36 @@
+.archiveProjects {
+  width: 90%;
+  display: grid;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  column-gap: 0.625rem;
+  max-width: 1440px;
+  position: relative;
+  grid-gap: 1rem;
+  grid-auto-columns: 1fr;
+  grid-template-rows: auto;
+  padding-block: 6.25rem;
+  grid-template-columns: repeat(3, minmax(32.5px, 1fr));
+}
+
+// Medium / Small Laptops
+@media screen and (max-width: 991px) {
+  .archiveProjects {
+    grid-template-columns: repeat(2, minmax(32.5px, 1fr));
+  }
+}
+
+// Tablet
+@media screen and (max-width: 767px) {
+  .archiveProjects {
+    grid-template-columns: repeat(2, minmax(32.5px, 1fr));
+  }
+}
+
+// Phone
+@media screen and (max-width: 479px) {
+  .archiveProjects {
+    row-gap: 16px;
+    grid-template-columns: repeat(1, minmax(32.5px, 1fr));
+  }
+}

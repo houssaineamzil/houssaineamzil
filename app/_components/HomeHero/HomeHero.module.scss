@@ -1,0 +1,196 @@
+.homeHero {
+  width: 90%;
+  display: flex;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  max-width: 1440px;
+  position: relative;
+  padding-top: 240px;
+
+  .locationWrapper {
+    color: var(--gray-150);
+    width: 100%;
+    padding: 16px 0;
+    position: relative;
+
+    .location {
+      gap: 10px;
+      display: flex;
+      align-items: center;
+      justify-self: flex-start;
+
+      .locationIcon {
+        width: 24px;
+        height: 24px;
+      }
+
+      .locationText {
+        font-size: 16px;
+        line-height: 1.4;
+      }
+    }
+  }
+
+  .titleWrapper {
+    flex: 1 0;
+    width: 60%;
+    position: relative;
+
+    .title {
+      .line {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        .shapeIcon {
+          height: 3.5rem;
+        }
+      }
+    }
+  }
+
+  .descriptionWrapper {
+    display: flex;
+    padding: 0 12px;
+    position: relative;
+    align-items: flex-end;
+
+    .description {
+      max-width: 365px;
+      text-align: justify;
+      color: var(--foreground);
+      font-family: var(--font-syne);
+
+      .indentation {
+        padding-left: 2rem;
+      }
+    }
+  }
+
+  .heroImageWrapper {
+    width: 100%;
+    padding: 24px 0;
+    position: relative;
+
+    .heroImage {
+      display: flex;
+      overflow: hidden;
+      position: relative;
+      align-items: center;
+      aspect-ratio: 16 / 9;
+      justify-content: center;
+
+      .image {
+        object-fit: cover;
+      }
+    }
+  }
+}
+
+// Medium / Small Laptops
+@media screen and (max-width: 991px) {
+  .homeHero {
+    max-width: 100dvw;
+
+    .locationWrapper {
+      padding: 12px 0;
+    }
+
+    .titleWrapper {
+      width: 100%;
+
+      .title {
+        .line {
+          .shapeIcon {
+            height: 39px;
+          }
+        }
+      }
+    }
+
+    .descriptionWrapper {
+      width: 100%;
+      padding: 24px 12px 12px;
+      justify-content: flex-end;
+
+      .description {
+        .indentation {
+          padding-left: 2rem;
+        }
+      }
+    }
+
+    .heroImageWrapper {
+      padding: 64px 0 24px;
+    }
+  }
+}
+
+// Tablet
+@media screen and (max-width: 767px) {
+  .homeHero {
+    padding-top: 180px;
+
+    .locationWrapper {
+      padding: 12px 0;
+    }
+
+    .titleWrapper {
+      width: 100%;
+
+      .title {
+        .line {
+          .shapeIcon {
+            height: 39px;
+          }
+        }
+      }
+    }
+
+    .descriptionWrapper {
+      width: 100%;
+      padding: 24px 12px 12px;
+
+      .description {
+        .indentation {
+          padding-left: 2rem;
+        }
+      }
+    }
+  }
+}
+
+// Phone
+@media screen and (max-width: 479px) {
+  .homeHero {
+    .titleWrapper {
+      .title {
+        .line {
+          flex-wrap: wrap;
+
+          .shapeIcon {
+            height: 36px;
+          }
+        }
+      }
+    }
+
+    .descriptionWrapper {
+      padding: 24px 12px 12px;
+
+      .description {
+        max-width: 100dvw;
+
+        .indentation {
+          padding-left: 10rem;
+        }
+      }
+    }
+
+    .heroImageWrapper {
+      .heroImage {
+        aspect-ratio: 3 / 5;
+      }
+    }
+  }
+}

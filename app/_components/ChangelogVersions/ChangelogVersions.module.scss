@@ -1,0 +1,60 @@
+.changelogVersions {
+  width: 90%;
+  display: flex;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  max-width: 1440px;
+  position: relative;
+  flex-direction: column;
+  padding-block: 240px;
+
+  .version {
+    gap: 5px;
+    display: flex;
+    padding-block: 16px;
+    flex-direction: column;
+    border-bottom: 1px solid var(--gray-100);
+
+    .versionNumber {
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+
+    .versionDescription {
+      position: relative;
+      line-height: 1;
+      font-weight: 500;
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      font-size: 14px;
+      color: #808184;
+      font-family: var(--font-syne);
+    }
+  }
+}
+
+// Medium / Small Laptops
+@media screen and (max-width: 991px) {
+  .changelogVersions {
+    max-width: 100dvw;
+    padding-block: 240px;
+  }
+}
+
+// Tablet
+@media screen and (max-width: 767px) {
+}
+
+// Phone
+@media screen and (max-width: 479px) {
+  .changelogVersions {
+    max-width: 100dvw;
+    padding-block: 180px;
+  }
+}

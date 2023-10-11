@@ -1,0 +1,29 @@
+.caseImages {
+  gap: 0.625rem;
+  width: 90%;
+  display: flex;
+  margin: 0 auto;
+  max-width: 1440px;
+  position: relative;
+  height: fit-content;
+  flex-direction: column;
+  padding-block: 6.25rem;
+
+  .caseImageWrapper {
+    width: 100%;
+    position: relative;
+
+    .caseImage {
+      display: flex;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+      position: relative;
+      align-items: center;
+      justify-content: center;
+
+      .image {
+        object-fit: cover;
+      }
+    }
+  }
+}

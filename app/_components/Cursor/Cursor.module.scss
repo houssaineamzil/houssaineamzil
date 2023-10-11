@@ -1,0 +1,48 @@
+.cursor {
+  top: 0%;
+  left: 0%;
+  right: 0%;
+  bottom: 0%;
+  z-index: 999;
+  display: none;
+  position: fixed;
+  align-items: center;
+  pointer-events: none;
+  justify-content: center;
+
+  .dot1 {
+    width: 72px;
+    height: 72px;
+    z-index: 9999;
+    color: var(--black);
+    display: flex;
+    font-size: 12px;
+    overflow: hidden;
+    font-weight: 500;
+    border-radius: 50%;
+    align-items: center;
+    transform: scale(0.2);
+    letter-spacing: 0.02rem;
+    justify-content: center;
+    text-transform: uppercase;
+    background-color: var(--foreground);
+  }
+
+  .dot2 {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    font-size: 0.7rem;
+    position: absolute;
+    border-radius: 50%;
+    background-color: var(--white);
+  }
+
+  .text {
+    opacity: 0;
+    color: var(--white);
+    transform-style: preserve-3d;
+    transform: translate3d(0px, 0px, 0px) scale3d(0, 0, 1) rotateX(0deg)
+      rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+  }
+}

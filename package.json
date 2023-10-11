@@ -1,0 +1,28 @@
+{
+  "name": "houss",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "prettify": "prettier --write .",
+    "dev": "next dev -p 8000",
+    "clean": "rm -r .next && yarn run prettify",
+    "build": "next build",
+    "start": "next start -p 8000",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@types/node": "20.8.2",
+    "@types/react": "18.2.25",
+    "@types/react-dom": "18.2.10",
+    "eslint": "8.50.0",
+    "eslint-config-next": "13.5.4",
+    "framer-motion": "^10.16.4",
+    "gsap": "^3.12.2",
+    "next": "13.5.4",
+    "next-themes": "^0.2.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "sass": "^1.69.0",
+    "typescript": "5.2.2"
+  }
+}
