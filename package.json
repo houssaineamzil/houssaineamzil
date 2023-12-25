@@ -1,0 +1,32 @@
+{
+  "name": "houssaineamzil",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "prettify": "prettier --write .",
+    "dev": "next dev -p 8000",
+    "clean": "rm -r .next && yarn run prettify",
+    "build": "next build",
+    "start": "next start -p 8000",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^2.0.1",
+    "classnames": "^2.3.2",
+    "framer-motion": "^10.16.16",
+    "next": "14.0.4",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-grid-layout-next": "^2.2.0",
+    "react-redux": "^9.0.4",
+    "sass": "^1.69.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.4",
+    "typescript": "^5"
+  }
+}
