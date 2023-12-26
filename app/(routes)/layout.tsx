@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 		siteName: "Høussaine Amzil — Creative Developer",
 		images: [
 			{
-				url: "https://houssaineamzil.vercel.app/og.png",
+				url: "https://houssaineamzil-git-v2-houssaineamzil.vercel.app/og.png",
 				width: 1920,
 				height: 1080,
 			},
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
 		siteId: "1251202830314151936",
 		creator: "@houssaineamzil",
 		creatorId: "1251202830314151936",
-		images: ["https://houssaineamzil.vercel.app/og.png"],
+		images: ["https://houssaineamzil-git-v2-houssaineamzil.vercel.app/og.png"],
 	},
 }
 
