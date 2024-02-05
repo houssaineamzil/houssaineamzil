@@ -1,5 +1,3 @@
-"use client";
-
 import { Card } from "_components/Card";
 import styles from "./styles.module.scss";
 import { useState } from "react";
