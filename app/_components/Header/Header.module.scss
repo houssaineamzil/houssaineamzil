@@ -1,73 +1,68 @@
 .header {
-  left: 0;
-  right: 0;
-  top: 24px;
-  width: 90%;
-  z-index: 99;
-  display: flex;
-  margin: 0 auto;
-  position: fixed;
-  overflow: hidden;
-  max-width: 1440px;
-  align-items: flex-end;
-  justify-content: space-between;
+	left: 0;
+	right: 0;
+	top: 24px;
+	width: 90%;
+	z-index: 99;
+	display: flex;
+	margin: 0 auto;
+	position: fixed;
+	overflow: hidden;
+	max-width: 1440px;
+	align-items: flex-end;
+	justify-content: space-between;
 
-  .nav {
-    gap: 10px;
-    display: flex;
-    align-items: center;
-  }
+	.nav {
+		gap: 10px;
+		display: flex;
+		align-items: center;
 
-  .navCTA {
-    padding: 10px;
-    display: flex;
-    flex-shrink: 0;
-    cursor: pointer;
-    max-height: 42px;
-    overflow: hidden;
-    position: relative;
-    border-radius: 99rem;
-    color: var(--background);
-    justify-content: flex-end;
-    background: var(--foreground);
-    border: 1px solid var(--foreground);
-    transition:
-      width 800ms,
-      padding 800ms,
-      gap 800ms;
+		position: relative;
+	}
 
-    .label {
-      opacity: 0;
-      max-width: 0;
-      overflow: hidden;
-      white-space: nowrap;
-      display: inline-block;
-      vertical-align: middle;
-      transition:
-        max-width 1200ms,
-        opacity 0ms;
+	.navCTA {
+		width: 42px;
+		height: 42px;
+		// padding-left: 10px;
+		// padding-block: 10px;
+		border-radius: 99rem;
+		position: relative;
+		display: flex;
+		align-items: center;
+		overflow: hidden;
+		transition: box-shadow 0.2s ease-out;
+		color: var(--background);
+		background: var(--foreground);
+		border: 1px solid var(--foreground);
 
-      font-size: 16px;
-      line-height: 1.4;
-      font-weight: 300;
-      text-align: left;
-      color: var(--background);
-      font-family: var(--font-display);
-    }
+		&:hover {
+			cursor: pointer;
+			transition: box-shadow 0.2s ease-out;
+		}
 
-    &:hover {
-      gap: 10px;
-      max-width: 100%;
-      padding-left: 16px;
+		.label {
+			font-size: 16px;
+			line-height: 1.4;
+			font-weight: 300;
+			text-align: left;
 
-      .label {
-        opacity: 1;
-        max-width: none;
-        max-height: none;
-        transition:
-          max-width 1200ms,
-          opacity 0ms;
-      }
-    }
-  }
+			// overflow: hidden;
+			white-space: nowrap;
+			color: var(--background);
+			font-family: var(--font-display);
+
+			margin: 0 42px 0 10px;
+		}
+
+		.icon {
+			width: 42px;
+			height: 42px;
+			border-radius: 99rem;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			position: absolute;
+			right: 0;
+		}
+	}
 }

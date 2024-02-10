@@ -1,5 +1,5 @@
 {
-  "trailingComma": "es5",
+  "trailingComma": "es2020",
   "tabs": true,
   "tabWidth": 2,
   "semi": false,

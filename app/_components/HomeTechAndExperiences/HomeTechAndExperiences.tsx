@@ -28,6 +28,7 @@ const technologies = [
   "Next.js",
   "Firebase",
   "MongoDB",
+  "SupaBase",
   "Python",
   "PyGame",
   "Discord.py",

@@ -1,22 +1,28 @@
 {
   "title": "Finwind",
   "url": "/cases/finwind",
-  "cover": "/assets/images/project02.png",
+  "cover": "/assets/images/cases/finwind/cover.png",
   "info": {
     "client": "-",
-    "year": 2019,
-    "role": "UI Designer",
-    "service": "Website Redesign"
+    "year": 2023,
+    "role": "Graphic Designer",
+    "service": "branding, visual communication"
   },
-  "description_short": "A digital experience rooted in a strong story and brand purpose",
-  "description_full": "Lorem ipsum dolor sit amet consectetur. Scelerisque viverra ultrices eget id. Fermentum adipiscing aliquet nec maecenas. In enim turpis cursus pretium id.",
+  "description_short": "A Brand strong and flexible to stand the Market challanges",
+  "description_full": "Finwind is a banking agency to which I tried to build a strong yet flexible Brand Identity to face the strong market demands.",
   "images": [
-    "/assets/images/cases/plain/image01.png",
-    "/assets/images/cases/plain/image02.png",
-    "/assets/images/cases/plain/image03.png",
-    "/assets/images/cases/plain/image04.png",
-    "/assets/images/cases/plain/image05.png",
-    "/assets/images/cases/plain/image06.png"
+    "/assets/images/cases/finwind/image01.png",
+    "/assets/images/cases/finwind/image02.png",
+    "/assets/images/cases/finwind/image03.png",
+    "/assets/images/cases/finwind/image04.png",
+    "/assets/images/cases/finwind/image05.png",
+    "/assets/images/cases/finwind/image06.png",
+    "/assets/images/cases/finwind/image07.png",
+    "/assets/images/cases/finwind/image08.png",
+    "/assets/images/cases/finwind/image09.png",
+    "/assets/images/cases/finwind/image10.png",
+    "/assets/images/cases/finwind/image11.png",
+    "/assets/images/cases/finwind/image12.png"
   ],
   "related": ["mrc", "myway-education", "plain"]
 }
