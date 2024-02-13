@@ -15,21 +15,17 @@
     "incremental": true,
     "plugins": [
       {
-        "name": "next"
-      }
+        "name": "next",
+      },
     ],
     "paths": {
-      // "@/*": ["./app/*"],
-      "_assets/*": ["./app/_assets/*"],
       "_components/*": ["./app/_components/*"],
       "_data/*": ["./app/_data/*"],
-      "_hooks/*": ["./app/_hooks/*"],
-      "_lib/*": ["./app/_lib/*"],
-      "_stores/*": ["./app/_stores/*"],
       "_styles/*": ["./app/_styles/*"],
-      "_types/*": ["./app/_types/*"]
-    }
+      "_types/*": ["./app/_types/*"],
+      "_utils/*": ["./app/_utils/*"],
+    },
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
 }
