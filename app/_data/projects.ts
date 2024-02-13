@@ -2,6 +2,14 @@ import { ProjectType } from "_types/types"
 
 export const projects: ProjectType[] = [
 	{
+		href: "https://nanocopy.vercel.app/",
+		title: "Nano Copy®",
+		description: "Short copy text for your website.",
+		type: "Design & Dev",
+		image: { src: "/images/nanocopy.png" },
+		size: "big",
+	},
+	{
 		href: "https://beta-houssaineamzil.vercel.app/",
 		title: "Høussaine Amzil",
 		description: "My beta website still working on it",
@@ -9,7 +17,6 @@ export const projects: ProjectType[] = [
 		image: { src: "/images/houssaine.png" },
 		size: "big",
 	},
-
 	{
 		href: "https://bloggo-iota.vercel.app/",
 		title: "Bloggo",
