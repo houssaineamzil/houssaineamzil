@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server"
 
 export const GET = async (req: NextRequest, res: NextResponse) => {
 	const response = await getCurrentlyPlaying()
-	console.log(response)
 
 	if (response.status === 204 || response.status > 400) {
 		return Response.json({ isPlaying: false }, { status: 200 })
