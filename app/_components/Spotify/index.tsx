@@ -53,7 +53,7 @@ export const Spotify = ({ ...restProp }) => {
           {data?.name}
         </h2>
         <p style={{ lineHeight: "22px" }}>
-          {data?.artists.map((artist: string, index: number) => {
+          {data?.artists?.map((artist: string, index: number) => {
             return artist + (index + 1 !== data?.artists.length ? ", " : "");
           })}
         </p>
