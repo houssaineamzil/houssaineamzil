@@ -2,11 +2,11 @@
 
 import { Card } from "_components/Card";
 import cn from "classnames";
-import styles from "./styles.module.scss";
 import { useQuery } from "react-query";
+import styles from "./styles.module.scss";
 
 export const Spotify = ({ ...restProp }) => {
-  const { error, data } = useQuery(
+  const { data } = useQuery(
     `currentlyPlaying`,
     () => fetch(`/api/spotify`).then((res) => res.json()),
     { refetchOnMount: true },
@@ -54,7 +54,7 @@ export const Spotify = ({ ...restProp }) => {
         </h2>
         <p style={{ lineHeight: "22px" }}>
           {data?.artists?.map((artist: string, index: number) => {
-            return artist + (index + 1 !== data?.artists.length ? ", " : "");
+            return artist + (index + 1 !== data?.artists?.length ? ", " : "");
           })}
         </p>
       </div>

@@ -1,7 +1,6 @@
-import { ReactNode } from "react";
+import { Card } from "_components/Card";
 import cn from "classnames";
 import styles from "./styles.module.scss";
-import { Card } from "_components/Card";
 
 export const Bio = () => {
   return (

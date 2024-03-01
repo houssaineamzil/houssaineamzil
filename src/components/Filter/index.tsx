@@ -1,7 +1,7 @@
-import { type MouseEvent, useState } from "react";
-import styles from "./styles.module.scss";
 import { filters } from "_data/shared";
 import { motion } from "framer-motion";
+import { useState } from "react";
+import styles from "./styles.module.scss";
 
 export const Filter = ({ setFilter }: { setFilter: any }) => {
   const [left, setLeft] = useState(5);

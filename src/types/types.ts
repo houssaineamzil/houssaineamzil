@@ -1,4 +1,3 @@
-// import { z } from "zod"
 import type { Breakpoint, ResponsiveLayout } from "react-grid-layout-next";
 
 export interface ProjectType {

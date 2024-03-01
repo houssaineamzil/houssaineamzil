@@ -1,7 +1,8 @@
 import { Card } from "_components/Card";
-import styles from "./styles.module.scss";
-import { useState } from "react";
 import cn from "classnames";
+import Link from "next/link";
+import { useState } from "react";
+import styles from "./styles.module.scss";
 
 interface Props {
   key?: string | number;
@@ -22,7 +23,6 @@ export const CaseStudy = ({
   bg,
   image,
   title,
-  // description,
   type,
   href,
   size,
@@ -39,8 +39,6 @@ export const CaseStudy = ({
       onMouseLeave={() => setActive(false)}
       {...restProps}
     >
-      {/* <img src="images/recroot-bg.svg" />
-				<img src="images/recroot.png" className="CaseStudy__Image-sc-1crojhk-2 GUaRk" /> */}
       <div className={styles.typeWrap}>
         <div className={styles.dot} />
         <div className={styles.type}>{type}</div>
@@ -48,9 +46,10 @@ export const CaseStudy = ({
       <div className={styles.titleWrap}>
         <div className={styles.title}>{title}</div>
       </div>
-      <div
+      <Link
         className={cn(styles.link, active && styles.active)}
-        onMouseDown={() => href && window.open(href, "_blank")}
+        href={href}
+        target="_blank"
       >
         <svg
           width="18"
@@ -67,7 +66,7 @@ export const CaseStudy = ({
             strokeLinejoin="round"
           />
         </svg>
-      </div>
+      </Link>
     </Card>
   );
 };

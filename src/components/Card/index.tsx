@@ -1,7 +1,7 @@
-import { PropsWithChildren, PropsWithoutRef, ReactNode } from "react";
 import cn from "classnames";
-import styles from "./styles.module.scss";
 import Image from "next/image";
+import { ReactNode } from "react";
+import styles from "./styles.module.scss";
 
 interface Props {
   children: ReactNode;
@@ -11,6 +11,7 @@ interface Props {
     alt?: string;
   };
   className?: any;
+  [key: string]: any;
 }
 
 export const Card = ({
@@ -19,7 +20,7 @@ export const Card = ({
   image,
   className,
   ...restprops
-}: any) => {
+}: Props) => {
   return (
     <div className={cn(styles.item, size && styles[size])} {...restprops}>
       {image && (
