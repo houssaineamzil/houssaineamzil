@@ -1,32 +1,32 @@
 {
-  "name": "houssaineamzil",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "prettify": "prettier --write .",
-    "dev": "next dev -p 8000",
-    "clean": "rm -r .next && pnpm run prettify",
-    "build": "next build",
-    "start": "next start -p 8000",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@vercel/analytics": "^1.1.1",
-    "classnames": "^2.3.2",
-    "framer-motion": "^10.16.16",
-    "next": "14.0.4",
-    "react": "^18",
-    "react-dom": "^18",
-    "react-grid-layout-next": "^2.2.0",
-    "react-query": "^3.39.3",
-    "sass": "^1.69.5"
-  },
-  "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "14.0.4",
-    "typescript": "^5"
-  }
+	"name": "houssaineamzil",
+	"version": "0.2.1",
+	"private": true,
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"lint": "next lint",
+		"prettify": "prettier --write .",
+		"clean": "rm -r .next && pnpm run prettify"
+	},
+	"dependencies": {
+		"@vercel/analytics": "^1.1.1",
+		"classnames": "^2.3.2",
+		"framer-motion": "^10.16.16",
+		"next": "14.0.4",
+		"react": "^18",
+		"react-dom": "^18",
+		"react-grid-layout-next": "^2.2.0",
+		"react-query": "^3.39.3",
+		"sass": "^1.69.5"
+	},
+	"devDependencies": {
+		"@types/node": "^20",
+		"@types/react": "^18",
+		"@types/react-dom": "^18",
+		"eslint": "^8",
+		"eslint-config-next": "14.0.4",
+		"typescript": "^5"
+	}
 }
