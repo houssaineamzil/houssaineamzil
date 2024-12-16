@@ -1,40 +1,40 @@
 .container {
-  position: relative;
-  background: transparent;
-  border: 2px solid rgb(48 54 61);
-  border-radius: 23px;
-  transform: translateX(0px);
-  display: flex;
-  font-size: 14px;
-  padding: 5px;
-  background: rgb(9 12 16);
+	position: relative;
+	background: transparent;
+	border: 2px solid rgb(48 54 61);
+	border-radius: 23px;
+	transform: translateX(0px);
+	display: flex;
+	font-size: 14px;
+	padding: 5px;
+	background: rgb(9 12 16);
 }
 
 .highlight {
-  position: absolute;
-  height: 32px;
-  width: 49px;
-  border-radius: 16px;
-  background: rgb(33 38 45);
-  z-index: -1;
-  box-shadow: 0 0 0 2px rgb(48 54 61);
+	position: absolute;
+	height: 32px;
+	width: 49px;
+	border-radius: 16px;
+	background: rgb(33 38 45);
+	z-index: -1;
+	box-shadow: 0 0 0 2px rgb(48 54 61);
 }
 
 .option {
-  border-radius: 50px;
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  height: 32px;
-  padding: 0px 16px;
-  transition: opacity 0.3s ease 0s;
-  color: rgb(240 242 248);
+	border-radius: 50px;
+	display: flex;
+	-webkit-box-align: center;
+	align-items: center;
+	height: 32px;
+	padding: 0px 16px;
+	transition: opacity 0.3s ease 0s;
+	color: rgb(240 242 248);
 
-  @media (hover: hover) {
-    &:hover {
-      cursor: pointer;
-      opacity: 0.5;
-      transition: opacity 0.25s ease 0s;
-    }
-  }
+	@media (hover: hover) {
+		&:hover {
+			cursor: pointer;
+			opacity: 0.5;
+			transition: opacity 0.25s ease 0s;
+		}
+	}
 }

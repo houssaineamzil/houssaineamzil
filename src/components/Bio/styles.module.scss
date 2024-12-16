@@ -1,25 +1,25 @@
 .container {
-  justify-content: end;
+	justify-content: end;
 }
 
 .about {
-  max-width: 26.5rem;
+	max-width: 26.5rem;
 }
 
 .indentation {
-  padding-left: 2rem;
+	padding-left: 2rem;
 }
 
 .name {
-  font-size: 1.25rem;
-  font-weight: 700;
-  background-image: linear-gradient(
-    90deg,
-    rgb(240 242 248 /15%),
-    rgb(240 242 248),
-    rgb(240 242 248 / 15%)
-  );
-  background-clip: text;
-  -moz-text-fill-color: transparent;
-  -webkit-text-fill-color: transparent;
+	font-size: 1.25rem;
+	font-weight: 700;
+	background-image: linear-gradient(
+		90deg,
+		rgb(240 242 248 /15%),
+		rgb(240 242 248),
+		rgb(240 242 248 / 15%)
+	);
+	background-clip: text;
+	-moz-text-fill-color: transparent;
+	-webkit-text-fill-color: transparent;
 }

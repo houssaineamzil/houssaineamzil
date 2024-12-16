@@ -7,7 +7,7 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"prettify": "prettier --write .",
+		"prettify": "prettier -w .",
 		"clean": "rm -r .next && pnpm run prettify"
 	},
 	"dependencies": {

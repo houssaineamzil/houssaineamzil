@@ -1,13 +1,21 @@
-import { ProjectType } from "_types/types"
+import { ProjectType } from "@/types/types"
 
 export const projects: ProjectType[] = [
+	{
+		href: "https://meetalab.vercel.app/",
+		title: "Metalab",
+		description: "A clone of the original Metalab website.",
+		type: "Dev",
+		image: { src: "/images/metalab.webp" },
+		size: "big"
+	},
 	{
 		href: "https://emmaissocial.vercel.app/",
 		title: "Emma is social",
 		description: "A clone of the original Emma is social by DashDigital®.",
 		type: "Dev",
 		image: { src: "/images/emmaissocial.png" },
-		size: "big",
+		size: "big"
 	},
 	{
 		href: "https://synthetictheatre-houssaineamzil.vercel.app/",
@@ -15,7 +23,7 @@ export const projects: ProjectType[] = [
 		description: "A clone of the original Synthetic Theatre by Daniele Buffa.",
 		type: "Dev",
 		image: { src: "/images/synthetictheatre.png" },
-		size: "big",
+		size: "wide"
 	},
 	{
 		href: "https://nanocopy.vercel.app/",
@@ -23,7 +31,7 @@ export const projects: ProjectType[] = [
 		description: "Short copy text for your website.",
 		type: "Design & Dev",
 		image: { src: "/images/nanocopy.png" },
-		size: "wide",
+		size: "wide"
 	},
 	{
 		href: "https://beta-houssaineamzil.vercel.app/",
@@ -31,14 +39,13 @@ export const projects: ProjectType[] = [
 		description: "My beta website still working on it",
 		type: "Design & Dev",
 		image: { src: "/images/houssaine.png" },
-		size: "wide",
 	},
 	{
 		href: "https://bloggo-iota.vercel.app/",
 		title: "Bloggo",
 		description: "A feminin blog",
 		type: "Dev",
-		image: { src: "/images/bloggo.png" },
+		image: { src: "/images/bloggo.png" }
 	},
 	{
 		href: "https://mrc-houssaineamzil.vercel.app/",
@@ -46,7 +53,7 @@ export const projects: ProjectType[] = [
 		description: "",
 		type: "Dev",
 		image: { src: "/images/mrc.png" },
-		size: "tall",
+		size: "tall"
 	},
 	{
 		href: "https://weather-co.vercel.app/en",
@@ -54,21 +61,21 @@ export const projects: ProjectType[] = [
 		description: "",
 		type: "Dsign & Dev",
 		image: { src: "/images/weatherco.jpg" },
-		size: "tall",
+		size: "tall"
 	},
 	{
 		href: "https://lus-acd-20232024.vercel.app/",
 		title: "LUC ACD",
 		description: "",
 		type: "Dev",
-		image: { src: "/images/lucacd.png" },
+		image: { src: "/images/lucacd.png" }
 	},
 	{
 		href: "https://coacherrar.com/?ref=houssaineamzil.vercel.com",
 		title: "Coach Herrar",
 		description: "",
 		type: "Design & Dev",
-		image: { src: "/images/coacherrar.png" },
+		image: { src: "/images/coacherrar.png" }
 	},
 	{
 		href: "https://www.behance.net/gallery/175260655/Internship-Report",
@@ -76,7 +83,7 @@ export const projects: ProjectType[] = [
 		description: "",
 		type: "Editorial",
 		image: { src: "/images/intern.jpg" },
-		size: "wide",
+		size: "wide"
 	},
 	{
 		href: "https://www.behance.net/gallery/178346349/My-Way-Education",
@@ -84,7 +91,7 @@ export const projects: ProjectType[] = [
 		description: "",
 		type: "Branding",
 		image: { src: "/images/mywayeduc.png" },
-		size: "wide",
+		size: "wide"
 	},
 	{
 		href: "https://www.behance.net/gallery/179037663/Finwind",
@@ -92,6 +99,6 @@ export const projects: ProjectType[] = [
 		description: "",
 		type: "Branding",
 		image: { src: "/images/finwind.png" },
-		size: "wide",
-	},
+		size: "wide"
+	}
 ]

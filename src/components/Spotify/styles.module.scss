@@ -1,66 +1,66 @@
 .container {
-  padding: 2rem 2.25rem;
-  background: rgb(29 185 84);
+	padding: 2rem 2.25rem;
+	background: rgb(29 185 84);
 }
 
 .icon {
-  width: 54px;
-  height: 54px;
-  margin-left: -4px;
+	width: 54px;
+	height: 54px;
+	margin-left: -4px;
 
-  @media (max-width: 1200px) {
-    width: 36px;
-    height: 36px;
-  }
+	@media (max-width: 1200px) {
+		width: 36px;
+		height: 36px;
+	}
 
-  @media (max-width: 800px) {
-    width: 72px;
-    height: 72px;
-  }
+	@media (max-width: 800px) {
+		width: 72px;
+		height: 72px;
+	}
 }
 
 .nowPlaying {
-  display: flex;
-  align-items: center;
-  margin-bottom: 0px;
+	display: flex;
+	align-items: center;
+	margin-bottom: 0px;
 }
 
 .playingIndicator {
-  height: 20px;
-  margin-right: 4px;
-  position: relative;
-  display: flex;
-  align-items: center;
+	height: 20px;
+	margin-right: 4px;
+	position: relative;
+	display: flex;
+	align-items: center;
 
-  .playingIndicator__Line {
-    width: 3px;
-    height: 3px;
-    margin-right: 3px;
-    background: rgb(255 255 255);
-    border-radius: 1.5px;
-  }
+	.playingIndicator__Line {
+		width: 3px;
+		height: 3px;
+		margin-right: 3px;
+		background: rgb(255 255 255);
+		border-radius: 1.5px;
+	}
 }
 
 .title {
-  transition: opacity 0.5s;
-  display: inline-block;
+	transition: opacity 0.5s;
+	display: inline-block;
 
-  &:hover {
-    opacity: 0.5;
-    cursor: pointer;
-    transition: opacity 0.5s;
-  }
+	&:hover {
+		opacity: 0.5;
+		cursor: pointer;
+		transition: opacity 0.5s;
+	}
 
-  @media (max-width: 1200px) and (min-width: 800px) {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
-  }
+	@media (max-width: 1200px) and (min-width: 800px) {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		width: 100%;
+	}
 
-  @media (max-width: 800px) {
-    font-size: 32px;
-    line-height: 38px;
-    margin: 6px 0;
-  }
+	@media (max-width: 800px) {
+		font-size: 32px;
+		line-height: 38px;
+		margin: 6px 0;
+	}
 }

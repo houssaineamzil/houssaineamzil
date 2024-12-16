@@ -1,4 +1,4 @@
-import { Card } from "_components/Card"
+import { Card } from "@/components/Card"
 import Link from "next/link"
 import { cloneElement, type ReactNode } from "react"
 import styles from "./styles.module.scss"
@@ -15,7 +15,7 @@ export const Social = ({
 	return (
 		<Card className={styles.container} {...restProps}>
 			{cloneElement(icon as React.ReactElement, {
-				className: styles.icon,
+				className: styles.icon
 			})}
 			<Link className={styles.link} href={link} target="_blank">
 				<svg
