@@ -44,7 +44,6 @@ export const pageStructure = (
 			return (
 				S.listItem()
 					.title(typeDef.title!)
-					// @ts-expect-error I don't give a fuck it's annoying
 					.icon(typeDef.icon)
 					.child(
 						S.editor()
