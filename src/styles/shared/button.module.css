@@ -1,0 +1,53 @@
+.root {
+  align-content: center;
+  align-items: center;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 7.5px;
+  height: min-content;
+  justify-content: center;
+  padding: 9px 15px;
+  position: relative;
+  text-decoration: none;
+  width: min-content;
+  border-radius: 999rem;
+  will-change: transform;
+  background: var(--color-indigo-100);
+  color: var(--color-indigo-800);
+
+  --borderWidth: 1px;
+}
+
+.dot {
+  margin-left: -4.5px;
+
+  width: 10px;
+  height: 10px;
+  display: block;
+
+  border-radius: 999rem;
+  transition: all ease-in-out;
+  border: 1px solid currentColor;
+}
+
+.container {
+  gap: 5px;
+  height: 14px;
+  overflow: hidden;
+}
+
+.wrapper {
+  gap: 5px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 100%;
+  text-align: center;
+  position: relative;
+  letter-spacing: -0.2px;
+}

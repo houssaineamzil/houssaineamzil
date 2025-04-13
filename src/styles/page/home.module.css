@@ -1,0 +1,32 @@
+.main {
+  gap: 15px;
+  flex: none;
+  width: 100%;
+  height: auto;
+  display: masonry;
+  columns: 3;
+  column-gap: 15px;
+  flex-wrap: nowrap;
+  position: relative;
+  padding: 150px 15px 15px;
+}
+
+.column {
+  gap: 15px;
+  width: 1px;
+  height: auto;
+  display: flex;
+  flex: 1 0 0px;
+  flex-wrap: nowrap;
+  position: relative;
+  align-items: center;
+  align-content: center;
+  flex-direction: column;
+}
+
+.card {
+  break-inside: avoid;
+  + .card {
+    margin-top: 15px;
+  }
+}

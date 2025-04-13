@@ -1,0 +1,26 @@
+@import "./card.module.css";
+
+.title {
+  font-size: 18px;
+  line-height: 90%;
+  font-weight: 430;
+  text-align: justify;
+  text-align-last: center;
+}
+
+.root:has(.background) {
+  color: white;
+}
+
+.background {
+  inset: 0;
+  position: absolute;
+}
+
+.overlay {
+  inset: 0;
+  opacity: 10%;
+  position: absolute;
+  mix-blend-mode: multiply;
+  background: hsla(0deg 0% 0%);
+}

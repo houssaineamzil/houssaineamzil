@@ -1,0 +1,99 @@
+.container {
+  gap: 15px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  position: relative;
+  padding-block: 150px 240px;
+}
+
+.left {
+  grid-column: span 5 / span 5;
+}
+
+.right {
+  gap: 15px;
+  display: flex;
+  grid-column: 7 / span 4;
+  flex-direction: column;
+}
+
+.image {
+  top: 120px;
+  width: 100%;
+  position: sticky;
+  overflow: hidden;
+  border-radius: 12px;
+  aspect-ratio: 10 / 6;
+}
+
+.info {
+  gap: 10px;
+  display: flex;
+  align-self: stretch;
+  flex-direction: column;
+}
+
+.bio {
+  gap: 15px;
+  display: flex;
+  align-self: stretch;
+  padding-bottom: 30px;
+  flex-direction: column;
+}
+
+.bioTitle {
+  color: var(--color-zinc-400);
+}
+
+.bioContent {
+  font-size: 16px;
+  font-weight: 420;
+}
+
+.section {
+  display: flex;
+  padding-block: 8px;
+  border-top: 1px solid var(--color-zinc-200);
+}
+
+.sectionTitle {
+  flex: 1 0 0px;
+
+  color: var(--color-zinc-400);
+}
+
+.sectionContent {
+  flex: 3 0 0px;
+  font-weight: 420;
+}
+
+.clients {
+  columns: 2;
+}
+
+.clientCard {
+  display: flex;
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-zinc-100);
+
+  & + .clientCard {
+    margin-top: 15px;
+  }
+}
+
+.industries {
+  columns: 2;
+}
+
+.contactTitle {
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+
+.contactContent {
+  margin-bottom: 7px;
+}

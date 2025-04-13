@@ -1,0 +1,92 @@
+.root {
+  top: 0;
+  z-index: 9;
+  height: auto;
+  inset-inline: 0;
+  position: fixed;
+}
+
+.nav {
+  gap: 20px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-block: 20px;
+  flex-direction: column;
+}
+
+.container {
+  gap: 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-inline: 20px;
+  justify-content: center;
+}
+
+.logoWrapper {
+  gap: 10px;
+  width: 1px;
+  flex: 1 0 0px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logo {
+  font-size: 20px;
+  line-height: 100%;
+  position: relative;
+  font-family: "Forma DJR", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+    sans-serif;
+}
+
+.linkContainer {
+  align-content: center;
+  align-items: center;
+  display: flex;
+  flex: 1 0 0px;
+  flex-wrap: nowrap;
+  gap: 20px;
+  height: min-content;
+  justify-content: flex-end;
+  overflow: visible;
+  position: relative;
+  width: 1px;
+}
+
+.linkWrapper {
+  align-content: center;
+  align-items: center;
+  display: flex;
+  flex: none;
+  flex-wrap: nowrap;
+  gap: 20px;
+  height: min-content;
+  overflow: visible;
+  padding-right: 10px;
+  position: relative;
+  width: min-content;
+}
+
+.link {
+  opacity: 0.6;
+  padding-block: 2px;
+}
+
+.ctaWrapper {
+  align-content: flex-end;
+  align-items: flex-end;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 10px;
+  height: min-content;
+  justify-content: flex-end;
+  overflow: visible;
+  position: relative;
+  width: 111px;
+  z-index: 9;
+}

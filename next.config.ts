@@ -1,32 +1,26 @@
-import type { NextConfig } from "next"
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-	images: {
-		remotePatterns: [
-			{
-				protocol: "https",
-				hostname: "cdn.sanity.io"
-			}
-		]
-	},
-	experimental: {
-		turbo: {
-			rules: {
-				"*.glsl": {
-					loaders: ["raw-loader"],
-					as: "*.js"
-				},
-				"*.frag": {
-					loaders: ["raw-loader"],
-					as: "*.js"
-				},
-				"*.vert": {
-					loaders: ["raw-loader"],
-					as: "*.js"
-				}
-			}
-		}
-	}
-}
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "framerusercontent.com",
+      },
+      {
+        protocol: "https",
+        hostname: "dropboxusercontent.com",
+      },
+      {
+        protocol: "https",
+        hostname: "images.pexels.com",
+      },
+      {
+        protocol: "https",
+        hostname: "videos.pexels.com",
+      },
+    ],
+  },
+};
 
-export default nextConfig
+export default nextConfig;

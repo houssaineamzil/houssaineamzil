@@ -1,0 +1,36 @@
+.root {
+  gap: 7.5px;
+  display: flex;
+  flex-wrap: nowrap;
+  padding: 6px 14px;
+  position: absolute;
+  width: min-content;
+  height: min-content;
+  align-items: center;
+  align-content: center;
+  border-radius: 999rem;
+  justify-content: center;
+  border: 1px solid currentColor;
+}
+
+.container {
+  gap: 5px;
+  height: 13px;
+  overflow: hidden;
+}
+
+.wrapper {
+  gap: 5px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 100%;
+  text-align: center;
+  position: relative;
+  letter-spacing: -0.2px;
+}

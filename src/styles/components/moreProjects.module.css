@@ -1,0 +1,26 @@
+.root {
+  gap: 15px;
+  display: flex;
+  padding-block: 15px;
+  flex-direction: column;
+}
+
+.head {
+  display: flex;
+  padding-bottom: 40px;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 32px;
+}
+
+.projects {
+  gap: 15px;
+  display: flex;
+}
+
+.card {
+  height: 21.7rem;
+  aspect-ratio: 4 / 3;
+}

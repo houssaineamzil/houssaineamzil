@@ -1,0 +1,84 @@
+.container {
+  gap: 15px;
+  width: 100%;
+  display: flex;
+  position: relative;
+  padding-block: 150px 240px;
+}
+
+.images {
+  gap: 15px;
+  display: flex;
+  flex: 5 0 0px;
+  flex-direction: column;
+}
+
+.image {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  aspect-ratio: 16 / 9;
+}
+
+.infoWrapper {
+  gap: 40px;
+  display: flex;
+  flex: 2 0 0px;
+  padding-inline: 15px;
+  position: sticky;
+  top: 120px;
+  height: fit-content;
+  flex-direction: column;
+}
+
+.head {
+  gap: 15px;
+  display: flex;
+  align-self: stretch;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 28px;
+}
+
+.info {
+  gap: 10px;
+  display: flex;
+  align-self: stretch;
+  flex-direction: column;
+}
+
+.description {
+  gap: 15px;
+  display: flex;
+  align-self: stretch;
+  padding-bottom: 30px;
+  flex-direction: column;
+}
+
+.descriptionTitle {
+  color: var(--color-zinc-400);
+}
+
+.descriptionContent {
+  font-size: 16px;
+  font-weight: 420;
+}
+
+.section {
+  display: flex;
+  padding-block: 8px;
+  border-top: 1px solid var(--color-zinc-200);
+}
+
+.sectionTitle {
+  flex: 1 0 0px;
+
+  color: var(--color-zinc-400);
+}
+
+.sectionContent {
+  flex: 3 0 0px;
+  font-weight: 420;
+}

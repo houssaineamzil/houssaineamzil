@@ -1,0 +1,30 @@
+.root {
+  gap: 10px;
+  display: inline-flex;
+  cursor: pointer;
+  flex-wrap: nowrap;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.label {
+  font-size: 14px;
+  line-height: 90%;
+  text-align: center;
+  letter-spacing: -0.1px;
+}
+
+.line {
+  bottom: 0;
+  z-index: 1;
+  width: 100%;
+  height: 1px;
+  position: absolute;
+  background: currentColor;
+
+  transform-origin: 50% 50%;
+  transform: translate(-110%);
+}

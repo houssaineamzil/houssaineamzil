@@ -1,0 +1,17 @@
+.root {
+  overflow-x: hidden;
+}
+
+.container {
+  display: flex;
+  justify-content: flex-start;
+  white-space: nowrap;
+}
+
+.reversed {
+  justify-content: flex-end;
+}
+
+.wrapper {
+  display: inline;
+}

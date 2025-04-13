@@ -1,0 +1,25 @@
+@import "./card.module.css";
+
+.marquee {
+  position: relative;
+}
+
+.marqueeContent {
+  gap: 24px;
+  display: flex;
+  margin-left: 24px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.marqueeMask {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    var(--color-zinc-100),
+    transparent 10%,
+    transparent 90%,
+    var(--color-zinc-100)
+  );
+}

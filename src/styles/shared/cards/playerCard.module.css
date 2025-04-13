@@ -1,0 +1,15 @@
+@import "./card.module.css";
+
+.root {
+  padding: 15px;
+  flex-direction: column;
+}
+
+.root {
+  .title {
+    display: flex;
+    flex: 1 0 auto;
+    align-items: center;
+    justify-content: center;
+  }
+}
