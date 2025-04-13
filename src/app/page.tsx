@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 import React from "react";
 
 const Page: NextPage = () => {
-	return <Slider />;
+  return <Slider />;
 };
 
 export default Page;
