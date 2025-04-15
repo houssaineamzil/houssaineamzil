@@ -23,3 +23,8 @@
     var(--color-zinc-100)
   );
 }
+
+.clientLogo {
+  width: 64px;
+  height: auto;
+}

@@ -11,6 +11,10 @@
   background: var(--color-zinc-100);
 }
 
+.root:has(.background) {
+  color: white;
+}
+
 .square {
   aspect-ratio: 1 / 1;
 }

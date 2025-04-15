@@ -67,8 +67,10 @@ export const Button: React.FC<Props> = ({
           yPercent: -((110 + 5) / 2),
         },
         "<",
-      )
-      .to(
+      );
+
+    if (dotRef.current)
+      timeline.current.to(
         dotRef.current,
         {
           background: "var(--color-indigo-800)",

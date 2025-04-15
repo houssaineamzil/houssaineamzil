@@ -6,6 +6,7 @@ import styles from "@/styles/page/case.module.css";
 import type { NextPage } from "next";
 
 import data from "@/data/home.json";
+import { Fragment } from "react";
 
 const services = [
   {
@@ -101,15 +102,13 @@ const Page: NextPage = () => {
                   <div className={styles.sectionTitle}>{service.title}</div>
                   <div className={styles.sectionContent}>
                     {service.itmes.map((item) => (
-                      <>
+                      <Fragment key={item.label}>
                         {item.url ? (
-                          <Link key={item.label} href={item.url}>
-                            {item.label}
-                          </Link>
+                          <Link href={item.url}>{item.label}</Link>
                         ) : (
-                          <div key={item.label}>{item.label}</div>
+                          <div>{item.label}</div>
                         )}
-                      </>
+                      </Fragment>
                     ))}
                   </div>
                 </div>

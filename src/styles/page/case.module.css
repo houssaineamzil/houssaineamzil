@@ -3,6 +3,7 @@
   width: 100%;
   display: flex;
   position: relative;
+  padding-inline: 15px;
   padding-block: 150px 240px;
 }
 

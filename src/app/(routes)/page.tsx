@@ -30,7 +30,7 @@ const Page: NextPage = async () => {
   return (
     <main className={styles.main}>
       {cards.map((card, index) => {
-        const Card = cardTypes[card._type];
+        const Card = cardTypes[card._type as keyof typeof cardTypes];
         return <Card key={index} {...card} className={styles.card} />;
       })}
     </main>

@@ -1,10 +1,1 @@
 @import "./card.module.css";
-
-.root {
-  color: var(--color-indigo-800);
-  background: var(--color-indigo-50);
-}
-
-.root:has(.background) {
-  color: white;
-}

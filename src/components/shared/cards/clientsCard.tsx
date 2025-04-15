@@ -1,5 +1,6 @@
 "use client";
 
+import { clients } from "@/constants";
 import styles from "@/styles/shared/cards/clientsCard.module.css";
 import type { CardType } from "@/types";
 import { cn } from "@/utils";
@@ -54,34 +55,15 @@ export const ClientsCard: React.FC<Props> = ({ className, ...card }) => {
       <div className={styles.marquee}>
         <Marquee>
           <div className={styles.marqueeContent}>
-            <img
-              src="https://pelostudio-storyblok-assets.b-cdn.net/f/236077/70x40/56b47ea194/charging-cards-chargenow.svg"
-              alt=""
-              loading="lazy"
-              width="96"
-              height="auto"
-            />
-            <img
-              src="https://pelostudio-storyblok-assets.b-cdn.net/f/236077/56x40/16e33026fb/charging-cards-charge-map.svg"
-              alt=""
-              loading="lazy"
-              width="96"
-              height="auto"
-            />
-            <img
-              src="https://pelostudio-storyblok-assets.b-cdn.net/f/236077/56x40/830e213f6f/charging-cards-izivia.svg"
-              alt=""
-              loading="lazy"
-              width="96"
-              height="auto"
-            />
-            <img
-              src="https://pelostudio-storyblok-assets.b-cdn.net/f/236077/56x40/8f898364d8/charging-cards-electromaps.svg"
-              alt=""
-              loading="lazy"
-              width="96"
-              height="auto"
-            />
+            {clients.map((client) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                key={client.name}
+                width={112}
+                src={client.logo}
+                alt={client.name}
+              />
+            ))}
           </div>
         </Marquee>
         <div className={styles.marqueeMask} />

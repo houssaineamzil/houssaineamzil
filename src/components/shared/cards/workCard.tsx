@@ -29,15 +29,16 @@ export const WorkCard: React.FC<Props> = ({ className, ...card }) => {
       ease: "power5.inOut",
     });
 
-    timeline.current
-      .to(
-        tag.current,
-        {
-          yPercent: -((110 + 5) / 2),
-        },
-        0,
-      )
-      .to(
+    timeline.current.to(
+      tag.current,
+      {
+        yPercent: -((110 + 5) / 2),
+      },
+      0,
+    );
+
+    if (overlay.current)
+      timeline.current.to(
         overlay.current,
         {
           opacity: 0.2,
@@ -72,7 +73,7 @@ export const WorkCard: React.FC<Props> = ({ className, ...card }) => {
         <div className={styles.background}>
           {card.background._type === "image" && (
             <Image
-              alt={card.title}
+              alt={card.title as string | ""}
               src={card.background.url}
               className={styles.image}
             />

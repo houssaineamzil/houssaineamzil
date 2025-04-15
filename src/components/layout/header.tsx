@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "@/styles/global/header.module.css";
+import styles from "@/styles/layout/header.module.css";
 import NextLink from "next/link";
 import { Button } from "../shared/button";
 import { Link } from "../shared/link";

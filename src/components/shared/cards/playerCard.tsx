@@ -14,7 +14,6 @@ interface Props extends CardType {
 
 export const PlayerCard: React.FC<Props> = ({ className, ...card }) => {
   const tag = useRef<HTMLDivElement>(null);
-  const overlay = useRef<HTMLDivElement>(null);
   const timeline = useRef<gsap.core.Timeline | null>(null);
 
   useEffect(() => {
@@ -26,21 +25,13 @@ export const PlayerCard: React.FC<Props> = ({ className, ...card }) => {
       ease: "power5.inOut",
     });
 
-    timeline.current
-      .to(
-        tag.current,
-        {
-          yPercent: -((110 + 5) / 2),
-        },
-        0,
-      )
-      .to(
-        overlay.current,
-        {
-          opacity: 0.2,
-        },
-        "<",
-      );
+    timeline.current.to(
+      tag.current,
+      {
+        yPercent: -((110 + 5) / 2),
+      },
+      0,
+    );
 
     return () => {
       timeline.current?.kill();

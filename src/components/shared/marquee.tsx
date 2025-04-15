@@ -1,3 +1,5 @@
+"use client";
+
 import styles from "@/styles/shared/marquee.module.css";
 import { cn } from "@/utils";
 import gsap, { Linear } from "gsap";

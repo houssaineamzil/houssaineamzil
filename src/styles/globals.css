@@ -39,9 +39,9 @@
     @apply bg-white text-zinc-800 text-sm font-sans;
   }
 
-	.root {
-		@apply flex flex-col gap-3 p-3
-	} 
+  .root {
+    @apply flex flex-col gap-3 p-3;
+  }
 
   a {
     color: inherit;

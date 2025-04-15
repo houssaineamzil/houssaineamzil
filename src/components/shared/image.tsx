@@ -9,7 +9,12 @@ interface Props extends React.ComponentProps<typeof NextImage> {
 export const Image: React.FC<Props> = ({ className, ...props }) => {
   return (
     <div className={cn(styles.root)}>
-      <NextImage fill {...props} className={className} />
+      <NextImage
+        fill
+        {...props}
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        className={className}
+      />
     </div>
   );
 };

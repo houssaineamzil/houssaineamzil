@@ -1,55 +1,8 @@
 import { Button } from "@/components/shared/button";
 import { Image } from "@/components/shared/image";
+import { clients, industries, services } from "@/constants";
 import styles from "@/styles/page/about.module.css";
 import type { NextPage } from "next";
-
-const services = [
-  "Brand Identity",
-  "Motion design",
-  "Web design",
-  "Copywriting",
-  "Strategy",
-  "Development",
-];
-
-const clients = [
-  {
-    name: "Google",
-    logo: "https://framerusercontent.com/images/HbDPrY63HxnPooLcXp2DPJOKXd0.svg",
-  },
-  {
-    name: "Google",
-    logo: "https://framerusercontent.com/images/HbDPrY63HxnPooLcXp2DPJOKXd0.svg",
-  },
-  {
-    name: "Google",
-    logo: "https://framerusercontent.com/images/HbDPrY63HxnPooLcXp2DPJOKXd0.svg",
-  },
-  {
-    name: "Google",
-    logo: "https://framerusercontent.com/images/HbDPrY63HxnPooLcXp2DPJOKXd0.svg",
-  },
-  {
-    name: "Google",
-    logo: "https://framerusercontent.com/images/HbDPrY63HxnPooLcXp2DPJOKXd0.svg",
-  },
-  {
-    name: "Google",
-    logo: "https://framerusercontent.com/images/HbDPrY63HxnPooLcXp2DPJOKXd0.svg",
-  },
-];
-
-const industries = [
-  "Arts",
-  "Culture",
-  "Music",
-  "Tech",
-  "Fashion",
-  "E-Commerce",
-  "Hospitality",
-  "Health",
-  "Auto",
-];
 
 const Page: NextPage = () => {
   return (
@@ -90,12 +43,7 @@ const Page: NextPage = () => {
                 <div className={styles.clients}>
                   {clients.map((client) => (
                     <div key={client.name} className={styles.clientCard}>
-                      <img
-                        decoding="async"
-                        sizes="calc((max(min(292px, 100vw), 0px) - 40px) / 2)"
-                        src={client.logo}
-                        alt=""
-                      />
+                      <Image src={client.logo} alt={client.name} />
                     </div>
                   ))}
                 </div>

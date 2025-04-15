@@ -10,7 +10,7 @@
       "tag": ["Project", "Work"]
     },
     {
-      "id": "h2k7m9n4",
+      "id": "b9c1a3d5",
       "uid": "L'Oréal",
       "_variant": "square",
       "_type": "work",
@@ -23,7 +23,7 @@
       "tag": ["Project", "Work"]
     },
     {
-      "id": "p6r8s5t1",
+      "id": "e2f8d1c4",
       "uid": "houssaineamzil",
       "_variant": "medium",
       "_type": "about",
@@ -32,7 +32,7 @@
       "tag": ["About", "About"]
     },
     {
-      "id": "w3x9y4z7",
+      "id": "a1b2c3d4",
       "uid": "flowers",
       "_variant": "square",
       "_type": "work",
@@ -45,16 +45,13 @@
       "tag": ["Project", "Work"]
     },
     {
-      "id": "k8m5n2p7",
-      "uid": null,
+      "id": "f5e3d1c2",
       "_variant": "square",
       "_type": "geo",
-      "title": null,
-      "description": null,
       "tag": ["Geo", "Geo"]
     },
     {
-      "id": "w3x9y4z7",
+      "id": "c6d4e2f1",
       "uid": "audi",
       "_variant": "square",
       "_type": "work",
@@ -67,7 +64,7 @@
       "tag": ["Project", "Work"]
     },
     {
-      "id": "w3x9y4z7",
+      "id": "b3a5c7e9",
       "uid": "kia",
       "_variant": "square",
       "_type": "work",
@@ -80,7 +77,7 @@
       "tag": ["Project", "Work"]
     },
     {
-      "id": "j5k8l2m6",
+      "id": "d9c8b7a6",
       "uid": "a9dc11c1",
       "_variant": "medium",
       "_type": "about",
@@ -89,7 +86,7 @@
       "tag": ["About", "About"]
     },
     {
-      "id": "q1w9e4r7",
+      "id": "e4f1d7c3",
       "uid": "lumia",
       "_variant": "square",
       "_type": "work",
@@ -102,7 +99,7 @@
       "tag": ["Project", "Work"]
     },
     {
-      "id": "t6y3u8i2",
+      "id": "a2b3c4d5",
       "uid": "lawyer",
       "_variant": "small",
       "_type": "work",
@@ -111,9 +108,10 @@
       "tag": ["Project", "Work"]
     },
     {
-      "id": "o4p7a2s5",
+      "id": "f9a1b8c2",
       "_variant": "square",
       "_type": "about",
+      "title": "About",
       "background": {
         "_type": "image",
         "url": "https://images.pexels.com/photos/380769/pexels-photo-380769.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
@@ -121,7 +119,7 @@
       "tag": ["Studio", "Studio"]
     },
     {
-      "id": "d8f5g2h6",
+      "id": "c7d8e9f0",
       "uid": "bruush",
       "_variant": "square",
       "_type": "work",
@@ -134,7 +132,7 @@
       "tag": ["Project", "Work"]
     },
     {
-      "id": "v7b4n9m1",
+      "id": "b4c5d6e7",
       "uid": "lio",
       "_variant": "small",
       "_type": "work",
@@ -143,7 +141,7 @@
       "tag": ["Project", "Work"]
     },
     {
-      "id": "d8f5g2h6",
+      "id": "a9b8c7d6",
       "uid": "deco",
       "_variant": "medium",
       "_type": "work",
@@ -156,7 +154,7 @@
       "tag": ["Project", "Work"]
     },
     {
-      "id": "c3x6z9l4",
+      "id": "e1f2d3c4",
       "uid": "ray-ban",
       "_variant": "medium",
       "_type": "work",
@@ -169,7 +167,7 @@
       "tag": ["Project", "Work"]
     },
     {
-      "id": "k8m5n2p7",
+      "id": "f3e2d1c0",
       "uid": "clients",
       "_variant": "medium",
       "_type": "clients",
@@ -177,7 +175,7 @@
       "tag": ["Clients", "Clients"]
     },
     {
-      "id": "c3x6z9l4",
+      "id": "d4e5f6a7",
       "uid": "sidi-ali",
       "_variant": "medium",
       "_type": "work",
@@ -190,7 +188,7 @@
       "tag": ["Project", "Work"]
     },
     {
-      "id": "k8m5n2p7",
+      "id": "c1b2a3f4",
       "uid": "services",
       "_variant": "small",
       "_type": "services",
@@ -198,7 +196,7 @@
       "tag": ["Services", "Services"]
     },
     {
-      "id": "c3x6z9l4",
+      "id": "a5d8c9b1",
       "uid": "mosaic",
       "_variant": "square",
       "_type": "work",
@@ -211,7 +209,7 @@
       "tag": ["Project", "Work"]
     },
     {
-      "id": "c3x6z9l4",
+      "id": "b7a4c2d9",
       "uid": "Cosmic",
       "_variant": "small",
       "_type": "work",
@@ -220,7 +218,7 @@
       "tag": ["Project", "Work"]
     },
     {
-      "id": "c3x6z9l4",
+      "id": "f8e9d7c6",
       "_variant": "square",
       "_type": "player",
       "title": "What puts me on mood",
