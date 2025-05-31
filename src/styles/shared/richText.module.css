@@ -1,8 +1,4 @@
 .root {
-  flex: none;
-  width: auto;
-  height: auto;
-  white-space: pre;
   user-select: none;
   position: relative;
   -webkit-user-select: none;
