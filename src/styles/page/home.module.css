@@ -4,10 +4,10 @@
   width: 100%;
   height: auto;
   display: masonry;
-  columns: 3;
   column-gap: 15px;
   flex-wrap: nowrap;
   position: relative;
+  columns: 3 min(350px);
   padding: 150px 15px 15px;
 }
 

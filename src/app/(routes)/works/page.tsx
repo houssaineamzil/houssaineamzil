@@ -4,15 +4,14 @@ import type { CardType } from "@/types";
 import type { NextPage } from "next";
 
 const getCards = async (): Promise<CardType[]> => {
-  const res = (await import("../../../data/home.json")).default
+  const res = (await import("../../../data/works.json")).default
     .cards as CardType[];
 
   return res;
 };
 
 const Page: NextPage = async () => {
-  const cards = await getCards();
-  const works = cards.filter((card) => card._type === "work");
+  const works = await getCards();
 
   return (
     <main className={styles.main}>

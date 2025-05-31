@@ -1,0 +1,223 @@
+{
+  "title": "houssaineamzil",
+  "description": "A personal portfolio website showcasing the work and skills of Høussaine Amzil, featuring a clean design, smooth animations, and a focus on user experience.",
+  "tag": ["Project", "Work"],
+  "uid": "houssaineamzil",
+  "variant": "large",
+  "live": {
+    "url": "https://houssaineamzil.vercel.app/",
+    "label": "Live Project"
+  },
+  "background": {
+    "_type": "image",
+    "alt": "Høussaine Amzil Portfolio",
+    "url": "https://framerusercontent.com/images/TDVqw1tqR6Xs2CRjqnICnaPpH1o.jpg"
+  },
+  "info": [
+    {
+      "title": "Services",
+      "items": [
+        { "label": "Art Direction", "url": null },
+        { "label": "Web Development", "url": null }
+      ]
+    },
+    {
+      "title": "Client",
+      "items": [
+        {
+          "label": "Høussaine Amzil",
+          "url": "https://houssaineamzil.vercel.app/"
+        },
+        { "label": "Khalid Baddou", "url": null }
+      ]
+    },
+    {
+      "title": "Year",
+      "items": [{ "label": "2025", "url": null }]
+    },
+    {
+      "title": "Design",
+      "items": [
+        {
+          "label": "Høussaine Amzil",
+          "url": "https://houssaineamzil.vercel.app/"
+        },
+        { "label": "Malik Hammadi", "url": null }
+      ]
+    },
+    {
+      "title": "Motion",
+      "items": [{ "label": "Yasmin Jaafar", "url": null }]
+    },
+    {
+      "title": "Development",
+      "items": [
+        {
+          "label": "Høussaine Amzil",
+          "url": "https://houssaineamzil.vercel.app/"
+        },
+        { "label": "Ahmed Taib", "url": null },
+        { "label": "Mostapha Touhami", "url": null }
+      ]
+    },
+    {
+      "title": "Awards",
+      "items": [
+        { "label": "Awwwards SOTD", "url": null },
+        { "label": "CSS Site of the Day", "url": null }
+      ]
+    }
+  ],
+  "sections": [
+    {
+      "type": "single_image",
+      "images": {
+        "mobile": {
+          "_type": "image",
+          "alt": "Høussaine Amzil Portfolio",
+          "url": "https://framerusercontent.com/images/TDVqw1tqR6Xs2CRjqnICnaPpH1o.jpg"
+        },
+        "desktop": {
+          "_type": "image",
+          "alt": "Høussaine Amzil Portfolio",
+          "url": "https://framerusercontent.com/images/TDVqw1tqR6Xs2CRjqnICnaPpH1o.jpg"
+        }
+      }
+    },
+    {
+      "type": "single_image",
+      "images": {
+        "mobile": {
+          "_type": "image",
+          "alt": "Høussaine Amzil Portfolio",
+          "url": "https://framerusercontent.com/images/TDVqw1tqR6Xs2CRjqnICnaPpH1o.jpg"
+        },
+        "desktop": {
+          "_type": "image",
+          "alt": "Høussaine Amzil Portfolio",
+          "url": "https://framerusercontent.com/images/TDVqw1tqR6Xs2CRjqnICnaPpH1o.jpg"
+        }
+      }
+    },
+    {
+      "type": "single_image",
+      "images": {
+        "mobile": {
+          "_type": "image",
+          "alt": "Høussaine Amzil Portfolio",
+          "url": "https://framerusercontent.com/images/TDVqw1tqR6Xs2CRjqnICnaPpH1o.jpg"
+        },
+        "desktop": {
+          "_type": "image",
+          "alt": "Høussaine Amzil Portfolio",
+          "url": "https://framerusercontent.com/images/TDVqw1tqR6Xs2CRjqnICnaPpH1o.jpg"
+        }
+      }
+    },
+    {
+      "type": "single_image",
+      "images": {
+        "mobile": {
+          "_type": "image",
+          "alt": "Høussaine Amzil Portfolio",
+          "url": "https://framerusercontent.com/images/TDVqw1tqR6Xs2CRjqnICnaPpH1o.jpg"
+        },
+        "desktop": {
+          "_type": "image",
+          "alt": "Høussaine Amzil Portfolio",
+          "url": "https://framerusercontent.com/images/TDVqw1tqR6Xs2CRjqnICnaPpH1o.jpg"
+        }
+      }
+    },
+    {
+      "type": "single_image",
+      "images": {
+        "mobile": {
+          "_type": "image",
+          "alt": "Høussaine Amzil Portfolio",
+          "url": "https://framerusercontent.com/images/TDVqw1tqR6Xs2CRjqnICnaPpH1o.jpg"
+        },
+        "desktop": {
+          "_type": "image",
+          "alt": "Høussaine Amzil Portfolio",
+          "url": "https://framerusercontent.com/images/TDVqw1tqR6Xs2CRjqnICnaPpH1o.jpg"
+        }
+      }
+    },
+    {
+      "type": "single_image",
+      "images": {
+        "mobile": {
+          "_type": "image",
+          "alt": "Høussaine Amzil Portfolio",
+          "url": "https://framerusercontent.com/images/TDVqw1tqR6Xs2CRjqnICnaPpH1o.jpg"
+        },
+        "desktop": {
+          "_type": "image",
+          "alt": "Høussaine Amzil Portfolio",
+          "url": "https://framerusercontent.com/images/TDVqw1tqR6Xs2CRjqnICnaPpH1o.jpg"
+        }
+      }
+    },
+    {
+      "type": "single_image",
+      "images": {
+        "mobile": {
+          "_type": "image",
+          "alt": "Høussaine Amzil Portfolio",
+          "url": "https://framerusercontent.com/images/TDVqw1tqR6Xs2CRjqnICnaPpH1o.jpg"
+        },
+        "desktop": {
+          "_type": "image",
+          "alt": "Høussaine Amzil Portfolio",
+          "url": "https://framerusercontent.com/images/TDVqw1tqR6Xs2CRjqnICnaPpH1o.jpg"
+        }
+      }
+    },
+    {
+      "type": "single_image",
+      "images": {
+        "mobile": {
+          "_type": "image",
+          "alt": "Høussaine Amzil Portfolio",
+          "url": "https://framerusercontent.com/images/TDVqw1tqR6Xs2CRjqnICnaPpH1o.jpg"
+        },
+        "desktop": {
+          "_type": "image",
+          "alt": "Høussaine Amzil Portfolio",
+          "url": "https://framerusercontent.com/images/TDVqw1tqR6Xs2CRjqnICnaPpH1o.jpg"
+        }
+      }
+    },
+    {
+      "type": "single_image",
+      "images": {
+        "mobile": {
+          "_type": "image",
+          "alt": "Høussaine Amzil Portfolio",
+          "url": "https://framerusercontent.com/images/TDVqw1tqR6Xs2CRjqnICnaPpH1o.jpg"
+        },
+        "desktop": {
+          "_type": "image",
+          "alt": "Høussaine Amzil Portfolio",
+          "url": "https://framerusercontent.com/images/TDVqw1tqR6Xs2CRjqnICnaPpH1o.jpg"
+        }
+      }
+    },
+    {
+      "type": "single_image",
+      "images": {
+        "mobile": {
+          "_type": "image",
+          "alt": "Høussaine Amzil Portfolio",
+          "url": "https://framerusercontent.com/images/TDVqw1tqR6Xs2CRjqnICnaPpH1o.jpg"
+        },
+        "desktop": {
+          "_type": "image",
+          "alt": "Høussaine Amzil Portfolio",
+          "url": "https://framerusercontent.com/images/TDVqw1tqR6Xs2CRjqnICnaPpH1o.jpg"
+        }
+      }
+    }
+  ]
+}

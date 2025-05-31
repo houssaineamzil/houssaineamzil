@@ -1,5 +1,6 @@
+import { InlineSvgPreviewItem } from "@focus-reactive/sanity-plugin-inline-svg-input";
 import { BookIcon, LinkIcon } from "@sanity/icons";
-import { defineArrayMember, defineField, defineType } from "sanity";
+import { defineField, defineType } from "sanity";
 
 export const about = defineType({
   name: "about",
@@ -10,59 +11,73 @@ export const about = defineType({
   liveEdit: true,
   fields: [
     defineField({
-      type: "string",
-      name: "title",
-      title: "Title",
-      description:
-        "This is your title for About page that will be displayed in the header of your website.",
+      name: "bio",
+      description: "Enter a short bio about yourself.",
+      title: "Bio",
+      type: "text",
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: "overview",
-      description: "This field is for your About description.",
-      title: "Description",
+      name: "services",
+      title: "Services",
+      description: "(Optional) Here you can add a list of services you offer.",
+      type: "array",
+      of: [{ type: "string" }],
+    }),
+    defineField({
+      name: "industries",
+      title: "Industries",
+      description:
+        "(Optional) Here you can add a list of industries you have worked with.",
+      type: "array",
+      of: [{ type: "string" }],
+    }),
+    defineField({
+      name: "clients",
+      title: "Clients",
+      description:
+        "(Optional) Here you can add a list of clients you have worked with.",
       type: "array",
       of: [
-        // Paragraphs
-        defineArrayMember({
-          lists: [],
-          marks: {
-            annotations: [
-              {
-                name: "link",
-                type: "object",
-                title: "Link",
-                fields: [
-                  {
-                    name: "href",
-                    type: "url",
-                    title: "Url",
-                  },
-                ],
-              },
-            ],
-            decorators: [
-              {
-                title: "Italic",
-                value: "em",
-              },
-              {
-                title: "Strong",
-                value: "strong",
-              },
-            ],
+        {
+          type: "object",
+          name: "client",
+          fields: [
+            {
+              name: "name",
+              type: "string",
+            },
+            {
+              name: "icon",
+              type: "inlineSvg",
+            },
+          ],
+          preview: {
+            select: {
+              icon: "icon",
+              title: "name",
+            },
           },
-          styles: [],
-          type: "block",
-        }),
+          components: {
+            preview: InlineSvgPreviewItem,
+          },
+        },
       ],
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: "aboutImage",
       title: "About Image",
       description:
-        "(Optional) This image will be displayed next to your About description.",
+        "(Optional) Here you can add an image to display in the About Page.",
+      type: "image",
+      options: {
+        hotspot: true,
+      },
+    }),
+    defineField({
+      name: "studioImage",
+      title: "Studio Image",
+      description: "(Optional) Here you can add an image of your studio.",
       type: "image",
       options: {
         hotspot: true,

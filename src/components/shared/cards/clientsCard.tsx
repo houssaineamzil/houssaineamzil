@@ -1,6 +1,5 @@
 "use client";
 
-import { clients } from "@/constants";
 import styles from "@/styles/shared/cards/clientsCard.module.css";
 import type { CardType } from "@/types";
 import { cn } from "@/utils";
@@ -55,14 +54,10 @@ export const ClientsCard: React.FC<Props> = ({ className, ...card }) => {
       <div className={styles.marquee}>
         <Marquee>
           <div className={styles.marqueeContent}>
-            {clients.map((client) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                key={client.name}
-                width={112}
-                src={client.logo}
-                alt={client.name}
-              />
+            {card.clients.map((client) => (
+              <span key={client.name} className={styles.clientLogo}>
+                {client.name}
+              </span>
             ))}
           </div>
         </Marquee>

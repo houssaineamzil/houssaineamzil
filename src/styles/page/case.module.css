@@ -4,7 +4,13 @@
   display: flex;
   position: relative;
   padding-inline: 15px;
-  padding-block: 150px 240px;
+  padding-block: 32vh 34vh;
+
+  @media screen and (max-width: 920px) {
+    gap: 12vh;
+    flex-direction: column;
+    padding-block: 32vh 24vh;
+  }
 }
 
 .images {
@@ -12,6 +18,10 @@
   display: flex;
   flex: 5 0 0px;
   flex-direction: column;
+
+  @media screen and (max-width: 920px) {
+    order: 2;
+  }
 }
 
 .image {
@@ -19,6 +29,10 @@
   overflow: hidden;
   border-radius: 12px;
   aspect-ratio: 16 / 9;
+
+  &.mobile {
+    aspect-ratio: 3 / 4;
+  }
 }
 
 .infoWrapper {
@@ -30,6 +44,11 @@
   top: 120px;
   height: fit-content;
   flex-direction: column;
+
+  @media screen and (max-width: 920px) {
+    order: 1;
+    position: initial;
+  }
 }
 
 .head {
@@ -75,11 +94,14 @@
 
 .sectionTitle {
   flex: 1 0 0px;
-
   color: var(--color-zinc-400);
 }
 
 .sectionContent {
   flex: 3 0 0px;
   font-weight: 420;
+
+  @media screen and (max-width: 920px) {
+    flex: 2 0 0px;
+  }
 }

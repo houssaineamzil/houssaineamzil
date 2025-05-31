@@ -9,5 +9,9 @@ export interface CardType {
     _type: string | "image" | "video";
     url: string;
   };
+  clients: {
+    name: string;
+    logo?: string;
+  }[];
   tag: string[];
 }

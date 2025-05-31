@@ -23,15 +23,6 @@
       "tag": ["Project", "Work"]
     },
     {
-      "id": "e2f8d1c4",
-      "uid": "houssaineamzil",
-      "_variant": "medium",
-      "_type": "about",
-      "title": "I like to make things that lives in my computer",
-      "description": "I like to make things that lives in my computer",
-      "tag": ["About", "About"]
-    },
-    {
       "id": "a1b2c3d4",
       "uid": "flowers",
       "_variant": "square",
@@ -43,12 +34,6 @@
         "url": "https://videos.pexels.com/video-files/2078088/2078088-uhd_2732_1164_25fps.mp4"
       },
       "tag": ["Project", "Work"]
-    },
-    {
-      "id": "f5e3d1c2",
-      "_variant": "square",
-      "_type": "geo",
-      "tag": ["Geo", "Geo"]
     },
     {
       "id": "c6d4e2f1",
@@ -77,15 +62,6 @@
       "tag": ["Project", "Work"]
     },
     {
-      "id": "d9c8b7a6",
-      "uid": "a9dc11c1",
-      "_variant": "medium",
-      "_type": "about",
-      "title": "For me, everything begins with the strength of a compelling concept. Our methodology stems from transforming stories into unique and adaptable creations designed for growth and precision.",
-      "description": "I like to make things that lives in my computer",
-      "tag": ["About", "About"]
-    },
-    {
       "id": "e4f1d7c3",
       "uid": "lumia",
       "_variant": "square",
@@ -106,17 +82,6 @@
       "title": "Lawyer",
       "description": "Lawyer Project",
       "tag": ["Project", "Work"]
-    },
-    {
-      "id": "f9a1b8c2",
-      "_variant": "square",
-      "_type": "about",
-      "title": "About",
-      "background": {
-        "_type": "image",
-        "url": "https://images.pexels.com/photos/380769/pexels-photo-380769.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-      },
-      "tag": ["Studio", "Studio"]
     },
     {
       "id": "c7d8e9f0",
@@ -167,21 +132,6 @@
       "tag": ["Project", "Work"]
     },
     {
-      "id": "f3e2d1c0",
-      "uid": "clients",
-      "_variant": "medium",
-      "_type": "clients",
-      "clients": [
-        { "name": "Google" },
-        { "name": "Apple" },
-        { "name": "Amazon" },
-        { "name": "Microsoft" },
-        { "name": "Huawei" },
-        { "name": "Xiaomi" }
-      ],
-      "tag": ["Clients", "Clients"]
-    },
-    {
       "id": "d4e5f6a7",
       "uid": "sidi-ali",
       "_variant": "medium",
@@ -193,14 +143,6 @@
         "url": "https://framerusercontent.com/images/dj15JAtlB1COBsDSKYyZq2vgc5A.jpg"
       },
       "tag": ["Project", "Work"]
-    },
-    {
-      "id": "c1b2a3f4",
-      "uid": "services",
-      "_variant": "small",
-      "_type": "services",
-
-      "tag": ["Services", "Services"]
     },
     {
       "id": "a5d8c9b1",
@@ -223,13 +165,6 @@
       "title": "Cosmic",
       "description": "Cosmic Project",
       "tag": ["Project", "Work"]
-    },
-    {
-      "id": "f8e9d7c6",
-      "_variant": "square",
-      "_type": "player",
-      "title": "What puts me on mood",
-      "tag": ["Music", "Mood"]
     }
   ],
   "socials": [

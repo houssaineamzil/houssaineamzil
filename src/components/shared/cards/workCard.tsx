@@ -4,7 +4,7 @@ import styles from "@/styles/shared/cards/workCard.module.css";
 import type { CardType } from "@/types";
 import { cn } from "@/utils";
 import gsap from "gsap";
-import Link from "next/link";
+// import Link from "next/link"
 import { useEffect, useRef } from "react";
 import { Image } from "../image";
 import { RichText } from "../richText";
@@ -52,8 +52,13 @@ export const WorkCard: React.FC<Props> = ({ className, ...card }) => {
   }, []);
 
   return (
-    <Link
-      href={`works/${card.uid}`}
+    // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+    <div
+      // href={`works/${card.uid}`}
+      onClick={(event) => {
+        event.preventDefault();
+        window.location.href = `/works/${card.uid}`;
+      }}
       className={cn(
         styles.root,
         {
@@ -94,6 +99,6 @@ export const WorkCard: React.FC<Props> = ({ className, ...card }) => {
       <RichText as="h2" className={styles.title}>
         {card.title}
       </RichText>
-    </Link>
+    </div>
   );
 };

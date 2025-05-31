@@ -18,6 +18,7 @@ import { schema } from "@/sanity/schemas";
 import { about } from "@/sanity/schemas/singletons/about";
 import { home } from "@/sanity/schemas/singletons/home";
 import { settings } from "@/sanity/schemas/singletons/settings";
+import { inlineSvgInput } from "@focus-reactive/sanity-plugin-inline-svg-input";
 
 export default defineConfig({
   projectId,
@@ -41,5 +42,6 @@ export default defineConfig({
     visionTool({ defaultApiVersion: apiVersion }),
     colorInput(),
     media(),
+    inlineSvgInput(),
   ],
 });

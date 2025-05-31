@@ -1,87 +1,75 @@
-import { MoreProjects } from "@/components/moreProjects";
+// import { MoreProjects } from "@/components/moreProjects";
 import { Button } from "@/components/shared/button";
 import { Image } from "@/components/shared/image";
 import { Link } from "@/components/shared/link";
 import styles from "@/styles/page/case.module.css";
 import type { NextPage } from "next";
-
-import data from "@/data/home.json";
 import { Fragment } from "react";
 
-const services = [
-  {
-    title: "Services",
-    itmes: [
-      { label: "Art Direction", url: null },
-      { label: "Web Development", url: null },
-    ],
-  },
-  {
-    title: "Client",
-    itmes: [
-      { label: "Høussaine Amzil", url: "https://houssaineamzil.vercel.app/" },
-      { label: "Khalid Baddou", url: null },
-    ],
-  },
-  {
-    title: "Year",
-    itmes: [{ label: "2025", url: null }],
-  },
-  {
-    title: "Design",
-    itmes: [
-      { label: "Høussaine Amzil", url: "https://houssaineamzil.vercel.app/" },
-      { label: "Malik Hammadi", url: null },
-    ],
-  },
-  {
-    title: "Motion",
-    itmes: [{ label: "Yasmin Jaafar", url: null }],
-  },
-  {
-    title: "Development",
-    itmes: [
-      { label: "Høussaine Amzil", url: "https://houssaineamzil.vercel.app/" },
-      { label: "Ahmed Taib", url: null },
-      { label: "Mostapha Touhami", url: null },
-    ],
-  },
-  {
-    title: "Awards",
-    itmes: [
-      { label: "Awwwards SOTD", url: null },
-      { label: "CSS Site of the Day", url: null },
-    ],
-  },
-];
+interface WorkData {
+  title: string;
+  description: string;
+  tag: string[];
+  uid: string;
+  variant: string;
+  live?: {
+    url: string;
+    label?: string;
+  };
+  info: {
+    title: string;
+    items: {
+      label: string;
+      url?: string;
+    }[];
+  }[];
+  sections: {
+    type: string;
+    images: {
+      mobile?: {
+        _type: string;
+        alt: string;
+        url: string;
+      };
+      desktop: {
+        _type: string;
+        alt: string;
+        url: string;
+      };
+    };
+  }[];
+  related?: unknown;
+}
 
-const live = true;
+const getData = async (): Promise<WorkData> => {
+  const res = (await import("../../../../data/works/houssaineamzil.json"))
+    .default as WorkData;
 
-const Page: NextPage = () => {
-  const projects = data.cards.filter((card) => card._type === "work");
+  return res;
+};
+const Page: NextPage = async () => {
+  const data = await getData();
 
   return (
     <main className={styles.main}>
       <div className={styles.container}>
         <div className={styles.images}>
-          {Array(8)
-            .fill(null)
-            .map((image, index) => (
-              <div key={index} className={styles.image}>
-                <Image
-                  alt=""
-                  src="https://framerusercontent.com/images/TDVqw1tqR6Xs2CRjqnICnaPpH1o.jpg"
-                />
-              </div>
-            ))}
+          {data.sections.map((section, index) => (
+            <div key={index} className={styles.image}>
+              <Image
+                alt={section.images.desktop.alt || "Image"}
+                src={section.images.desktop.url}
+              />
+            </div>
+          ))}
         </div>
 
         <div className={styles.infoWrapper}>
           <div className={styles.head}>
-            <div className={styles.title}>houssaineamzil</div>
-            {live && (
-              <Button link href="/" target="_blank">
-                View live site
+            <div className={styles.title}>{data.title}</div>
+            {data.live && (
+              <Button link href={data.live.url} target="_blank">
+                {data.live.label || "View live site"}
               </Button>
             )}
           </div>
@@ -89,19 +77,16 @@ const Page: NextPage = () => {
             <div className={styles.description}>
               <div className={styles.descriptionTitle}>Info</div>
               <div className={styles.descriptionContent}>
-                The Essence of Modern Minimalism. Designed specifically for
-                portfolios and design studios, this Framer template is a
-                testament to the power of simplicity. Studio B stands out with
-                its clean lines, elegant whitespace, and thoughtful layout.
+                {data.description}
               </div>
             </div>
 
-            {services.map((service) => {
+            {data.info.map((section) => {
               return (
-                <div key={service.title} className={styles.section}>
-                  <div className={styles.sectionTitle}>{service.title}</div>
+                <div key={section.title} className={styles.section}>
+                  <div className={styles.sectionTitle}>{section.title}</div>
                   <div className={styles.sectionContent}>
-                    {service.itmes.map((item) => (
+                    {section.items.map((item) => (
                       <Fragment key={item.label}>
                         {item.url ? (
                           <Link href={item.url}>{item.label}</Link>
@@ -117,7 +102,7 @@ const Page: NextPage = () => {
           </div>
         </div>
       </div>
-      <MoreProjects projects={projects} />
+      {/* <MoreProjects projects={projects} /> */}
     </main>
   );
 };

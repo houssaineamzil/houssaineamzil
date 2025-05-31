@@ -13,6 +13,7 @@
     "clean": "rm -r .next && bun run check"
   },
   "dependencies": {
+    "@focus-reactive/sanity-plugin-inline-svg-input": "^1.1.0",
     "@sanity/color-input": "^4.0.3",
     "@sanity/icons": "^3.7.0",
     "@sanity/image-url": "^1.1.0",
@@ -38,6 +39,7 @@
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@eslint/eslintrc": "^3.3.1",
+    "@svgr/webpack": "^8.1.0",
     "@tailwindcss/postcss": "^4.1.4",
     "@types/node": "^22.14.1",
     "@types/react": "^19.1.2",

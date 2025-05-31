@@ -19,7 +19,7 @@ export const project = defineType({
     defineField({
       name: "slug",
       description:
-        "This field is the project page name at yourwebsite.com/projects/<name>.",
+        "This field is the project page name. It will be used in the URL of the project page.",
       title: "Slug",
       type: "slug",
       options: {
@@ -45,58 +45,104 @@ export const project = defineType({
       description:
         "Used both for project subheader, and the <meta> description tag for SEO.",
       title: "Overview",
+      type: "text",
+      validation: (rule) => rule.max(250).required(),
+    }),
+    defineField({
+      name: "services",
+      description:
+        "(Optional) Here you can add a list of services you have worked on for this project.",
+      title: "Services",
       type: "array",
-      of: [
-        // Paragraphs
-        defineArrayMember({
-          lists: [],
-          marks: {
-            annotations: [],
-            decorators: [
-              {
-                title: "Italic",
-                value: "em",
-              },
-              {
-                title: "Strong",
-                value: "strong",
-              },
-            ],
-          },
-          styles: [],
-          type: "block",
-        }),
-      ],
-      validation: (rule) => rule.max(155).required(),
+      of: [{ type: "string" }],
+    }),
+    defineField({
+      name: "client",
+      description: "(Optional) This field is for the name of your client.",
+      title: "Client",
+      type: "string",
     }),
     defineField({
       name: "year",
-      description:
-        "(Optional) This freeform field is for year or type of your project. It will be displayed next to title in the projects list within the homepage and below title at project page.",
+      description: "(Optional) This field is for the year of the project.",
       title: "Year",
       type: "string",
     }),
     defineField({
-      name: "site",
-      title: "Website link",
+      name: "design",
       description:
-        "(Optional) External link related to your project, it is displayed below your project overview text.",
-      type: "object",
-      options: {
-        columns: 2,
-      },
-      fields: [
+        "(Optional) This field is for the people who worked on the design of the project.",
+      title: "Design",
+      type: "array",
+      of: [
         {
-          title: "URL Title",
-          name: "urltitle",
-          type: "string",
-        },
-        {
-          title: "URL link",
-          name: "url",
-          type: "url",
+          type: "object",
+          name: "person",
+          fields: [
+            { name: "name", type: "string" },
+            { name: "website", type: "url" },
+          ],
         },
       ],
+    }),
+    defineField({
+      name: "motion",
+      description:
+        "(Optional) This field is for the people who worked on the motion of the project.",
+      title: "Motion",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          name: "person",
+          fields: [
+            { name: "name", type: "string" },
+            { name: "website", type: "url" },
+          ],
+        },
+      ],
+    }),
+    defineField({
+      name: "development",
+      description:
+        "(Optional) This field is for the people who worked on the development of the project.",
+      title: "Development",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          name: "person",
+          fields: [
+            { name: "name", type: "string" },
+            { name: "website", type: "url" },
+          ],
+        },
+      ],
+    }),
+    defineField({
+      name: "awards",
+      description:
+        "(Optional) This field is for the awards the project has won.",
+      title: "Awards",
+      type: "array",
+      of: [{ type: "string" }],
+      options: {
+        list: [
+          { title: "Awwwards", value: "Awwwards" },
+          { title: "CSS Design Awards", value: "CSS Design Awards" },
+          { title: "Webby Awards", value: "Webby Awards" },
+          { title: "FWA", value: "FWA" },
+          { title: "Other", value: "Other" },
+        ],
+      },
+    }),
+    defineField({
+      name: "livePreview",
+      title: "Live preview",
+      description:
+        "(Optional) External link related to your project, it is displayed below your project overview text.",
+      type: "url",
+      validation: (rule) => rule.uri({ scheme: ["http", "https"] }),
     }),
     // Content blocks
     defineField({

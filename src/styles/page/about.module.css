@@ -1,21 +1,31 @@
 .container {
   gap: 15px;
   width: 100%;
-  display: grid;
+  display: flex;
   position: relative;
   padding-inline: 15px;
-  padding-block: 150px 240px;
-  grid-template-columns: repeat(12, 1fr);
+  padding-block: 32vh 34vh;
+
+  @media screen and (max-width: 920px) {
+    gap: 12vh;
+    flex-direction: column;
+    padding-block: 32vh 24vh;
+  }
 }
 
 .left {
-  grid-column: span 5 / span 5;
+  gap: 15px;
+  display: flex;
+  flex: 5 0 0px;
+  flex-direction: column;
 }
 
 .right {
-  gap: 15px;
+  gap: 40px;
   display: flex;
-  grid-column: 7 / span 4;
+  flex: 2 0 0px;
+  height: fit-content;
+  padding-inline: 15px;
   flex-direction: column;
 }
 
@@ -26,6 +36,10 @@
   overflow: hidden;
   border-radius: 12px;
   aspect-ratio: 10 / 6;
+
+  @media screen and (max-width: 920px) {
+    aspect-ratio: 3 / 4;
+  }
 }
 
 .info {
@@ -56,6 +70,11 @@
   display: flex;
   padding-block: 8px;
   border-top: 1px solid var(--color-zinc-200);
+
+  @media screen and (max-width: 920px) {
+    flex-direction: column;
+    gap: 15px;
+  }
 }
 
 .sectionTitle {
@@ -71,6 +90,10 @@
 
 .clients {
   columns: 2;
+
+  @media screen and (max-width: 920px) {
+    columns: 1;
+  }
 }
 
 .clientCard {
@@ -79,14 +102,27 @@
   border-radius: 12px;
   align-items: center;
   justify-content: center;
+  color: var(--color-zinc-700);
   background: var(--color-zinc-100);
 
   & + .clientCard {
     margin-top: 15px;
   }
+
+  @media screen and (max-width: 920px) {
+    aspect-ratio: 16 / 9;
+  }
 }
 
-.industries {
+.clientLogo {
+  width: 112px;
+  font-size: 26px;
+  color: currentColor;
+  text-align: center;
+}
+
+.industries,
+.services {
   columns: 2;
 }
 

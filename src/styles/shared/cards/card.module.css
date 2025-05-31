@@ -67,10 +67,10 @@
 
   flex: none;
   height: auto;
-  width: 380px;
   position: relative;
   text-align: center;
   white-space: pre-wrap;
   word-wrap: break-word;
+  width: min(100%, 37ch);
   word-break: break-word;
 }
