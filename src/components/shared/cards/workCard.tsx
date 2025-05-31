@@ -4,6 +4,7 @@ import styles from "@/styles/shared/cards/workCard.module.css";
 import type { CardType } from "@/types";
 import { cn } from "@/utils";
 import gsap from "gsap";
+import { useRouter } from "next/navigation";
 // import Link from "next/link"
 import { useEffect, useRef } from "react";
 import { Image } from "../image";
@@ -16,6 +17,7 @@ interface Props extends CardType {
 }
 
 export const WorkCard: React.FC<Props> = ({ className, ...card }) => {
+  const router = useRouter();
   const tag = useRef<HTMLDivElement>(null);
   const overlay = useRef<HTMLDivElement>(null);
   const timeline = useRef<gsap.core.Timeline | null>(null);
@@ -57,7 +59,7 @@ export const WorkCard: React.FC<Props> = ({ className, ...card }) => {
       // href={`works/${card.uid}`}
       onClick={(event) => {
         event.preventDefault();
-        window.location.href = `/works/${card.uid}`;
+        router.push(`/works/${card.uid}`);
       }}
       className={cn(
         styles.root,

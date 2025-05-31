@@ -4,12 +4,11 @@
   display: flex;
   flex-wrap: nowrap;
   gap: 7.5px;
-  height: min-content;
   justify-content: center;
   padding: 9px 15px;
   position: relative;
   text-decoration: none;
-  width: min-content;
+  width: fit-content;
   border-radius: 999rem;
   will-change: transform;
   background: var(--color-indigo-100);
