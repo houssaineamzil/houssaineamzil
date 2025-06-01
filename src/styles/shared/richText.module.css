@@ -1,9 +1,3 @@
-.root {
-  flex: none;
-  width: auto;
-  height: auto;
-  white-space: pre;
-  user-select: none;
+.wrapper {
   position: relative;
-  -webkit-user-select: none;
 }

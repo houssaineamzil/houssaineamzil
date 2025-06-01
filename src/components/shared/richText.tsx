@@ -16,10 +16,10 @@ export const RichText: React.FC<Props> = ({
   children,
 }) => {
   return inner ? (
-    <div className={styles.root}>
-      <Comp className={cn(styles.inner, className)}>{children}</Comp>
+    <div className={styles.wrapper}>
+      <Comp className={cn(className)}>{children}</Comp>
     </div>
   ) : (
-    <Comp className={cn(styles.root, className)}>{children}</Comp>
+    <Comp className={cn(className)}>{children}</Comp>
   );
 };
