@@ -1,3 +1,6 @@
 {
-	"cSpell.words": ["Awwwards", "Behance", "hotspot"]
+	"cSpell.words": ["Awwwards", "Behance", "hotspot", "Kenitra"],
+	"files.associations": {
+    "*.css": "tailwindcss"
+  }
 }

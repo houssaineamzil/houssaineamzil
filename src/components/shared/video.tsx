@@ -1,8 +1,8 @@
-import styles from "@/styles/shared/video.module.css";
-import { cn } from "@/utils";
+import styles from "@/styles/shared/video.module.css"
+import { cn } from "@/utils"
 
 interface Props extends React.VideoHTMLAttributes<HTMLVideoElement> {
-  className?: string;
+  className?: string
 }
 
 export const Video: React.FC<Props> = ({ className, ...props }) => {
@@ -18,5 +18,5 @@ export const Video: React.FC<Props> = ({ className, ...props }) => {
         className={className}
       />
     </div>
-  );
-};
+  )
+}

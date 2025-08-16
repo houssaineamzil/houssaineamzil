@@ -1,5 +1,7 @@
 .root {
+  width: 100%;
   padding: 15px;
+  overflow: hidden;
 }
 
 .container {

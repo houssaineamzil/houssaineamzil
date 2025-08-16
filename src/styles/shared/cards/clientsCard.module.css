@@ -6,7 +6,7 @@
 }
 
 .marqueeContent {
-  gap: 24px;
+  gap: 32px;
   display: flex;
   margin-left: 24px;
   align-items: center;
@@ -27,7 +27,6 @@
 }
 
 .clientLogo {
-  width: 112px;
   font-size: 26px;
   color: currentColor;
 }

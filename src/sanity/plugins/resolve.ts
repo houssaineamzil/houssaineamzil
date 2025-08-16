@@ -3,32 +3,32 @@
  * see https://www.sanity.io/docs/presentation-resolver-api for more information.
  */
 
-import { defineDocuments, defineLocations } from "sanity/presentation";
+import { defineDocuments, defineLocations } from "sanity/presentation"
 
-import { resolveHref } from "@/sanity/lib/url";
+import { resolveHref } from "@/sanity/lib/url"
 
 export const mainDocuments = defineDocuments([
   {
     route: "/projects/:slug",
-    filter: `_type == "project" && slug.current == $slug`,
-  },
-]);
+    filter: `_type == "project" && slug.current == $slug`
+  }
+])
 
 export const locations = {
   settings: defineLocations({
     message:
       "This settings are used on all pages. When edited do not forget to publish your changes",
-    tone: "caution",
+    tone: "caution"
   }),
   home: defineLocations({
     message:
       "These settings are used for your Home page. When edited do not forget to publish your changes",
-    tone: "positive",
+    tone: "positive"
   }),
   about: defineLocations({
     message:
       "(Optional page) This fields are used for the About page. After you published your changes add a link in your Menu links section at Settings tab",
-    tone: "positive",
+    tone: "positive"
   }),
   project: defineLocations({
     select: { title: "title", slug: "slug.current" },
@@ -39,9 +39,9 @@ export const locations = {
       locations: [
         {
           title: doc?.title || "Untitled",
-          href: resolveHref("project", doc?.slug)!,
-        },
-      ],
-    }),
-  }),
-};
+          href: resolveHref("project", doc?.slug)!
+        }
+      ]
+    })
+  })
+}

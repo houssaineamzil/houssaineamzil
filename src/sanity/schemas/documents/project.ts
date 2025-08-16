@@ -1,360 +1,271 @@
-import { DocumentIcon, ImageIcon, PlayIcon, TextIcon } from "@sanity/icons";
-import { defineArrayMember, defineField, defineType } from "sanity";
+import { DocumentIcon, ImageIcon, PlayIcon, TextIcon } from "@sanity/icons"
+import { defineArrayMember, defineField, defineType } from "sanity"
+
+const client = defineArrayMember({
+  name: "client",
+  title: "Client",
+  type: "object",
+  fields: [
+    defineField({
+      name: "name",
+      title: "Name",
+      type: "string"
+    }),
+    defineField({
+      name: "url",
+      title: "URL",
+      type: "url"
+    })
+  ]
+})
+
+const person = defineArrayMember({
+  name: "person",
+  title: "Person",
+  type: "object",
+  fields: [
+    defineField({
+      name: "name",
+      title: "Name",
+      type: "string"
+    }),
+    defineField({
+      name: "url",
+      title: "URL",
+      type: "url"
+    })
+  ]
+})
+
+const award = defineArrayMember({
+  name: "award",
+  title: "Award",
+  type: "object",
+  fields: [
+    defineField({
+      name: "name",
+      title: "Name",
+      type: "string"
+    }),
+    defineField({
+      name: "url",
+      title: "URL",
+      type: "url"
+    })
+  ]
+})
 
 export const project = defineType({
   name: "project",
   title: "Projects",
   type: "document",
   icon: DocumentIcon,
-  // Uncomment below to have edits publish automatically as you type
   liveEdit: true,
   fields: [
     defineField({
       name: "title",
-      description: "This field is the title of your project.",
+      description: "The title of your project.",
       title: "Title",
       type: "string",
-      validation: (rule) => rule.required(),
+      validation: (rule) => rule.required()
     }),
     defineField({
       name: "slug",
-      description:
-        "This field is the project page name. It will be used in the URL of the project page.",
+      description: "The project page name for the URL.",
       title: "Slug",
       type: "slug",
       options: {
         source: "title",
         maxLength: 96,
-        isUnique: (value, context) => context.defaultIsUnique(value, context),
+        isUnique: (value, context) => context.defaultIsUnique(value, context)
       },
-      validation: (rule) => rule.required(),
+      validation: (rule) => rule.required()
     }),
     defineField({
-      name: "coverImage",
-      title: "Cover Image",
+      name: "description",
       description:
-        "This image will be used as the cover image for the project. If you choose to add it to Home page, this is the image displayed in the list within the homepage.",
-      type: "image",
-      options: {
-        hotspot: true,
-      },
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: "overview",
-      description:
-        "Used both for project subheader, and the <meta> description tag for SEO.",
-      title: "Overview",
+        "Used for the project subheader and the SEO meta description.",
+      title: "Description",
       type: "text",
-      validation: (rule) => rule.max(250).required(),
+      validation: (rule) => rule.max(250).required()
     }),
+    defineField({
+      name: "uid",
+      title: "UID",
+      description: "(Optional) A unique identifier for the project.",
+      type: "string"
+    }),
+    defineField({
+      name: "isProtected",
+      title: "Protected",
+      description: "Is this a protected project?",
+      type: "boolean",
+      initialValue: false
+    }),
+    defineField({
+      name: "password",
+      title: "Password",
+      description: "(Optional) A password to access the project.",
+      type: "string",
+      hidden: ({ parent }) => !parent?.isProtected,
+      initialValue: () => Math.random().toString(36).slice(-10)
+    }),
+    defineField({
+      name: "live",
+      title: "Live preview",
+      description: "An external link to the live project.",
+      type: "url",
+      validation: (rule) => rule.uri({ scheme: ["http", "https"] })
+    }),
+
+    defineField({
+      name: "year",
+      title: "Year",
+      description: "The year the project was completed.",
+      type: "string"
+    }),
+
     defineField({
       name: "services",
-      description:
-        "(Optional) Here you can add a list of services you have worked on for this project.",
       title: "Services",
+      description: "List the services provided for this project.",
       type: "array",
-      of: [{ type: "string" }],
+      of: [defineArrayMember({ type: "string" })]
     }),
     defineField({
       name: "client",
-      description: "(Optional) This field is for the name of your client.",
       title: "Client",
-      type: "string",
-    }),
-    defineField({
-      name: "year",
-      description: "(Optional) This field is for the year of the project.",
-      title: "Year",
-      type: "string",
+      description: "List the client(s) for this project.",
+      type: "array",
+      of: [client]
     }),
     defineField({
       name: "design",
-      description:
-        "(Optional) This field is for the people who worked on the design of the project.",
-      title: "Design",
+      title: "Design (Design Team)",
+      description: "List the members of the design team.",
       type: "array",
-      of: [
-        {
-          type: "object",
-          name: "person",
-          fields: [
-            { name: "name", type: "string" },
-            { name: "website", type: "url" },
-          ],
-        },
-      ],
+      of: [person]
     }),
     defineField({
       name: "motion",
-      description:
-        "(Optional) This field is for the people who worked on the motion of the project.",
-      title: "Motion",
+      title: "Motion (Motion Team)",
+      description: "List the members of the motion team.",
       type: "array",
-      of: [
-        {
-          type: "object",
-          name: "person",
-          fields: [
-            { name: "name", type: "string" },
-            { name: "website", type: "url" },
-          ],
-        },
-      ],
+      of: [person]
     }),
     defineField({
       name: "development",
-      description:
-        "(Optional) This field is for the people who worked on the development of the project.",
-      title: "Development",
+      title: "Development (Development Team)",
+      description: "List the members of the development team.",
       type: "array",
-      of: [
-        {
-          type: "object",
-          name: "person",
-          fields: [
-            { name: "name", type: "string" },
-            { name: "website", type: "url" },
-          ],
-        },
-      ],
+      of: [person]
     }),
     defineField({
       name: "awards",
-      description:
-        "(Optional) This field is for the awards the project has won.",
       title: "Awards",
+      description: "List any awards the project has won.",
       type: "array",
-      of: [{ type: "string" }],
-      options: {
-        list: [
-          { title: "Awwwards", value: "Awwwards" },
-          { title: "CSS Design Awards", value: "CSS Design Awards" },
-          { title: "Webby Awards", value: "Webby Awards" },
-          { title: "FWA", value: "FWA" },
-          { title: "Other", value: "Other" },
-        ],
-      },
+      of: [award]
     }),
+
     defineField({
-      name: "livePreview",
-      title: "Live preview",
+      name: "cover",
+      title: "Cover",
       description:
-        "(Optional) External link related to your project, it is displayed below your project overview text.",
-      type: "url",
-      validation: (rule) => rule.uri({ scheme: ["http", "https"] }),
+        "The media used for the project cover on the home page grid.",
+      type: "file",
+      options: {
+        accept: "image/*,video/*"
+      },
+      validation: (rule) => rule.required()
     }),
-    // Content blocks
+
     defineField({
       title: "Content builder",
       description:
-        "This is a content builder for your project page, choose content type and add your content. You can rearrange your blocks later.",
-      name: "content",
+        "Build the content for your project page using various blocks.",
+      name: "sections",
       type: "array",
       of: [
-        // Single image block
         defineArrayMember({
-          title: "Single Image",
-          name: "singleImage",
+          name: "image",
+          title: "Image",
+          type: "image",
+          icon: ImageIcon,
+          options: { hotspot: true },
+          preview: {
+            select: { media: "image" },
+            prepare: ({ media }) => ({ title: "Image", media })
+          }
+        }),
+        defineArrayMember({
+          name: "images",
+          title: "Images",
           type: "object",
           icon: ImageIcon,
           fields: [
-            {
-              title: "Photo",
-              name: "photo",
+            defineField({
+              name: "leftImage",
+              title: "Left Image",
               type: "image",
-              options: {
-                hotspot: true,
-              },
-            },
-            {
-              title: "Caption",
-              name: "caption",
-              type: "string",
-              description: "(Optional) Caption below the image",
-            },
+              options: { hotspot: true }
+            }),
+            defineField({
+              name: "rightImage",
+              title: "Right Image",
+              type: "image",
+              options: { hotspot: true }
+            })
           ],
           preview: {
-            select: {
-              photo: "photo",
-            },
-            prepare({ photo }) {
-              return {
-                title: "Single image",
-                media: photo,
-              };
-            },
-          },
+            select: { media: "leftImage" },
+            prepare: ({ media }) => ({ title: "Images", media })
+          }
         }),
-        // Two images block
         defineArrayMember({
-          title: "Two Images",
-          name: "twoImages",
-          type: "object",
-          icon: ImageIcon,
-          fields: [
-            {
-              title: "Left photo",
-              name: "photoOne",
-              type: "image",
-              options: {
-                hotspot: true,
-              },
-            },
-            {
-              title: "Right photo",
-              name: "photoTwo",
-              type: "image",
-              options: {
-                hotspot: true,
-              },
-            },
-            {
-              title: "Caption",
-              name: "caption",
-              type: "string",
-              description: "(Optional) Caption below 2 images",
-            },
-          ],
-          preview: {
-            select: {
-              photo: "photoOne",
-            },
-            prepare({ photo }) {
-              return {
-                title: "Two images",
-                media: photo,
-              };
-            },
-          },
-        }),
-        // Text block
-        defineArrayMember({
-          title: "Text Block",
           name: "textBlock",
+          title: "Text",
           type: "object",
           icon: TextIcon,
           fields: [
-            {
-              name: "description",
-              title: "Text Block",
+            defineField({
+              name: "content",
+              title: "Content",
               type: "array",
-              of: [
-                defineArrayMember({
-                  lists: [],
-                  marks: {
-                    annotations: [
-                      {
-                        name: "link",
-                        type: "object",
-                        title: "Link",
-                        fields: [
-                          {
-                            name: "href",
-                            type: "url",
-                            title: "Url",
-                          },
-                        ],
-                      },
-                    ],
-                    decorators: [
-                      {
-                        title: "Italic",
-                        value: "em",
-                      },
-                      {
-                        title: "Strong",
-                        value: "strong",
-                      },
-                    ],
-                  },
-                  styles: [],
-                  type: "block",
-                }),
-              ],
-            },
+              of: [{ type: "block" }]
+            })
           ],
           preview: {
-            select: {
-              content: "description",
-            },
-            prepare({ content }) {
-              return {
-                title: "Text Block",
-                subtitle: content,
-              };
-            },
-          },
+            select: { subtitle: "content" },
+            prepare: ({ subtitle }) => ({
+              title: "Text",
+              subtitle: subtitle
+                ? `Text block starts with: ${subtitle[0].children[0].text}`
+                : ""
+            })
+          }
         }),
-        // Single video
         defineArrayMember({
-          title: "Single Video (Youtube/Video link)",
-          name: "singleVideo",
-          type: "object",
+          name: "video",
+          title: "Video",
+          type: "file",
           icon: PlayIcon,
-          fields: [
-            {
-              title: "Youtube or Vimeo link",
-              name: "videoLink",
-              type: "url",
-            },
-            {
-              title: "Caption",
-              name: "caption",
-              type: "string",
-              description: "(Optional) Caption below the video",
-            },
-          ],
-          preview: {
-            select: {
-              link: "videoLink",
-            },
-            prepare({ link }) {
-              return {
-                title: "Single video",
-                subtitle: link,
-              };
-            },
+          options: {
+            accept: "video/*"
           },
-        }),
-        // Two videos
-        defineArrayMember({
-          title: "Two Videos (Youtube/Video link)",
-          name: "twoVideos",
-          type: "object",
-          icon: PlayIcon,
-          fields: [
-            {
-              title: "Left video (Youtube/Video link)",
-              name: "videoOneLink",
-              type: "url",
-            },
-            {
-              title: "Right video (Youtube/Video link)",
-              name: "videoTwoLink",
-              type: "url",
-            },
-            {
-              title: "Caption",
-              name: "caption",
-              type: "string",
-              description: "(Optional) Caption below 2 videos",
-            },
-          ],
           preview: {
-            select: {
-              linkOne: "videoOneLink",
-              linkTwo: "videoTwoLink",
-            },
-            prepare({ linkOne, linkTwo }) {
-              return {
-                title: "Two videos",
-                subtitle: `${linkOne} + ${linkTwo}`,
-              };
-            },
-          },
-        }),
-      ],
-    }),
+            select: { subtitle: "videoUrl" },
+            prepare: ({ subtitle }) => ({ title: "Video", subtitle })
+          }
+        })
+      ]
+    })
   ],
-});
+  preview: {
+    select: {
+      title: "title",
+      subtitle: "description",
+      media: "coverMedia.mediaFile"
+    }
+  }
+})

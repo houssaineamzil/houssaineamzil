@@ -1,27 +1,36 @@
-"use client";
+"use client"
 
-import styles from "@/styles/layout/header.module.css";
-import NextLink from "next/link";
-import { Button } from "../shared/button";
-import { Link } from "../shared/link";
-import { RichText } from "../shared/richText";
+import NextLink from "next/link"
+import { Button } from "@/components/shared/button"
+import { Link } from "@/components/shared/link"
+import { RichText } from "@/components/shared/richText"
+import styles from "@/styles/layout/header.module.css"
 
 export const Header: React.FC = () => {
   return (
     <div className={styles.root}>
       <nav className={styles.nav}>
         <div className={styles.container}>
-          <NextLink className={styles.logoWrapper} href="/">
+          <NextLink
+            className={styles.logoWrapper}
+            href="/"
+          >
             <RichText className={styles.logo}>houssaineamzil</RichText>
           </NextLink>
           <div className={styles.linkContainer}>
             <div className={styles.linkWrapper}>
-              <Link href="/works" className={styles.link}>
+              <Link
+                href="/works"
+                className={styles.link}
+              >
                 Projects
               </Link>
-              <Link href="/about" className={styles.link}>
+              {/* <Link
+                href="/about"
+                className={styles.link}
+              >
                 About
-              </Link>
+              </Link> */}
             </div>
             <div className={styles.ctaWrapper}>
               <Button
@@ -36,5 +45,5 @@ export const Header: React.FC = () => {
         </div>
       </nav>
     </div>
-  );
-};
+  )
+}

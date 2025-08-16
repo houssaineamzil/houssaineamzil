@@ -1,25 +1,30 @@
-import { WorkCard } from "@/components/shared/cards/workCard";
-import styles from "@/styles/page/works.module.css";
-import type { CardType } from "@/types";
-import type { NextPage } from "next";
-
-const getCards = async (): Promise<CardType[]> => {
-  const res = (await import("../../../data/works.json")).default
-    .cards as CardType[];
-
-  return res;
-};
+import type { NextPage } from "next"
+import { Footer } from "@/components/layout/footer"
+import { Header } from "@/components/layout/header"
+import { WorkCard } from "@/components/shared/cards/workCard"
+import { getProjectsCardsData } from "@/lib/data"
+import styles from "@/styles/page/works.module.css"
 
 const Page: NextPage = async () => {
-  const works = await getCards();
+  const works = await getProjectsCardsData()
 
   return (
-    <main className={styles.main}>
-      {works.map((work, index) => {
-        return <WorkCard key={index} {...work} className={styles.card} />;
-      })}
-    </main>
-  );
-};
+    <>
+      <Header />
+      <main className={styles.main}>
+        {works.cards.map((work) => {
+          return (
+            <WorkCard
+              {...work}
+              key={work.key}
+              className={styles.card}
+            />
+          )
+        })}
+      </main>
+      <Footer />
+    </>
+  )
+}
 
-export default Page;
+export default Page

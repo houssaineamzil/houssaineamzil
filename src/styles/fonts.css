@@ -1,12 +1,15 @@
 @font-face {
   font-family: "Forma DJR";
   font-style: normal;
-  src: local("Forma DJR"), url("./fonts/FormaDJR.woff") format("woff");
+  src:
+    local("Forma DJR"),
+    url("./fonts/FormaDJR.woff") format("woff");
 }
 
 @font-face {
   font-family: "Forma DJR Italic";
   font-style: italic;
-  src: local("Forma DJR Italic"), url("./fonts/FormaDJR-Italic.woff")
-    format("woff");
+  src:
+    local("Forma DJR Italic"),
+    url("./fonts/FormaDJR-Italic.woff") format("woff");
 }

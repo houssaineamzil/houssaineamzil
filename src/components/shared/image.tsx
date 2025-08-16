@@ -1,9 +1,9 @@
-import styles from "@/styles/shared/image.module.css";
-import { cn } from "@/utils";
-import NextImage from "next/image";
+import NextImage from "next/image"
+import styles from "@/styles/shared/image.module.css"
+import { cn } from "@/utils"
 
 interface Props extends React.ComponentProps<typeof NextImage> {
-  className?: string;
+  className?: string
 }
 
 export const Image: React.FC<Props> = ({ className, ...props }) => {
@@ -16,5 +16,5 @@ export const Image: React.FC<Props> = ({ className, ...props }) => {
         className={className}
       />
     </div>
-  );
-};
+  )
+}

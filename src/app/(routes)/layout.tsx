@@ -1,7 +1,5 @@
-import { Footer } from "@/components/layout/footer";
-import { Header } from "@/components/layout/header";
-import "@/styles/globals.css";
-import ReactLenis from "lenis/react";
+import "@/styles/globals.css"
+import ReactLenis from "lenis/react"
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -9,16 +7,12 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       root
       options={{
         duration: 1.2,
-        autoRaf: true,
+        autoRaf: true
       }}
     >
-      <div content="bg-white text-zinc-800 text-sm font-sans">
-        <Header />
-        {children}
-        <Footer />
-      </div>
+      {children}
     </ReactLenis>
-  );
-};
+  )
+}
 
-export default RootLayout;
+export default RootLayout

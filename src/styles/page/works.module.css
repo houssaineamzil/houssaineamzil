@@ -3,12 +3,14 @@
   flex: none;
   width: 100%;
   height: auto;
+  overflow: hidden;
   display: masonry;
   column-gap: 15px;
   flex-wrap: nowrap;
   position: relative;
   columns: 3 min(350px);
-  padding: 150px 15px 15px;
+  padding-inline: 15px;
+  padding-block: 24vh 20vh;
 }
 
 .column {

@@ -1,40 +1,45 @@
-import { AboutCard } from "@/components/shared/cards/aboutCard";
-import { ClientsCard } from "@/components/shared/cards/clientsCard";
-import { GeoCard } from "@/components/shared/cards/geoCard";
-import { PlayerCard } from "@/components/shared/cards/playerCard";
-import { ServicesCard } from "@/components/shared/cards/servicesCard";
-import { WorkCard } from "@/components/shared/cards/workCard";
-import styles from "@/styles/page/home.module.css";
-import type { CardType } from "@/types";
-import type { NextPage } from "next";
-
-const getCards = async (): Promise<CardType[]> => {
-  const res = (await import("../../data/home.json")).default
-    .cards as CardType[];
-
-  return res;
-};
+import type { NextPage } from "next"
+import { Footer } from "@/components/layout/footer"
+import { Header } from "@/components/layout/header"
+import { AboutCard } from "@/components/shared/cards/aboutCard"
+import { ClientsCard } from "@/components/shared/cards/clientsCard"
+import { GeoCard } from "@/components/shared/cards/geoCard"
+import { PlayerCard } from "@/components/shared/cards/playerCard"
+import { ServicesCard } from "@/components/shared/cards/servicesCard"
+import { WorkCard } from "@/components/shared/cards/workCard"
+import { getHomeData } from "@/lib/data"
+import styles from "@/styles/page/home.module.css"
 
 const cardTypes = {
   about: AboutCard,
   clients: ClientsCard,
   services: ServicesCard,
-  work: WorkCard,
+  project: WorkCard,
   geo: GeoCard,
-  player: PlayerCard,
-};
+  player: PlayerCard
+}
 
 const Page: NextPage = async () => {
-  const cards = await getCards();
+  const data = await getHomeData()
 
   return (
-    <main className={styles.main}>
-      {cards.map((card, index) => {
-        const Card = cardTypes[card._type as keyof typeof cardTypes];
-        return <Card key={index} {...card} className={styles.card} />;
-      })}
-    </main>
-  );
-};
+    <>
+      <Header />
+      <main className={styles.main}>
+        {data.cards.map((card) => {
+          const Card = cardTypes[card.type]
+          return (
+            <Card
+              {...card}
+              key={card.key}
+              className={styles.card}
+            />
+          )
+        })}
+      </main>
+      <Footer />
+    </>
+  )
+}
 
-export default Page;
+export default Page

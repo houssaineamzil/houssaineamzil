@@ -1,96 +1,117 @@
-"use client";
+"use client"
 
-import styles from "@/styles/shared/cards/aboutCard.module.css";
-import type { CardType } from "@/types";
-import { cn } from "@/utils";
-import gsap from "gsap";
-import { useEffect, useRef } from "react";
-import { Image } from "../image";
-import { RichText } from "../richText";
-import { Tag } from "../tag";
-import { Video } from "../video";
+import { parseAssetId } from "@sanity/asset-utils"
+import { gsap } from "gsap"
+import { memo, useEffect, useRef } from "react"
+import type { Asset } from "sanity"
+import { Image } from "@/components/shared/image"
+import { RichText } from "@/components/shared/richText"
+import { Tag } from "@/components/shared/tag"
+import { Video } from "@/components/shared/video"
+import { assetUrl } from "@/sanity/lib/assets"
+import styles from "@/styles/shared/cards/aboutCard.module.css"
+import type { CardType } from "@/types"
+import { cn } from "@/utils"
 
 interface Props extends CardType {
-  className?: string;
+  className?: string
 }
 
-export const AboutCard: React.FC<Props> = ({ className, ...card }) => {
-  const tag = useRef<HTMLDivElement>(null);
-  const overlay = useRef<HTMLDivElement>(null);
-  const timeline = useRef<gsap.core.Timeline | null>(null);
+export const AboutCard: React.FC<Props> = memo(({ className, ...card }) => {
+  const tag = useRef<HTMLDivElement>(null)
+  const overlay = useRef<HTMLDivElement>(null)
+  const timeline = useRef<gsap.core.Timeline | null>(null)
 
   useEffect(() => {
     timeline.current = gsap.timeline({
       paused: true,
       defaults: {
-        duration: 0.25,
+        duration: 0.25
       },
-      ease: "power5.inOut",
-    });
+      ease: "power5.inOut"
+    })
 
     timeline.current.to(
       tag.current,
       {
-        yPercent: -((110 + 5) / 2),
+        yPercent: -((110 + 5) / 2)
       },
-      0,
-    );
+      0
+    )
 
     if (overlay.current)
       timeline.current.to(
         overlay.current,
         {
-          opacity: 0.2,
+          opacity: 0.2
         },
-        "<",
-      );
+        "<"
+      )
 
     return () => {
-      timeline.current?.kill();
-    };
-  }, []);
+      timeline.current?.kill()
+    }
+  }, [])
 
   return (
     <div
       className={cn(styles.root, className, {
-        [styles[card._variant]]: card._variant,
-        [styles.black]: !card.background,
+        [styles[card.variant]]: card.variant,
+        [styles.black]: !card.background
       })}
       onMouseEnter={() => {
-        timeline.current?.play();
+        timeline.current?.play()
       }}
       onMouseLeave={() => {
-        timeline.current?.reverse();
+        timeline.current?.reverse()
       }}
     >
       {card.background && (
         <div className={styles.background}>
-          {card.background._type === "image" && (
-            <Image
-              alt={(card.title as string) || ""}
-              src={card.background.url}
-              className={styles.image}
-            />
-          )}
+          {parseAssetId(card.background.asset._ref as string).extension &&
+            /(jpe?g|png|gif|webp|bmp)$/i.test(
+              parseAssetId(card.background.asset._ref as string).extension
+            ) && (
+              <Image
+                alt=""
+                src={assetUrl(card.background.asset as Asset)}
+                className={styles.image}
+              />
+            )}
 
-          {card.background._type === "video" && (
-            <Video
-              autoPlay
-              playsInline
-              className={styles.image}
-              src={card.background.url}
-            />
-          )}
-          <div ref={overlay} className={styles.overlay} />
+          {parseAssetId(card.background.asset._ref as string).extension &&
+            /(mp4|webm|ogg)$/i.test(
+              parseAssetId(card.background.asset._ref as string).extension
+            ) && (
+              <Video
+                autoPlay
+                playsInline
+                className={styles.image}
+                src={assetUrl(card.background.asset as Asset)}
+              />
+            )}
+          <div
+            ref={overlay}
+            className={styles.overlay}
+          />
         </div>
       )}
 
-      <Tag ref={tag} tag={card.tag} className={styles.tag} />
-      {card.title && (
-        <RichText as="h2" className={styles.title}>
-          {card.title}
+      <Tag
+        ref={tag}
+        tag={["About", "About"]}
+        className={styles.tag}
+      />
+      {card.content && (
+        <RichText
+          as="h2"
+          className={styles.title}
+        >
+          {card.content}
         </RichText>
       )}
     </div>
-  );
-};
+  )
+})
+
+AboutCard.displayName = "AboutCard"

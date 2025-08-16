@@ -1,62 +1,50 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
   turbopack: {
     rules: {
       "*.svg": {
         loaders: ["@svgr/webpack"],
-        as: "*.js",
-      },
-    },
+        as: "*.js"
+      }
+    }
   },
   webpack(config) {
     // Grab the existing rule that handles SVG imports
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const fileLoaderRule = config.module.rules.find((rule: any) =>
-      rule.test?.test?.(".svg"),
-    );
+      rule.test?.test?.(".svg")
+    )
 
     config.module.rules.push(
       // Reapply the existing rule, but only for svg imports ending in ?url
       {
         ...fileLoaderRule,
         test: /\.svg$/i,
-        resourceQuery: /url/, // *.svg?url
+        resourceQuery: /url/ // *.svg?url
       },
       // Convert all other *.svg imports to React components
       {
         test: /\.svg$/i,
         issuer: fileLoaderRule.issuer,
         resourceQuery: { not: [...fileLoaderRule.resourceQuery.not, /url/] }, // exclude if *.svg?url
-        use: ["@svgr/webpack"],
-      },
-    );
+        use: ["@svgr/webpack"]
+      }
+    )
 
     // Modify the file loader rule to ignore *.svg, since we have it handled now.
-    fileLoaderRule.exclude = /\.svg$/i;
+    fileLoaderRule.exclude = /\.svg$/i
 
-    return config;
+    return config
   },
   images: {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "framerusercontent.com",
-      },
-      {
-        protocol: "https",
-        hostname: "dropboxusercontent.com",
-      },
-      {
-        protocol: "https",
-        hostname: "images.pexels.com",
-      },
-      {
-        protocol: "https",
-        hostname: "videos.pexels.com",
-      },
-    ],
-  },
-};
+        hostname: "cdn.sanity.io"
+      }
+    ]
+  }
+}
 
-export default nextConfig;
+export default nextConfig

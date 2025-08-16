@@ -8,13 +8,15 @@
   text-decoration: none;
   flex-direction: column;
   justify-content: center;
-}
 
-.label {
   font-size: 14px;
   line-height: 90%;
   text-align: center;
   letter-spacing: -0.1px;
+}
+
+.label {
+  display: inline;
 }
 
 .line {

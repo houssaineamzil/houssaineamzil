@@ -1,28 +1,98 @@
-import { InlineSvgPreviewItem } from "@focus-reactive/sanity-plugin-inline-svg-input";
-import { BookIcon, LinkIcon } from "@sanity/icons";
-import { defineField, defineType } from "sanity";
+import { UserIcon } from "@sanity/icons"
+import { defineField, defineType } from "sanity"
 
 export const about = defineType({
   name: "about",
   title: "About",
   type: "document",
-  icon: BookIcon,
-  // Uncomment below to have edits publish automatically as you type
+  icon: UserIcon,
   liveEdit: true,
+  initialValue: {
+    name: "Høussaine Amzil",
+    bio: "Høussaine Amzil is a multidisciplinary creative with a focus on creating high-level work across a variety of digital medius such as automotive visualization and design. He currently works as a front-end developer at Onclusive.",
+    services: [
+      "Brand Identity",
+      "Motion design",
+      "Web design",
+      "Copywriting",
+      "Strategy",
+      "Development"
+    ]
+  },
   fields: [
+    defineField({
+      name: "name",
+      description: "(Optional) Here you can add your name.",
+      title: "Name",
+      type: "string",
+      validation: (rule) => rule.required()
+    }),
     defineField({
       name: "bio",
       description: "Enter a short bio about yourself.",
       title: "Bio",
       type: "text",
-      validation: (rule) => rule.required(),
+      validation: (rule) => rule.required()
+    }),
+    defineField({
+      name: "location",
+      title: "Location",
+      type: "string",
+      description: "(Optional) Here you can add your location."
+    }),
+    defineField({
+      name: "email",
+      title: "Email",
+      type: "string",
+      description:
+        "(Optional) Here you can add your email address, it will be displayed in the footer.",
+      validation: (rule) => rule.email()
+    }),
+    defineField({
+      name: "phone",
+      title: "Phone",
+      type: "string",
+      description:
+        "(Optional) Here you can add your phone number, it will be displayed in the footer.",
+      validation: (rule) =>
+        rule.regex(/^\+?\d{1,3}\s?\d{3}-\d{4,9}$/, { name: "phone" })
+    }),
+    defineField({
+      name: "website",
+      title: "Website",
+      type: "url",
+      description:
+        "(Optional) Here you can add your website URL, it will be displayed in the footer.",
+      validation: (rule) =>
+        rule.uri({
+          scheme: ["http", "https"],
+          allowRelative: false
+        })
+    }),
+    defineField({
+      name: "tagline",
+      title: "Tagline",
+      type: "string",
+      description:
+        "(Optional) Here you can add a short tagline, it will be displayed in the header.",
+      validation: (rule) => rule.max(100).warning("Keep it short!")
+    }),
+    defineField({
+      name: "image",
+      title: "Main Image",
+      description: "This is the primary image of yourself for the about page.",
+      type: "image",
+      options: {
+        hotspot: true
+      },
+      validation: (rule) => rule.required()
     }),
     defineField({
       name: "services",
       title: "Services",
       description: "(Optional) Here you can add a list of services you offer.",
       type: "array",
-      of: [{ type: "string" }],
+      of: [{ type: "reference", to: [{ type: "service" }] }]
     }),
     defineField({
       name: "industries",
@@ -30,7 +100,7 @@ export const about = defineType({
       description:
         "(Optional) Here you can add a list of industries you have worked with.",
       type: "array",
-      of: [{ type: "string" }],
+      of: [{ type: "string" }]
     }),
     defineField({
       name: "clients",
@@ -38,103 +108,31 @@ export const about = defineType({
       description:
         "(Optional) Here you can add a list of clients you have worked with.",
       type: "array",
-      of: [
-        {
-          type: "object",
-          name: "client",
-          fields: [
-            {
-              name: "name",
-              type: "string",
-            },
-            {
-              name: "icon",
-              type: "inlineSvg",
-            },
-          ],
-          preview: {
-            select: {
-              icon: "icon",
-              title: "name",
-            },
-          },
-          components: {
-            preview: InlineSvgPreviewItem,
-          },
-        },
-      ],
+      of: [{ type: "reference", to: [{ type: "client" }] }]
     }),
     defineField({
-      name: "aboutImage",
-      title: "About Image",
-      description:
-        "(Optional) Here you can add an image to display in the About Page.",
-      type: "image",
-      options: {
-        hotspot: true,
-      },
+      name: "studio",
+      title: "Studio",
+      description: "Information about your studio, if applicable.",
+      type: "object",
+      fields: [
+        { name: "name", title: "Studio Name", type: "string" },
+        { name: "logo", title: "Studio Logo", type: "image" },
+        { name: "website", title: "Studio Website", type: "url" }
+      ]
     }),
     defineField({
-      name: "studioImage",
-      title: "Studio Image",
-      description: "(Optional) Here you can add an image of your studio.",
-      type: "image",
-      options: {
-        hotspot: true,
-      },
-    }),
-    defineField({
-      name: "aboutLinks",
-      title: "External links",
-      description:
-        "(Optional) Here you can add a list of external links, it will be displayed below your About description text.",
+      name: "socials",
+      title: "Social Media Links",
       type: "array",
-      of: [
-        {
-          title: "Link",
-          name: "navLink",
-          type: "object",
-          icon: LinkIcon,
-          fields: [
-            {
-              title: "Title",
-              name: "title",
-              type: "string",
-              description: "Display Text",
-            },
-            {
-              title: "URL",
-              name: "url",
-              type: "url",
-              description: "enter an external URL",
-              validation: (Rule) =>
-                Rule.uri({
-                  scheme: ["http", "https", "mailto", "tel"],
-                }),
-            },
-          ],
-          preview: {
-            select: {
-              title: "title",
-              url: "url",
-            },
-            prepare({ title, url }) {
-              return {
-                title: title,
-                subtitle: url,
-                media: LinkIcon,
-              };
-            },
-          },
-        },
-      ],
-    }),
+      of: [{ type: "social" }]
+    })
   ],
   preview: {
     prepare() {
       return {
-        title: "About page",
-      };
-    },
-  },
-});
+        title: "About page"
+      }
+    }
+  }
+})

@@ -1,49 +1,70 @@
-import { Image } from "@/components/shared/image";
-import styles from "@/styles/page/about.module.css";
-import type { NextPage } from "next";
+import type { NextPage } from "next"
+import { Image } from "@/components/shared/image"
+import { Marquee } from "@/components/shared/marquee"
+import styles from "@/styles/page/about.module.css"
 
 interface Data {
-  name: string;
-  bio: string;
-  location: string;
-  email: string;
-  phone: string;
-  website: string;
-  tagline: string;
+  name: string
+  bio: string
+  location: string
+  email: string
+  phone: string
+  website: string
+  tagline: string
   image: {
-    _type: string;
-    alt: string;
-    url: string;
-  };
+    _type: string
+    alt: string
+    url: string
+  }
   studio: {
-    name: string;
+    name: string
     logo?: {
-      _type: string;
-      alt: string;
-      url: string;
-    };
-    website: string;
-  };
+      _type: string
+      alt: string
+      url: string
+    }
+    website: string
+  }
   clients: {
-    name: string;
-    logo?: string;
-  }[];
-  industries: string[];
-  services: string[];
+    name: string
+    logo?: string
+  }[]
+  industries: string[]
+  services: string[]
   socials: {
-    name: string;
-    link: string;
-  }[];
+    name: string
+    link: string
+  }[]
 }
 
-const getData = async (): Promise<Data> => {
-  const res = (await import("../../../data/about.json")).default as Data;
-
-  return res;
-};
-
 const Page: NextPage = async () => {
-  const data = await getData();
+  const data: Data = {
+    name: "Houssaine Amzil",
+    bio: "",
+    location: "",
+    email: "",
+    phone: "",
+    website: "",
+    tagline: "",
+    image: {
+      _type: "image",
+      alt: "",
+      url: ""
+    },
+    studio: {
+      name: "",
+      logo: {
+        _type: "image",
+        alt: "",
+        url: ""
+      },
+      website: ""
+    },
+    clients: [],
+    industries: [],
+    services: [],
+    socials: []
+  }
 
   return (
     <main className={styles.main}>
@@ -88,12 +109,20 @@ const Page: NextPage = async () => {
             <div className={styles.section}>
               <div className={styles.sectionTitle}>Clients</div>
               <div className={styles.sectionContent}>
-                <div className={styles.clients}>
-                  {data.clients.map((client) => (
-                    <div key={client.name} className={styles.clientCard}>
-                      <span className={styles.clientLogo}>{client.name}</span>
+                <div className={styles.marquee}>
+                  <Marquee>
+                    <div className={styles.marqueeContent}>
+                      {data.clients.map((client) => (
+                        <span
+                          key={client.name}
+                          className={styles.clientLogo}
+                        >
+                          {client.name}
+                        </span>
+                      ))}
                     </div>
-                  ))}
+                  </Marquee>
+                  <div className={styles.marqueeMask} />
                 </div>
               </div>
             </div>
@@ -101,7 +130,7 @@ const Page: NextPage = async () => {
         </div>
       </div>
     </main>
-  );
-};
+  )
+}
 
-export default Page;
+export default Page

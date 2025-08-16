@@ -1,19 +1,19 @@
-import styles from "@/styles/shared/richText.module.css";
-import { cn } from "@/utils";
-import type { HTMLElementType } from "react";
+import type { HTMLElementType } from "react"
+import styles from "@/styles/shared/richText.module.css"
+import { cn } from "@/utils"
 
 interface Props {
-  className?: string;
-  as?: HTMLElementType;
-  inner?: boolean;
-  children: React.ReactNode;
+  className?: string
+  as?: HTMLElementType
+  inner?: boolean
+  children: React.ReactNode
 }
 
 export const RichText: React.FC<Props> = ({
   className,
   as: Comp = "p",
   inner = false,
-  children,
+  children
 }) => {
   return inner ? (
     <div className={styles.wrapper}>
@@ -21,5 +21,5 @@ export const RichText: React.FC<Props> = ({
     </div>
   ) : (
     <Comp className={cn(className)}>{children}</Comp>
-  );
-};
+  )
+}
