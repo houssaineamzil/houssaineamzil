@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "prettify": "prettier --write .",
-    "dev": "next dev -p 8000",
+    "dev": "next dev",
     "clean": "rm -r .next && yarn run prettify",
     "build": "next build",
-    "start": "next start -p 8000",
+    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
@@ -19,7 +19,7 @@
     "eslint": "8.50.0",
     "eslint-config-next": "13.5.4",
     "framer-motion": "^10.17.11",
-    "gsap": "^3.12.4",
+    "gsap": "^3.13.0",
     "gsap-trial": "^3.12.4",
     "next": "13.5.4",
     "next-themes": "^0.2.1",
