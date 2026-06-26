@@ -1,5 +1,6 @@
-import { cn } from "@/utils";
 import Link from "next/link";
+import { cn } from "@/lib";
+import type { ProjectType } from "@/types";
 import { Image } from "./image";
 
 interface Props extends ProjectType {
@@ -38,7 +39,7 @@ export const WorkCard: React.FC<Props> = ({
         href={`/works/${slug}`}
         className={cn(
           "relative w-full",
-          horizontal ? "aspect-[3/2]" : "aspect-[2/3]",
+          horizontal ? "aspect-3/2" : "aspect-2/3",
         )}
       >
         <Image

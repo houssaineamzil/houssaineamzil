@@ -1,6 +1,5 @@
-import { Slider } from "@/components/slider";
 import type { NextPage } from "next";
-import React from "react";
+import { Slider } from "@/components/slider";
 
 const Page: NextPage = () => {
   return <Slider />;

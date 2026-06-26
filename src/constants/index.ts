@@ -1,3 +1,5 @@
+import type { ProjectType } from "@/types";
+
 export const projects: ProjectType[] = [
   {
     name: "Voltika",

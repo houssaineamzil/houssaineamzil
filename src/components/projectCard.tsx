@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import type { ProjectType } from "@/types";
 import { Image } from "./image";
 
 interface Props
@@ -9,57 +10,76 @@ interface Props
 }
 
 export const ProjectCard = React.forwardRef<HTMLAnchorElement, Props>(
-  ({ index, name, slug, type, labels, image }, ref) => {
+  ({ index, name, slug, type, labels, image, ...props }, ref) => {
     return (
-      <Link ref={ref} data-cindex={index} href={`/works/${slug}`}>
-        <div className="flex h-full w-96 cursor-pointer flex-col">
-          <div className="hidden h-52 w-full lg:flex">
+      <Link
+        {...props}
+        ref={ref}
+        data-cindex={index}
+        href={`/works/${slug}`}
+        className="drag-none block h-full w-96 cursor-grab active:cursor-grabbing select-none"
+      >
+        <article className="flex h-full w-full flex-col">
+          {/* Desktop Metadata Layout */}
+          <header className="hidden h-52 w-full lg:flex justify-between items-start pt-5">
             <div className="ml-5">
-              <h1 className="mb-13 font-semibold text-xs uppercase">{name}</h1>
-              <p className="font-normal text-muted text-xs leading-tight">
-                {labels.map((label, index) => (
-                  <React.Fragment key={label}>
-                    {label}
-                    {index < labels.length - 1 && <br />}
-                  </React.Fragment>
+              <h1 className="mb-4 font-semibold text-xs uppercase tracking-wider">
+                {name}
+              </h1>
+              <div className="font-normal text-muted text-xs leading-relaxed">
+                {labels.map((label) => (
+                  <p key={label}>{label}</p>
                 ))}
-              </p>
+              </div>
             </div>
-            <p className="mt-7 mr-16 ml-5 text-muted text-xs">{type}</p>
-          </div>
-          <div className="relative h-128 w-full">
-            <Image
-              fill
-              parallax
-              horizontal
-              src={image.url}
-              alt={image.alt}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
-            <h1 className="absolute top-[22.4rem] left-[10.2rem] z-100 block text-neutral-100 text-text-sm lg:hidden">
-              {name}
-            </h1>
-            <h2 className="absolute top-[48%] left-[38%] text-neutral-100 text-text-sm uppercase lg:hidden">
+            <p className="mt-0 mr-16 ml-5 text-muted text-xs font-medium uppercase tracking-wider">
               {type}
-            </h2>
-            <p className="absolute top-[37.9rem] left-[2.5rem] z-100 block font-normal text-neutral-100 text-xs lg:hidden">
-              {labels.map((label, index) => (
-                <React.Fragment key={label}>
-                  <span>
-                    <span className="mb-[0.3rem] inline-block translate-y-[-0.35rem] scale-50">
-                      {String(index).padStart(2, "0")}{" "}
-                    </span>
-                    {label}
-                  </span>
-                  <br />
-                </React.Fragment>
-              ))}
             </p>
-            <p className="absolute top-[37.9rem] right-[4.2rem] block text-neutral-100 text-text-sm underline lg:hidden">
-              Discover
-            </p>
+          </header>
+
+          {/* Visual Container Asset Block */}
+          <div className="relative h-128 w-full overflow-hidden bg-neutral-900">
+            <div className="absolute inset-0 pointer-events-none z-0">
+              <Image
+                fill
+                parallax
+                horizontal
+                src={image.url}
+                alt={image.alt}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover"
+              />
+            </div>
+
+            {/* Mobile-Only Overlays */}
+            <div className="absolute inset-0 z-10 flex flex-col justify-between p-6 bg-linear-to-t from-black/40 via-transparent to-transparent lg:hidden pointer-events-none text-neutral-100">
+              <div className="flex justify-between items-start w-full">
+                <h1 className="text-sm font-semibold uppercase tracking-wider">
+                  {name}
+                </h1>
+                <h2 className="text-xs uppercase tracking-widest opacity-80">
+                  {type}
+                </h2>
+              </div>
+
+              <div className="flex justify-between items-end w-full mt-auto">
+                <div className="text-xs font-normal leading-relaxed">
+                  {labels.map((label, idx) => (
+                    <div key={label} className="flex items-baseline gap-1.5">
+                      <span className="text-[10px] font-mono opacity-60">
+                        {String(idx).padStart(2, "0")}
+                      </span>
+                      <span>{label}</span>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs font-medium underline underline-offset-4 tracking-wide">
+                  Discover
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
+        </article>
       </Link>
     );
   },

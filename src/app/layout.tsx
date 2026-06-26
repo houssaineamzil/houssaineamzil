@@ -1,13 +1,8 @@
 import type { Metadata } from "next";
 
-import "@/styles/globals.css";
 import { Navigation } from "@/components/navigation";
-import gsap from "gsap";
-import CustomEase from "gsap/dist/CustomEase";
+import "@/styles/globals.css";
 import ReactLenis from "lenis/react";
-
-gsap.registerPlugin(CustomEase);
-CustomEase.create("easeInOut", "0.58, 0, 0, 1");
 
 export const metadata: Metadata = {
   title: "Houssaine Amzil - Creative Developer",
@@ -22,9 +17,16 @@ const RootLayout = ({
   return (
     <html lang="en">
       <body>
-        <ReactLenis root>
+        <ReactLenis
+          root
+          options={{
+            lerp: 0.15,
+            duration: 1.25,
+            syncTouch: true,
+          }}
+        >
           <Navigation />
-          <main className="absolute inset-0 h-full w-full">{children}</main>
+          <main className="relative block min-h-screen w-full">{children}</main>
         </ReactLenis>
       </body>
     </html>

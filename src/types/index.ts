@@ -1,4 +1,4 @@
-interface ProjectType {
+export interface ProjectType {
   name: string;
   slug: string;
   type: string;

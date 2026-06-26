@@ -1,12 +1,10 @@
 "use client";
 
-import { cn } from "@/utils";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import NextImage, { type ImageProps } from "next/image";
+import type React from "react";
 import { useEffect, useRef } from "react";
-
-gsap.registerPlugin(ScrollTrigger);
+import { cn } from "@/lib";
 
 interface Props extends ImageProps {
   parallax?: boolean;
@@ -27,40 +25,38 @@ export const Image: React.FC<Props> = ({
     const container = containerRef.current;
     const image = imageRef.current;
 
-    if (!container || !image) return;
+    if (!parallax || !container || !image) return;
 
-    if (parallax) {
-      const timeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: container,
-          scrub: true,
-          pin: false,
-          invalidateOnRefresh: true,
-        },
-        defaults: {
-          ease: "none",
-        },
-      });
+    const handleSliderMove = () => {
+      // Calculate where this specific image sits relative to the viewport window bounds
+      const rect = container.getBoundingClientRect();
+      const viewWidth = window.innerWidth;
+      const viewHeight = window.innerHeight;
 
-      const transformProperty = horizontal ? "xPercent" : "yPercent";
-      const transformAmount = horizontal ? 2.5 : 5;
+      if (horizontal) {
+        // Horizontal track calculation
+        const progress = (rect.left + rect.width) / (viewWidth + rect.width);
+        const shiftX = gsap.utils.mapRange(0, 1, -15, 15, progress);
+        gsap.set(image, { xPercent: shiftX });
+      } else {
+        // Fallback standard vertical page scroll track calculation
+        const progress = (rect.top + rect.height) / (viewHeight + rect.height);
+        const shiftY = gsap.utils.mapRange(0, 1, -15, 15, progress);
+        gsap.set(image, { yPercent: shiftY });
+      }
+    };
 
-      timeline.fromTo(
-        image,
-        { [transformProperty]: -1 * transformAmount },
-        {
-          [transformProperty]: transformAmount,
-          ease: "none",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            scrub: 0.5,
-            start: "top bottom",
-            end: "bottom top",
-            horizontal: horizontal,
-          },
-        },
-      );
-    }
+    // Listen to both custom slider moves and native vertical window scrolling
+    window.addEventListener("slider-move", handleSliderMove);
+    window.addEventListener("scroll", handleSliderMove);
+
+    // Run initial frame setup placement calculation
+    handleSliderMove();
+
+    return () => {
+      window.removeEventListener("slider-move", handleSliderMove);
+      window.removeEventListener("scroll", handleSliderMove);
+    };
   }, [parallax, horizontal]);
 
   return (
@@ -75,10 +71,17 @@ export const Image: React.FC<Props> = ({
       <div
         className={cn(
           "backface-hidden absolute inset-0 overflow-hidden",
-          horizontal ? "-ml-[10%] w-[120%]" : "-mt-[10%] h-[140%]",
+          horizontal
+            ? "left-[-15%] w-[130%] h-full"
+            : "top-[-15%] h-[130%] w-full",
         )}
       >
-        <NextImage ref={imageRef} {...props} fill className="object-cover" />
+        <NextImage
+          ref={imageRef}
+          {...props}
+          fill
+          className="object-cover scale-110"
+        />
       </div>
     </div>
   );
