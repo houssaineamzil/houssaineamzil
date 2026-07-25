@@ -20,8 +20,14 @@ const RootLayout = ({
         <ReactLenis
           root
           options={{
+            // `lerp` alone drives wheel/touch scrolling with per-frame damping
+            // toward the current target. Setting `duration` too makes Lenis
+            // use a fixed-length eased tween instead — which fully restarts
+            // on every wheel event, so a fast flick (many events in quick
+            // succession) never gets past the first fraction of the curve
+            // before being reset, producing a stuttery "launches then stops"
+            // feel instead of smooth continuous motion.
             lerp: 0.15,
-            duration: 1.25,
             syncTouch: true,
           }}
         >

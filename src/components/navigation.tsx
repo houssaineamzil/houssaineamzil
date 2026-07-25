@@ -2,7 +2,7 @@ import { Link } from "@/components/link";
 
 export const Navigation: React.FC = () => {
   return (
-    <header className="fixed inset-x-0 top-0 z-100 flex w-full justify-between gap-2 p-2">
+    <header className="fixed inset-x-0 top-0 z-100 flex w-full justify-between gap-2 p-4">
       <div className="flex-1">
         <svg
           className="w-18"

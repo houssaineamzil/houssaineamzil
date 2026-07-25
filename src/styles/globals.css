@@ -4,9 +4,9 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #f2f3f2;
-  --color-foreground: #505450;
-  --color-muted: #a7a9a7;
+  --color-background: --alpha(var(--color-neutral-50) / 50%);
+  --color-foreground: var(--color-neutral-600);
+  --color-muted: var(--color-neutral-400);
 
   --font-sans:
     "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -34,7 +34,6 @@
   }
 
   html {
-    overflow: hidden;
     -webkit-text-size-adjust: none;
     -webkit-font-smoothing: antialiased;
     user-select: none;
@@ -42,5 +41,27 @@
 
   body {
     @apply bg-background text-foreground text-xs font-sans font-[475];
+  }
+}
+
+@layer components {
+  .works-card {
+    transition: filter 300ms ease;
+  }
+
+  .works-grid:has(.works-card:hover) .works-card:not(:hover) {
+    filter: grayscale(80%);
+  }
+
+  .works-card-pixelate {
+    opacity: 0;
+    image-rendering: pixelated;
+    transition: opacity 300ms ease;
+  }
+
+  .works-grid:has(.works-card:hover)
+    .works-card:not(:hover)
+    .works-card-pixelate {
+    opacity: 1;
   }
 }

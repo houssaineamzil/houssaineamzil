@@ -4,7 +4,7 @@ import gsap from "gsap";
 import NextImage, { type ImageProps } from "next/image";
 import type React from "react";
 import { useEffect, useRef } from "react";
-import { cn } from "@/lib";
+import { cn, isVideoSrc } from "@/lib";
 
 interface Props extends ImageProps {
   parallax?: boolean;
@@ -16,16 +16,20 @@ export const Image: React.FC<Props> = ({
   fill = false,
   parallax = false,
   horizontal = false,
+  src,
+  alt,
   ...props
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const imageRef = useRef<HTMLImageElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const video = typeof src === "string" && isVideoSrc(src);
 
   useEffect(() => {
     const container = containerRef.current;
-    const image = imageRef.current;
+    const media = imageRef.current ?? videoRef.current;
 
-    if (!parallax || !container || !image) return;
+    if (!parallax || !container || !media) return;
 
     const handleSliderMove = () => {
       // Calculate where this specific image sits relative to the viewport window bounds
@@ -37,12 +41,12 @@ export const Image: React.FC<Props> = ({
         // Horizontal track calculation
         const progress = (rect.left + rect.width) / (viewWidth + rect.width);
         const shiftX = gsap.utils.mapRange(0, 1, -15, 15, progress);
-        gsap.set(image, { xPercent: shiftX });
+        gsap.set(media, { xPercent: shiftX });
       } else {
         // Fallback standard vertical page scroll track calculation
         const progress = (rect.top + rect.height) / (viewHeight + rect.height);
         const shiftY = gsap.utils.mapRange(0, 1, -15, 15, progress);
-        gsap.set(image, { yPercent: shiftY });
+        gsap.set(media, { yPercent: shiftY });
       }
     };
 
@@ -71,17 +75,35 @@ export const Image: React.FC<Props> = ({
       <div
         className={cn(
           "backface-hidden absolute inset-0 overflow-hidden",
-          horizontal
-            ? "left-[-15%] w-[130%] h-full"
-            : "top-[-15%] h-[130%] w-full",
+          parallax &&
+            (horizontal
+              ? "left-[-15%] w-[130%] h-full"
+              : "top-[-15%] h-[130%] w-full"),
         )}
       >
-        <NextImage
-          ref={imageRef}
-          {...props}
-          fill
-          className="object-cover scale-110"
-        />
+        {video ? (
+          <video
+            ref={videoRef}
+            src={src as string}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className={cn(
+              "absolute inset-0 h-full w-full object-cover",
+              parallax && "scale-110",
+            )}
+          />
+        ) : (
+          <NextImage
+            ref={imageRef}
+            {...props}
+            src={src}
+            alt={alt}
+            fill
+            className="object-cover scale-110"
+          />
+        )}
       </div>
     </div>
   );

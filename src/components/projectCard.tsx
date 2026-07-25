@@ -4,7 +4,7 @@ import type { ProjectType } from "@/types";
 import { Image } from "./image";
 
 interface Props
-  extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "type">,
+  extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "type" | "role">,
     ProjectType {
   index: number;
 }
@@ -17,7 +17,7 @@ export const ProjectCard = React.forwardRef<HTMLAnchorElement, Props>(
         ref={ref}
         data-cindex={index}
         href={`/works/${slug}`}
-        className="drag-none block h-full w-96 cursor-grab active:cursor-grabbing select-none"
+        className="drag-none block h-full w-dvw md:w-96 cursor-grab active:cursor-grabbing select-none"
       >
         <article className="flex h-full w-full flex-col">
           {/* Desktop Metadata Layout */}

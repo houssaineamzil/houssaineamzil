@@ -1,46 +1,32 @@
+import NextImage from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib";
 import type { ProjectType } from "@/types";
 import { Image } from "./image";
 
 interface Props extends ProjectType {
-  variant?: keyof typeof variants;
+  index: number;
   horizontal?: boolean;
 }
 
-const variants = {
-  1: "ml-[25%]",
-  2: "mt-[16%] mr-2",
-  3: "ml-2",
-  4: "mt-[8%] mr-[20%]",
-  5: "ml-[8%]",
-  6: "mt-[12%] mr-[12%]",
-  7: "-mt-[8%] ml-[25%]",
-  8: "mt-[10%] mr-2",
-};
-
 export const WorkCard: React.FC<Props> = ({
+  index,
   name,
   slug,
   image,
-  description,
-  variant = 1,
+  labels,
   horizontal = false,
 }) => {
   return (
     <div
       className={cn(
-        "flex flex-col",
-        horizontal ? "w-2xl" : "w-md",
-        variants[variant],
+        "works-card flex flex-col w-full",
+        horizontal ? "md:w-2xl" : "md:w-md",
       )}
     >
       <Link
         href={`/works/${slug}`}
-        className={cn(
-          "relative w-full",
-          horizontal ? "aspect-3/2" : "aspect-2/3",
-        )}
+        className="relative w-full aspect-3/4 md:aspect-square overflow-hidden"
       >
         <Image
           fill
@@ -49,10 +35,21 @@ export const WorkCard: React.FC<Props> = ({
           alt={image.alt}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
+        <NextImage
+          fill
+          aria-hidden
+          alt=""
+          src={image.url}
+          sizes="32px"
+          className="works-card-pixelate absolute inset-0 object-cover"
+        />
       </Link>
-      <div className="mt-4 max-w-md">
-        <h1 className="mb-2.5 text-[15px] uppercase">{name}</h1>
-        <p className="text-muted">{description}</p>
+      <div className="mt-4 flex gap-6 text-[11px] uppercase">
+        <span className="text-muted">{String(index + 1).padStart(3, "0")}</span>
+        <div>
+          <h1 className="mb-1">{name}</h1>
+          <p className="text-muted">{labels.slice(0, 2).join(", ")}</p>
+        </div>
       </div>
     </div>
   );
