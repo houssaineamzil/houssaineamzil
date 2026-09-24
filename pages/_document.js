@@ -5,7 +5,9 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
-        <Head />
+        <Head>
+          <meta name="robots" content="noindex, nofollow" />
+        </Head>
         <body>
           <Main />
           <NextScript />
