@@ -11,15 +11,18 @@ class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
-          <!-- Google tag (gtag.js) -->
-            <script async src="https://www.googletagmanager.com/gtag/js?id=G-J0VWS45T6M"></script>
-            <script>
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-
-              gtag('config', 'G-J0VWS45T6M');
-            </script>
+          {/* Google tag (gtag.js) */}
+          <script async src="https://www.googletagmanager.com/gtag/js?id=G-J0VWS45T6M"></script>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-J0VWS45T6M');
+              `,
+            }}
+          />
         </body>
       </Html>
     )
