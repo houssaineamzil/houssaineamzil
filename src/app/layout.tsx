@@ -7,6 +7,10 @@ import ReactLenis from "lenis/react";
 export const metadata: Metadata = {
   title: "Houssaine Amzil - Creative Developer",
   description: "",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 const RootLayout = ({
