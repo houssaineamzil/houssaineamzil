@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import styles from "./HomeAbout.module.scss";
 
 export const HomeAbout = () => {
@@ -66,27 +65,6 @@ export const HomeAbout = () => {
               journey as we delve into my design philosophy, and explore the
               various stages of the creative process.
             </p>
-            <Link
-              target="_blank"
-              href="/resume.pdf"
-              className={styles.link}
-              download="Høussaine Amzil - resume"
-            >
-              GET MY RESUME
-              <svg
-                fill="none"
-                viewBox="0 0 12 12"
-                className={styles.arrow}
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M0.564163 0L12 0V11.4358H10.4043V2.72402L1.12833 12L0 10.8716L9.27594 1.5957L0.564163 1.5957L0.564163 0Z"
-                  fill="currentColor"
-                />
-              </svg>
-            </Link>
           </div>
         </div>
       </div>
