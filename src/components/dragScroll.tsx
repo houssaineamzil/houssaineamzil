@@ -37,6 +37,12 @@ export const DragScroll: React.FC<Props> = ({ children, className }) => {
 
     const virtualTarget = document.createElement("div");
 
+    // Dragging itself stays fully interactive either way — this only
+    // removes the post-release momentum coast.
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
     // Dragging down should reveal content above, like a native touch scroll.
     // `lenis.stop()` is in effect for the whole drag + inertia glide below,
     // and Lenis silently ignores scrollTo while stopped unless forced.
@@ -50,7 +56,7 @@ export const DragScroll: React.FC<Props> = ({ children, className }) => {
     const draggableInstance = Draggable.create(virtualTarget, {
       trigger: container,
       type: "y",
-      inertia: true,
+      inertia: !reducedMotion,
       onDragStart() {
         lenis.stop();
       },

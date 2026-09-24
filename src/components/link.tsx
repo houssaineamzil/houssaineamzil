@@ -20,12 +20,16 @@ export const Link: React.FC<Props> = ({
   const handleMouseEnter: React.MouseEventHandler<HTMLAnchorElement> = (
     event,
   ) => {
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
     // Force reset position to off-screen left (-100%) before animating across
     gsap.set(underlineRef.current, { xPercent: 0 });
 
     gsap.to(underlineRef.current, {
       xPercent: 100,
-      duration: 0.7,
+      duration: reducedMotion ? 0 : 0.7,
       ease: "power2.inOut",
       overwrite: "auto",
     });
@@ -36,9 +40,13 @@ export const Link: React.FC<Props> = ({
   const handleMouseLeave: React.MouseEventHandler<HTMLAnchorElement> = (
     event,
   ) => {
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
     gsap.to(underlineRef.current, {
       xPercent: 200,
-      duration: 0.7,
+      duration: reducedMotion ? 0 : 0.7,
       ease: "power2.inOut",
       overwrite: "auto",
     });

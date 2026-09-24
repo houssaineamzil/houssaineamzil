@@ -20,7 +20,14 @@ const MIN_VIEWPORT_MULTIPLE = 2;
 export const Slider: React.FC = () => {
   const cardsRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+  const activeIndexRef = useRef<number | null>(null);
+  const tickAudioRef = useRef<HTMLAudioElement | null>(null);
   const [repeatCount, setRepeatCount] = useState(1);
+
+  useEffect(() => {
+    tickAudioRef.current = new Audio("/audio/knob_tick.webm");
+    tickAudioRef.current.volume = 0.3;
+  }, []);
 
   // Grow the repeat count until the track comfortably out-spans the viewport.
   useLayoutEffect(() => {
@@ -55,6 +62,13 @@ export const Slider: React.FC = () => {
     );
     if (trackItems.length === 0) return;
 
+    // Dragging/scrolling itself stays fully interactive either way — this
+    // only removes the eased "catch up" glide and the post-release inertia
+    // coast layered on top of it.
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
     // UNIFIED POSITION TRACKER
     // proxy.x holds our continuous, unbounded scroll position
     const proxy = { x: 0 };
@@ -64,8 +78,12 @@ export const Slider: React.FC = () => {
     const updatePositions = () => {
       // Read total track width directly from the DOM container
       const totalWidth = container.scrollWidth;
+      const viewportCenter = window.innerWidth / 2;
 
-      trackItems.forEach((item) => {
+      let activeItem: HTMLAnchorElement | null = null;
+      let activeDistance = Infinity;
+
+      for (const item of trackItems) {
         const itemWidth = item.offsetWidth;
         const rawX = item.offsetLeft + proxy.x;
 
@@ -77,7 +95,27 @@ export const Slider: React.FC = () => {
 
         // Apply translation delta relative to its natural CSS position
         gsap.set(item, { x: wrappedX - item.offsetLeft });
-      });
+
+        // Track whichever card is nearest the viewport's horizontal center —
+        // that's the "active" one for tick-sound purposes.
+        const distance = Math.abs(wrappedX + itemWidth / 2 - viewportCenter);
+        if (distance < activeDistance) {
+          activeDistance = distance;
+          activeItem = item;
+        }
+      }
+
+      if (activeItem) {
+        const activeIndex = Number(activeItem.dataset.cindex);
+        if (activeIndex !== activeIndexRef.current) {
+          activeIndexRef.current = activeIndex;
+          const audio = tickAudioRef.current;
+          if (audio) {
+            audio.currentTime = 0;
+            audio.play().catch(() => {});
+          }
+        }
+      }
 
       // --- BROADCAST MOVE EVENT ---
       // Notifies child components that the slider coordinates updated
@@ -87,7 +125,7 @@ export const Slider: React.FC = () => {
     // Smooth interpolation controller
     const catchUp = gsap.to(proxy, {
       x: () => targetX,
-      duration: 0.6,
+      duration: reducedMotion ? 0 : 0.6,
       ease: "power2.out",
       paused: true,
       onUpdate: updatePositions,
@@ -115,8 +153,10 @@ export const Slider: React.FC = () => {
           catchUp.invalidate().restart();
         },
         onDragEnd() {
-          const velocity = InertiaPlugin.getVelocity(virtualTarget, "x");
-          targetX += velocity * 0.25; // Kinetic glide/inertia throw
+          if (!reducedMotion) {
+            const velocity = InertiaPlugin.getVelocity(virtualTarget, "x");
+            targetX += velocity * 0.25; // Kinetic glide/inertia throw
+          }
           catchUp.invalidate().restart();
         },
       });

@@ -19,15 +19,27 @@ export const GalleryMinimap: React.FC<Props> = ({ images }) => {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: images isn't read directly, it's a re-run trigger so the rail re-measures fresh DOM nodes after client-side navigation to a different project
   useEffect(() => {
+    const indicator = indicatorRef.current;
+    const buttons =
+      railRef.current?.querySelectorAll<HTMLButtonElement>("button");
+    if (!indicator || !buttons?.length) return;
+
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    // Kept hidden (and collapsed to height 0) until the thumbnails finish
+    // their own intro below, so the indicator doesn't flash into view as a
+    // lone line before there's anything for it to be highlighting.
+    let revealed = reducedMotion;
+
     const handleScroll = () => {
       const rail = railRef.current;
-      const indicator = indicatorRef.current;
       const sections = document.querySelectorAll<HTMLElement>(
         "[data-gallery-image]",
       );
-      const buttons = rail?.querySelectorAll<HTMLButtonElement>("button");
 
-      if (!rail || !indicator || !buttons?.length) return;
+      if (!rail || !buttons?.length) return;
       if (buttons.length !== sections.length) return;
 
       const first = sections[0];
@@ -94,6 +106,18 @@ export const GalleryMinimap: React.FC<Props> = ({ images }) => {
         localProgress,
       );
 
+      if (!revealed) {
+        gsap.set(indicator, { y: top - OUTSET, height: 0 });
+        return;
+      }
+
+      // Reduced motion still needs the indicator to track scroll position —
+      // that's information, not decoration — just without the eased glide.
+      if (reducedMotion) {
+        gsap.set(indicator, { y: top - OUTSET, height: height + OUTSET * 2 });
+        return;
+      }
+
       gsap.to(indicator, {
         y: top - OUTSET,
         height: height + OUTSET * 2,
@@ -106,7 +130,48 @@ export const GalleryMinimap: React.FC<Props> = ({ images }) => {
     window.addEventListener("scroll", handleScroll);
     handleScroll();
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    // Reveals the indicator once the thumbnails have finished animating in:
+    // fades it in and, since `revealed` flips from false to true right
+    // before, the immediately-following handleScroll() call grows it from
+    // height 0 up to its real target instead of snapping straight there.
+    const revealIndicator = () => {
+      revealed = true;
+      gsap.to(indicator, { opacity: 1, duration: 0.5, ease: "power3.out" });
+      handleScroll();
+    };
+
+    let buttonsTween: gsap.core.Tween | null = null;
+
+    if (reducedMotion) {
+      // `revealed` was already true for the initial handleScroll() call
+      // above, so the indicator is already correctly positioned — it just
+      // needs to be shown, with no transition. Buttons need the same
+      // override, since the static `opacity-0` class they start with
+      // otherwise leaves them hidden forever with no tween to clear it.
+      gsap.set(indicator, { opacity: 1 });
+      gsap.set(buttons, { opacity: 1 });
+    } else {
+      // fromTo (not from) — see Reveal component for why an inferred end
+      // state breaks under React Strict Mode's dev double-invoke.
+      buttonsTween = gsap.fromTo(
+        buttons,
+        { opacity: 0, y: 16 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power3.out",
+          stagger: 0.05,
+          delay: 0.2,
+          onComplete: revealIndicator,
+        },
+      );
+    }
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      buttonsTween?.kill();
+    };
   }, [images]);
 
   if (images.length < 2) return null;
@@ -130,7 +195,7 @@ export const GalleryMinimap: React.FC<Props> = ({ images }) => {
                   ?.scrollIntoView({ behavior: "smooth", block: "center" })
               }
               className={cn(
-                "relative block cursor-pointer overflow-hidden bg-neutral-200",
+                "relative block cursor-pointer overflow-hidden bg-neutral-200 opacity-0",
                 imageIndex === 0 ? "aspect-square" : "aspect-video p-[6%]",
               )}
             >
@@ -151,7 +216,7 @@ export const GalleryMinimap: React.FC<Props> = ({ images }) => {
 
         <div
           ref={indicatorRef}
-          className="pointer-events-none absolute top-0 -left-2 w-20 border border-neutral-400"
+          className="pointer-events-none absolute top-0 -left-2 w-20 border border-neutral-400 opacity-0"
         />
       </div>
     </div>

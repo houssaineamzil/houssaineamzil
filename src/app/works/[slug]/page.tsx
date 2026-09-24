@@ -4,6 +4,7 @@ import { DragScroll } from "@/components/dragScroll";
 import { GalleryMinimap } from "@/components/galleryMinimap";
 import { Image } from "@/components/image";
 import { Link } from "@/components/link";
+import { Reveal } from "@/components/reveal";
 import { projects } from "@/constants";
 
 interface Props {
@@ -35,34 +36,47 @@ const Page = async ({ params }: Props) => {
 
   return (
     <div className="w-full">
-      <div className="flex w-full flex-col justify-end gap-16 p-4 pt-60 md:fixed md:inset-y-0 md:left-0 md:w-[42%] md:overflow-hidden md:p-4 md:pt-20">
+      <Reveal className="flex w-full flex-col justify-end gap-16 p-4 pt-60 md:fixed md:inset-y-0 md:left-0 md:w-[42%] md:overflow-hidden md:p-4 md:pt-20">
         <div className="flex flex-col gap-10">
           <dl className="grid grid-cols-[auto_1fr] gap-x-10 gap-y-1 text-[11px] uppercase">
-            <dt className="text-muted">Client</dt>
-            <dd>{project.name}</dd>
+            <dt data-reveal-item className="text-muted">
+              Client
+            </dt>
+            <dd data-reveal-item>{project.name}</dd>
 
-            <dt className="text-muted">Mission</dt>
-            <dd>{project.labels.slice(0, 2).join(", ")}</dd>
+            <dt data-reveal-item className="text-muted">
+              Mission
+            </dt>
+            <dd data-reveal-item>{project.labels.slice(0, 2).join(", ")}</dd>
 
-            <dt className="text-muted">Year</dt>
-            <dd>{project.year}</dd>
+            <dt data-reveal-item className="text-muted">
+              Year
+            </dt>
+            <dd data-reveal-item>{project.year}</dd>
 
-            <dt className="text-muted">Role</dt>
-            <dd>{project.role}</dd>
+            <dt data-reveal-item className="text-muted">
+              Role
+            </dt>
+            <dd data-reveal-item>{project.role}</dd>
           </dl>
 
-          <p className="max-w-md text-xs leading-tight whitespace-pre-line uppercase">
+          <p
+            data-reveal-lines
+            className="max-w-md text-xs leading-tight whitespace-pre-line uppercase"
+          >
             {project.description}
           </p>
         </div>
 
         <div className="flex items-end justify-between text-[11px] uppercase">
-          <Link href={`/works/${next.slug}`}>Next</Link>
-          <Link href="mailto:houssaineamzil18@gmail.com">
+          <Link data-reveal-item href={`/works/${next.slug}`}>
+            Next
+          </Link>
+          <Link data-reveal-item href="mailto:houssaineamzil18@gmail.com">
             houssaineamzil18@gmail.com
           </Link>
         </div>
-      </div>
+      </Reveal>
 
       <GalleryMinimap images={galleryImages} />
 
@@ -74,6 +88,7 @@ const Page = async ({ params }: Props) => {
           <Image
             fill
             parallax
+            revealOnScroll
             src={project.image.url}
             alt={project.image.alt}
             sizes="(max-width: 768px) 100vw, 58vw"
@@ -92,6 +107,7 @@ const Page = async ({ params }: Props) => {
                     fill
                     parallax={false}
                     horizontal={false}
+                    revealOnScroll
                     src={image.url}
                     alt={image.alt}
                     sizes="(max-width: 768px) 50vw, 29vw"

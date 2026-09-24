@@ -9,6 +9,7 @@ import { cn, isVideoSrc } from "@/lib";
 interface Props extends ImageProps {
   parallax?: boolean;
   horizontal?: boolean;
+  revealOnScroll?: boolean;
 }
 
 export const Image: React.FC<Props> = ({
@@ -16,6 +17,7 @@ export const Image: React.FC<Props> = ({
   fill = false,
   parallax = false,
   horizontal = false,
+  revealOnScroll = false,
   src,
   alt,
   ...props
@@ -25,11 +27,49 @@ export const Image: React.FC<Props> = ({
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const video = typeof src === "string" && isVideoSrc(src);
 
+  // Fires immediately for anything already in the viewport at mount, so the
+  // same observer covers both the hero image (visible on load) and gallery
+  // images further down the page (revealed as they're scrolled into view).
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!revealOnScroll || !container) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      gsap.set(container, { opacity: 1 });
+      return;
+    }
+
+    // The y offset is owned entirely by GSAP (the `transform` property)
+    // rather than a Tailwind `translate-y-*` class — Tailwind v4 applies
+    // translate via the standalone CSS `translate` property, which GSAP's
+    // `y` tween doesn't know about and can't animate away.
+    gsap.set(container, { y: 24 });
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return;
+
+        gsap.to(container, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out",
+        });
+        observer.disconnect();
+      },
+      { threshold: 0.2 },
+    );
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [revealOnScroll]);
+
   useEffect(() => {
     const container = containerRef.current;
     const media = imageRef.current ?? videoRef.current;
 
     if (!parallax || !container || !media) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const handleSliderMove = () => {
       // Calculate where this specific image sits relative to the viewport window bounds
@@ -70,6 +110,7 @@ export const Image: React.FC<Props> = ({
         "relative overflow-hidden",
         className,
         fill && "absolute inset-0 h-full w-full",
+        revealOnScroll && "opacity-0",
       )}
     >
       <div
