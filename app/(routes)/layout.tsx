@@ -36,6 +36,10 @@ export const metadata: Metadata = {
 	},
 	description:
 		"Creative developer passionate about building appealing and interactive web experiences.",
+	robots: {
+		index: false,
+		follow: false,
+	},
 }
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
