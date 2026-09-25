@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 /**
  * One-time helper to obtain a personal Spotify refresh token.
  *
@@ -23,8 +24,8 @@
  * to disk.
  */
 
-import { createServer } from "node:http";
 import { randomBytes } from "node:crypto";
+import { createServer } from "node:http";
 
 const PORT = 8888;
 const REDIRECT_URI = `http://127.0.0.1:${PORT}/callback`;
@@ -86,10 +87,15 @@ const server = createServer(async (req, res) => {
   const code = url.searchParams.get("code");
 
   if (error || returnedState !== state || !code) {
-    res.writeHead(400, { "Content-Type": "text/html" }).end(
-      "<p>Authorization failed or state mismatch. Check the terminal and try again.</p>",
+    res
+      .writeHead(400, { "Content-Type": "text/html" })
+      .end(
+        "<p>Authorization failed or state mismatch. Check the terminal and try again.</p>",
+      );
+    console.error(
+      "Authorization failed:",
+      error ?? "state mismatch / missing code",
     );
-    console.error("Authorization failed:", error ?? "state mismatch / missing code");
     server.close();
     process.exitCode = 1;
     return;
@@ -97,19 +103,21 @@ const server = createServer(async (req, res) => {
 
   try {
     const tokens = await exchangeCodeForTokens(code);
-    res.writeHead(200, { "Content-Type": "text/html" }).end(
-      "<p>Done — you can close this tab and go back to the terminal.</p>",
-    );
+    res
+      .writeHead(200, { "Content-Type": "text/html" })
+      .end("<p>Done — you can close this tab and go back to the terminal.</p>");
 
-    console.log("\nSuccess. Refresh token (paste this into Vercel as SPOTIFY_REFRESH_TOKEN):\n");
+    console.log(
+      "\nSuccess. Refresh token (paste this into Vercel as SPOTIFY_REFRESH_TOKEN):\n",
+    );
     console.log(tokens.refresh_token);
     console.log(
       "\n(An access token was also issued but isn't needed — the app derives it from the refresh token at request time.)",
     );
   } catch (err) {
-    res.writeHead(500, { "Content-Type": "text/html" }).end(
-      "<p>Token exchange failed. Check the terminal.</p>",
-    );
+    res
+      .writeHead(500, { "Content-Type": "text/html" })
+      .end("<p>Token exchange failed. Check the terminal.</p>");
     console.error(err.message);
     process.exitCode = 1;
   } finally {

@@ -1,104 +1,93 @@
-import { ProjectType } from "@/types/types"
+import type { ProjectType } from "@/types/types";
 
 export const projects: ProjectType[] = [
-	{
-		href: "https://meetalab.vercel.app/",
-		title: "Metalab",
-		description: "A clone of the original Metalab website.",
-		type: "Dev",
-		image: { src: "/images/metalab.webp" },
-		size: "big"
-	},
-	{
-		href: "https://emmaissocial.vercel.app/",
-		title: "Emma is social",
-		description: "A clone of the original Emma is social by DashDigital®.",
-		type: "Dev",
-		image: { src: "/images/emmaissocial.png" },
-		size: "big"
-	},
-	{
-		href: "https://synthetictheatre-houssaineamzil.vercel.app/",
-		title: "Synthetic Theatre®",
-		description: "A clone of the original Synthetic Theatre by Daniele Buffa.",
-		type: "Dev",
-		image: { src: "/images/synthetictheatre.png" },
-		size: "wide"
-	},
-	{
-		href: "https://nanocopy.vercel.app/",
-		title: "Nano Copy®",
-		description: "Short copy text for your website.",
-		type: "Design & Dev",
-		image: { src: "/images/nanocopy.png" },
-		size: "wide"
-	},
-	{
-		href: "https://beta-houssaineamzil.vercel.app/",
-		title: "Høussaine Amzil",
-		description: "My beta website still working on it",
-		type: "Design & Dev",
-		image: { src: "/images/houssaine.png" },
-	},
-	{
-		href: "https://bloggo-iota.vercel.app/",
-		title: "Bloggo",
-		description: "A feminin blog",
-		type: "Dev",
-		image: { src: "/images/bloggo.png" }
-	},
-	{
-		href: "https://mrc-houssaineamzil.vercel.app/",
-		title: "Moroccan Real Estate Company",
-		description: "",
-		type: "Dev",
-		image: { src: "/images/mrc.png" },
-		size: "tall"
-	},
-	{
-		href: "https://weather-co.vercel.app/en",
-		title: "Weather.co",
-		description: "",
-		type: "Dsign & Dev",
-		image: { src: "/images/weatherco.jpg" },
-		size: "tall"
-	},
-	{
-		href: "https://lus-acd-20232024.vercel.app/",
-		title: "LUC ACD",
-		description: "",
-		type: "Dev",
-		image: { src: "/images/lucacd.png" }
-	},
-	{
-		href: "https://coacherrar.com/?ref=houssaineamzil.vercel.com",
-		title: "Coach Herrar",
-		description: "",
-		type: "Design & Dev",
-		image: { src: "/images/coacherrar.png" }
-	},
-	{
-		href: "https://www.behance.net/gallery/175260655/Internship-Report",
-		title: "Internship Report",
-		description: "",
-		type: "Editorial",
-		image: { src: "/images/intern.jpg" },
-		size: "wide"
-	},
-	{
-		href: "https://www.behance.net/gallery/178346349/My-Way-Education",
-		title: "My Way Education",
-		description: "",
-		type: "Branding",
-		image: { src: "/images/mywayeduc.png" },
-		size: "wide"
-	},
-	{
-		href: "https://www.behance.net/gallery/179037663/Finwind",
-		title: "Finwind",
-		description: "",
-		type: "Branding",
-		image: { src: "/images/finwind.png" },
-		size: "wide"
-	}
-]
+  {
+    href: "https://meetalab.vercel.app/",
+    title: "Metalab",
+    description: "A clone of the original Metalab website.",
+    type: "Dev",
+    image: { src: "/images/metalab.webp" },
+    size: "big",
+  },
+  {
+    href: "https://emmaissocial.vercel.app/",
+    title: "Emma is social",
+    description: "A clone of the original Emma is social by DashDigital®.",
+    type: "Dev",
+    image: { src: "/images/emmaissocial.png" },
+    size: "big",
+  },
+  {
+    href: "https://synthetictheatre-houssaineamzil.vercel.app/",
+    title: "Synthetic Theatre®",
+    description: "A clone of the original Synthetic Theatre by Daniele Buffa.",
+    type: "Dev",
+    image: { src: "/images/synthetictheatre.png" },
+    size: "wide",
+  },
+  {
+    href: "https://nanocopy.vercel.app/",
+    title: "Nano Copy®",
+    description: "Short copy text for your website.",
+    type: "Design & Dev",
+    image: { src: "/images/nanocopy.png" },
+    size: "wide",
+  },
+  {
+    href: "https://ceinty.com",
+    title: "ceinty",
+    description: "The operating system for short-term rentals.",
+    type: "Design & Dev",
+    image: { src: "/images/ceinty.png" },
+    size: "big",
+  },
+  {
+    href: "https://win98-houssaineamzil.vercel.app/",
+    title: "Windows 98",
+    description: "The web version of Windows 98.",
+    type: "Design & Dev",
+    image: { src: "/images/win98.png" },
+    size: "wide",
+  },
+  {
+    href: "https://devvoltika.vercel.app/",
+    title: "Voltra",
+    description: "Alimenter l’avenir de la mobilité électrique.",
+    type: "Design & Dev",
+    image: { src: "/images/voltra.png" },
+    size: "tall",
+  },
+  {
+    href: "https://www.allunan.com",
+    title: "Allunan™",
+    description: "High-end Visuals for Ambitious Digital Products",
+    type: "Design & Dev",
+    image: { src: "/images/allunan.png" },
+    size: "big",
+  },
+  {
+    href: "https://www.avocapp.ma",
+    title: "Avocapp",
+    description:
+      "The first AI-powered legal practice platform designed for how law firms actually work in MENA.",
+    type: "Design & Dev",
+    image: { src: "/images/avocapp.png" },
+    size: "wide",
+  },
+  {
+    href: "https://www.behance.net/gallery/178346349/My-Way-Education",
+    title: "My Way Education",
+    description: "",
+    type: "Branding",
+    image: { src: "/images/mywayeduc.png" },
+    size: "wide",
+  },
+  {
+    href: "https://www.behance.net/gallery/179037663/Finwind",
+    title: "Finwind",
+    description: "",
+    type: "Branding",
+    image: { src: "/images/finwind.png" },
+    size: "wide",
+  },
+];
