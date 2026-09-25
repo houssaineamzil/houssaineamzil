@@ -52,26 +52,39 @@ export async function getProjectBySlug(
   return row ? toProjectType(row) : null;
 }
 
+const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+
 export async function upsertProject(
   input: ProjectInput,
 ): Promise<ProjectType & { id: string }> {
-  if (!input.slug.trim()) {
+  const slug = input.slug.trim();
+  const name = input.name.trim();
+
+  if (!slug) {
     throw new Error("slug must not be empty");
+  }
+  if (!SLUG_PATTERN.test(slug)) {
+    throw new Error(
+      `slug "${slug}" must contain only lowercase letters, numbers, and hyphens (e.g. "my-project")`,
+    );
+  }
+  if (!name) {
+    throw new Error("name must not be empty");
   }
 
   const existingBySlug = await db
     .select({ id: projectsTable.id })
     .from(projectsTable)
-    .where(eq(projectsTable.slug, input.slug))
+    .where(eq(projectsTable.slug, slug))
     .limit(1);
 
   if (existingBySlug.length > 0 && existingBySlug[0]?.id !== input.id) {
-    throw new Error(`slug "${input.slug}" is already in use`);
+    throw new Error(`slug "${slug}" is already in use`);
   }
 
   const values = {
-    slug: input.slug,
-    name: input.name,
+    slug,
+    name,
     type: input.type,
     description: input.description,
     labels: input.labels,
@@ -120,21 +133,20 @@ export async function deleteProject(id: string): Promise<void> {
 }
 
 export async function reorderProjects(orderedIds: string[]): Promise<void> {
-  const rows = await db
-    .select({ id: projectsTable.id })
-    .from(projectsTable)
-    .where(inArray(projectsTable.id, orderedIds));
+  await db.transaction(async (tx) => {
+    const rows = await tx
+      .select({ id: projectsTable.id })
+      .from(projectsTable)
+      .where(inArray(projectsTable.id, orderedIds));
 
-  const validIds = new Set(rows.map((r) => r.id));
+    const validIds = new Set(rows.map((r) => r.id));
 
-  await Promise.all(
-    orderedIds
-      .filter((id) => validIds.has(id))
-      .map((id, index) =>
-        db
-          .update(projectsTable)
-          .set({ sortOrder: index })
-          .where(eq(projectsTable.id, id)),
-      ),
-  );
+    for (const [index, id] of orderedIds.entries()) {
+      if (!validIds.has(id)) continue;
+      await tx
+        .update(projectsTable)
+        .set({ sortOrder: index })
+        .where(eq(projectsTable.id, id));
+    }
+  });
 }

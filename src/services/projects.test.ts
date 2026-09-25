@@ -44,6 +44,29 @@ describe("projects service", () => {
     );
   });
 
+  it("rejects a whitespace-only slug", async () => {
+    await expect(upsertProject({ ...baseInput, slug: "   " })).rejects.toThrow(
+      /slug/i,
+    );
+  });
+
+  it("rejects a slug with characters that would break a URL path", async () => {
+    await expect(
+      upsertProject({ ...baseInput, slug: "a/b c?" }),
+    ).rejects.toThrow(/slug/i);
+  });
+
+  it("rejects a whitespace-only name", async () => {
+    await expect(upsertProject({ ...baseInput, name: "   " })).rejects.toThrow(
+      /name/i,
+    );
+  });
+
+  it("trims a name with surrounding whitespace", async () => {
+    const created = await upsertProject({ ...baseInput, name: "  Test  " });
+    expect(created.name).toBe("Test");
+  });
+
   it("rejects a duplicate slug", async () => {
     await upsertProject(baseInput);
     await expect(upsertProject(baseInput)).rejects.toThrow(/slug/i);
@@ -58,7 +81,7 @@ describe("projects service", () => {
 
   it("deletes a project", async () => {
     const created = await upsertProject(baseInput);
-    await deleteProject(created.id as unknown as string);
+    await deleteProject(created.id);
     expect(await getProjects()).toHaveLength(0);
   });
 
@@ -66,14 +89,24 @@ describe("projects service", () => {
     const a = await upsertProject({ ...baseInput, slug: "a" });
     const b = await upsertProject({ ...baseInput, slug: "b" });
     const c = await upsertProject({ ...baseInput, slug: "c" });
-    await deleteProject(b.id as unknown as string);
+    await deleteProject(b.id);
 
-    await reorderProjects([
-      c.id as unknown as string,
-      a.id as unknown as string,
-    ]);
+    await reorderProjects([c.id, a.id]);
 
     const all = await getProjects();
-    expect(all.map((p) => p.slug)).toEqual(["c", "a"]);
+    expect(all.map((p) => ({ slug: p.slug, id: p.id }))).toEqual([
+      { slug: "c", id: c.id },
+      { slug: "a", id: a.id },
+    ]);
+    // The actual sortOrder values, not just the resulting list order —
+    // a partial/stale reorder submission must not leave duplicate values.
+    const rows = await db
+      .select({ slug: projectsTable.slug, sortOrder: projectsTable.sortOrder })
+      .from(projectsTable)
+      .orderBy(projectsTable.sortOrder);
+    expect(rows).toEqual([
+      { slug: "c", sortOrder: 0 },
+      { slug: "a", sortOrder: 1 },
+    ]);
   });
 });
