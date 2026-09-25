@@ -188,6 +188,17 @@ as Production env vars on Vercel. Implementation proceeds against local
 Postgres in the meantime; the schema/migrations are portable to whatever
 Postgres URL is provided.
 
+`/`, `/about`, `/works`, and `/archive` are prerendered statically at
+build time (Next's default for pages with no dynamic APIs) and read the
+DB directly rather than through a build-time-safe data layer, so
+**`DATABASE_URL` must be reachable during `next build`**, not just at
+runtime — a CI/deploy pipeline that builds before provisioning the DB, or
+builds from a network that can't reach it, will fail. This only affects
+the public pages (static, refreshed via `revalidatePath` after any save);
+`/admin/**` content pages are forced dynamic (`export const dynamic =
+"force-dynamic"`) specifically so they never go stale between deploys,
+independent of this build-time requirement.
+
 ## Testing
 
 No test runner currently exists in this repo. Add Vitest (lightweight, fits
