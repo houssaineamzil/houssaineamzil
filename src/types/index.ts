@@ -6,6 +6,7 @@ export interface MediaType {
 }
 
 export interface ProjectType {
+  id?: string;
   name: string;
   slug: string;
   type: string;

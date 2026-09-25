@@ -142,6 +142,10 @@ export const Image: React.FC<Props> = ({
             src={src}
             alt={alt}
             fill
+            unoptimized={
+              typeof src === "string" &&
+              (src.startsWith("blob:") || src.startsWith("data:"))
+            }
             className="object-cover scale-110"
           />
         )}

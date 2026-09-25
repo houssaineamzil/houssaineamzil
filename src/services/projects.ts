@@ -19,6 +19,7 @@ export interface ProjectInput {
 
 function toProjectType(row: typeof projectsTable.$inferSelect): ProjectType {
   return {
+    id: row.id,
     slug: row.slug,
     name: row.name,
     type: row.type,
@@ -92,7 +93,7 @@ export async function upsertProject(
     if (!row) {
       throw new Error(`project "${input.id}" not found`);
     }
-    return { ...toProjectType(row), id: row.id };
+    return toProjectType(row) as ProjectType & { id: string };
   }
 
   const [maxOrderResult] = await db
@@ -111,7 +112,7 @@ export async function upsertProject(
     throw new Error("insert did not return a row");
   }
 
-  return { ...toProjectType(row), id: row.id };
+  return toProjectType(row) as ProjectType & { id: string };
 }
 
 export async function deleteProject(id: string): Promise<void> {

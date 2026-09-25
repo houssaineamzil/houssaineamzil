@@ -67,16 +67,18 @@ export const ProjectDetail: React.FC<Props> = ({
       <DragScroll className="flex w-full flex-col gap-2 p-4 md:pt-60 md:pl-[calc(42%+0.5rem)]">
         <div
           data-gallery-image={0}
-          className="relative aspect-3/4 md:aspect-square w-full"
+          className="relative aspect-3/4 md:aspect-square w-full bg-neutral-200"
         >
-          <Image
-            fill
-            parallax
-            revealOnScroll
-            src={project.image.url}
-            alt={project.image.alt}
-            sizes="(max-width: 768px) 100vw, 58vw"
-          />
+          {project.image.url && (
+            <Image
+              fill
+              parallax
+              revealOnScroll
+              src={project.image.url}
+              alt={project.image.alt}
+              sizes="(max-width: 768px) 100vw, 58vw"
+            />
+          )}
         </div>
 
         {project.gallery && (
@@ -90,15 +92,17 @@ export const ProjectDetail: React.FC<Props> = ({
                   data-gallery-image={imageIndex + 1}
                   className="relative aspect-video w-full"
                 >
-                  <Image
-                    fill
-                    parallax={false}
-                    horizontal={false}
-                    revealOnScroll
-                    src={image.url}
-                    alt={image.alt}
-                    sizes="(max-width: 768px) 50vw, 29vw"
-                  />
+                  {image.url && (
+                    <Image
+                      fill
+                      parallax={false}
+                      horizontal={false}
+                      revealOnScroll
+                      src={image.url}
+                      alt={image.alt}
+                      sizes="(max-width: 768px) 50vw, 29vw"
+                    />
+                  )}
                 </div>
               </div>
             ))}
