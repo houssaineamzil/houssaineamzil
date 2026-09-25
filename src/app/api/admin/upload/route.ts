@@ -17,7 +17,16 @@ export async function POST(request: Request): Promise<NextResponse> {
   }
 
   try {
+    // Explicit token, not the SDK's default BLOB_READ_WRITE_TOKEN lookup:
+    // the original "houssaineamzil-media" Blob store's BLOB_READ_WRITE_TOKEN
+    // consistently failed with "No read-write token found" in every Vercel
+    // environment even immediately after a fresh `vercel storage update
+    // --add-rw-token` write and a clean redeploy — the variable existed but
+    // never actually worked. A brand-new store's token (connected with
+    // --prefix BLOB2 to avoid colliding with the still-present broken one)
+    // worked immediately. Root cause on the old store was never identified.
     const jsonResponse = await handleUpload({
+      token: process.env.BLOB2_READ_WRITE_TOKEN,
       body,
       request,
       onBeforeGenerateToken: async () => ({
