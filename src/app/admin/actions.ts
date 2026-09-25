@@ -2,12 +2,21 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import {
   checkPassword,
   createSessionCookie,
   SESSION_COOKIE_MAX_AGE_SECONDS,
   SESSION_COOKIE_NAME,
 } from "@/lib/auth";
+import type { AboutContent, SiteLinks } from "@/lib/db/schema";
+import {
+  deleteProject,
+  reorderProjects,
+  upsertProject,
+  type ProjectInput,
+} from "@/services/projects";
+import { updateAboutContent, updateSiteLinks } from "@/services/settings";
 
 export async function login(
   _prevState: { error?: string } | undefined,
@@ -36,4 +45,39 @@ export async function logout(): Promise<void> {
   const cookieStore = await cookies();
   cookieStore.delete(SESSION_COOKIE_NAME);
   redirect("/admin/login");
+}
+
+export async function saveProject(
+  input: ProjectInput,
+): Promise<{ id: string }> {
+  const saved = await upsertProject(input);
+  revalidatePath("/works");
+  revalidatePath(`/works/${saved.slug}`);
+  revalidatePath("/");
+  revalidatePath("/archive");
+  return { id: saved.id };
+}
+
+export async function removeProject(id: string): Promise<void> {
+  await deleteProject(id);
+  revalidatePath("/works");
+  revalidatePath("/");
+  revalidatePath("/archive");
+}
+
+export async function saveProjectOrder(orderedIds: string[]): Promise<void> {
+  await reorderProjects(orderedIds);
+  revalidatePath("/works");
+  revalidatePath("/");
+  revalidatePath("/archive");
+}
+
+export async function saveAbout(content: AboutContent): Promise<void> {
+  await updateAboutContent(content);
+  revalidatePath("/about");
+}
+
+export async function saveSiteLinks(links: SiteLinks): Promise<void> {
+  await updateSiteLinks(links);
+  revalidatePath("/", "layout");
 }
