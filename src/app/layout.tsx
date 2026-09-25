@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import { Navigation } from "@/components/navigation";
 import "@/styles/globals.css";
 import ReactLenis from "lenis/react";
 
@@ -35,7 +34,6 @@ const RootLayout = ({
             syncTouch: true,
           }}
         >
-          <Navigation />
           <main className="relative block min-h-screen w-full">{children}</main>
         </ReactLenis>
       </body>
