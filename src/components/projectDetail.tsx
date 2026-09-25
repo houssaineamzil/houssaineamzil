@@ -28,10 +28,16 @@ export const ProjectDetail: React.FC<Props> = ({
             </dt>
             <dd data-reveal-item>{project.name}</dd>
 
-            <dt data-reveal-item className="text-muted">
-              Mission
-            </dt>
-            <dd data-reveal-item>{project.labels.slice(0, 2).join(", ")}</dd>
+            {project.labels.length > 0 && (
+              <>
+                <dt data-reveal-item className="text-muted">
+                  Mission
+                </dt>
+                <dd data-reveal-item>
+                  {project.labels.slice(0, 2).join(", ")}
+                </dd>
+              </>
+            )}
 
             <dt data-reveal-item className="text-muted">
               Year
