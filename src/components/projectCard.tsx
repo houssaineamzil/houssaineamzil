@@ -22,7 +22,7 @@ export const ProjectCard = React.forwardRef<HTMLAnchorElement, Props>(
       >
         <article className="flex h-full w-full flex-col">
           {/* Desktop Metadata Layout */}
-          <header className="hidden h-52 w-full lg:block">
+          <header className="hidden h-28 w-full lg:block">
             <Reveal className="flex h-full w-full justify-between items-start pt-5">
               <div className="ml-5">
                 <h1
