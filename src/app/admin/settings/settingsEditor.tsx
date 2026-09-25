@@ -10,11 +10,15 @@ export const SettingsEditor: React.FC<{ initial: SiteLinks }> = ({
 }) => {
   const [draft, setDraft] = useState(initial);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSave = async () => {
+    setError(null);
     setSaving(true);
     try {
       await saveSiteLinks(draft);
+    } catch (err) {
+      setError((err as Error).message);
     } finally {
       setSaving(false);
     }
@@ -38,6 +42,11 @@ export const SettingsEditor: React.FC<{ initial: SiteLinks }> = ({
         {field("instagram", "Instagram URL")}
         {field("behance", "Behance URL")}
         {field("email", "Email")}
+        {error && (
+          <p className="text-red-400 text-xs" role="alert">
+            {error}
+          </p>
+        )}
         <button
           type="button"
           onClick={handleSave}

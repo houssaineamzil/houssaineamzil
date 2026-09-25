@@ -19,6 +19,8 @@ import {
 } from "@/services/projects";
 import { updateAboutContent, updateSiteLinks } from "@/services/settings";
 
+const FAILED_LOGIN_DELAY_MS = 750;
+
 export async function login(
   _prevState: { error?: string } | undefined,
   formData: FormData,
@@ -26,6 +28,10 @@ export async function login(
   const password = String(formData.get("password") ?? "");
 
   if (!checkPassword(password)) {
+    // A fixed delay on every failed attempt — simple, stateless throttling
+    // against brute-force guessing. This route is public (proxy.ts
+    // exempts /admin/login), so it has no other rate limiting.
+    await new Promise((resolve) => setTimeout(resolve, FAILED_LOGIN_DELAY_MS));
     return { error: "Incorrect password" };
   }
 

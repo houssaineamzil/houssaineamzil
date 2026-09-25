@@ -5,6 +5,7 @@ import { useState } from "react";
 import { removeProject, saveProject } from "@/app/admin/actions";
 import { uploadMedia } from "@/app/admin/upload";
 import { ProjectDetail } from "@/components/projectDetail";
+import { isVideoSrc } from "@/lib/utils";
 import type { MediaType, ProjectType } from "@/types";
 
 interface Props {
@@ -16,6 +17,14 @@ export const ProjectEditor: React.FC<Props> = ({ initialProject, email }) => {
   const router = useRouter();
   const [draft, setDraft] = useState(initialProject);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [pendingUploads, setPendingUploads] = useState(0);
+  // The url alone can't say "video" once it's a blob: preview (no
+  // extension), so track it explicitly from the upload's file.type instead
+  // of re-deriving it from the (possibly local) url on every render.
+  const [galleryIsVideo, setGalleryIsVideo] = useState<boolean[]>(() =>
+    (initialProject.gallery ?? []).map((item) => isVideoSrc(item.url)),
+  );
 
   const updateField = <K extends keyof ProjectType>(
     key: K,
@@ -24,38 +33,92 @@ export const ProjectEditor: React.FC<Props> = ({ initialProject, email }) => {
 
   const handleHeroUpload = async (file: File) => {
     const localUrl = URL.createObjectURL(file);
-    updateField("image", { url: localUrl, alt: draft.image.alt });
-    const { url } = await uploadMedia(file);
-    updateField("image", { url, alt: draft.image.alt });
+    setDraft((prev) => ({
+      ...prev,
+      image: { url: localUrl, alt: prev.image.alt },
+    }));
+    setPendingUploads((n) => n + 1);
+    try {
+      const { url } = await uploadMedia(file);
+      setDraft((prev) => ({ ...prev, image: { url, alt: prev.image.alt } }));
+    } catch (err) {
+      setDraft((prev) => ({
+        ...prev,
+        image: { url: "", alt: prev.image.alt },
+      }));
+      setError(`Hero image upload failed: ${(err as Error).message}`);
+    } finally {
+      setPendingUploads((n) => n - 1);
+    }
   };
 
   const handleGalleryUpload = async (file: File, index: number) => {
-    const gallery = [...(draft.gallery ?? [])];
     const localUrl = URL.createObjectURL(file);
-    gallery[index] = {
-      url: localUrl,
-      alt: gallery[index]?.alt ?? "",
-      poster: gallery[index]?.poster,
-    };
-    updateField("gallery", gallery);
+    const isVideo = file.type.startsWith("video/");
 
-    const { url } = await uploadMedia(file);
-    const next = [...gallery];
-    next[index] = { ...(next[index] ?? { url: "", alt: "" }), url };
-    updateField("gallery", next);
+    setDraft((prev) => {
+      const gallery = [...(prev.gallery ?? [])];
+      const existing = gallery[index];
+      gallery[index] = {
+        url: localUrl,
+        alt: existing?.alt ?? "",
+        poster: existing?.poster,
+      };
+      return { ...prev, gallery };
+    });
+    setGalleryIsVideo((prev) => {
+      const next = [...prev];
+      next[index] = isVideo;
+      return next;
+    });
+    setPendingUploads((n) => n + 1);
+
+    try {
+      const { url } = await uploadMedia(file);
+      setDraft((prev) => {
+        const gallery = [...(prev.gallery ?? [])];
+        const current = gallery[index];
+        if (!current) return prev;
+        gallery[index] = { ...current, url };
+        return { ...prev, gallery };
+      });
+    } catch (err) {
+      setDraft((prev) => {
+        const gallery = [...(prev.gallery ?? [])];
+        const current = gallery[index];
+        if (current) gallery[index] = { ...current, url: "" };
+        return { ...prev, gallery };
+      });
+      setError(
+        `Gallery item ${index + 1} upload failed: ${(err as Error).message}`,
+      );
+    } finally {
+      setPendingUploads((n) => n - 1);
+    }
   };
 
   const handlePosterUpload = async (file: File, index: number) => {
-    const { url } = await uploadMedia(file);
-    const gallery = [...(draft.gallery ?? [])];
-    gallery[index] = {
-      ...(gallery[index] ?? { url: "", alt: "" }),
-      poster: url,
-    };
-    updateField("gallery", gallery);
+    setPendingUploads((n) => n + 1);
+    try {
+      const { url } = await uploadMedia(file);
+      setDraft((prev) => {
+        const gallery = [...(prev.gallery ?? [])];
+        const current = gallery[index];
+        if (!current) return prev;
+        gallery[index] = { ...current, poster: url };
+        return { ...prev, gallery };
+      });
+    } catch (err) {
+      setError(
+        `Poster upload for gallery item ${index + 1} failed: ${(err as Error).message}`,
+      );
+    } finally {
+      setPendingUploads((n) => n - 1);
+    }
   };
 
   const handleSave = async () => {
+    setError(null);
     setSaving(true);
     try {
       await saveProject({
@@ -75,6 +138,8 @@ export const ProjectEditor: React.FC<Props> = ({ initialProject, email }) => {
       // src/app/admin/projects/[id]/page.tsx), not the DB id.
       router.push(`/admin/projects/${draft.slug}`);
       router.refresh();
+    } catch (err) {
+      setError((err as Error).message);
     } finally {
       setSaving(false);
     }
@@ -82,8 +147,20 @@ export const ProjectEditor: React.FC<Props> = ({ initialProject, email }) => {
 
   const handleDelete = async () => {
     if (!draft.id) return;
-    await removeProject(draft.id);
-    router.push("/admin");
+    if (
+      !window.confirm(
+        `Delete "${draft.name || draft.slug}"? This cannot be undone.`,
+      )
+    ) {
+      return;
+    }
+    setError(null);
+    try {
+      await removeProject(draft.id);
+      router.push("/admin");
+    } catch (err) {
+      setError((err as Error).message);
+    }
   };
 
   return (
@@ -102,6 +179,14 @@ export const ProjectEditor: React.FC<Props> = ({ initialProject, email }) => {
           <input
             value={draft.slug}
             onChange={(e) => updateField("slug", e.target.value)}
+            className="border border-white/30 bg-transparent p-2"
+          />
+        </label>
+        <label className="flex flex-col gap-1 text-xs uppercase">
+          Type
+          <input
+            value={draft.type}
+            onChange={(e) => updateField("type", e.target.value)}
             className="border border-white/30 bg-transparent p-2"
           />
         </label>
@@ -171,7 +256,7 @@ export const ProjectEditor: React.FC<Props> = ({ initialProject, email }) => {
 
         <div className="flex flex-col gap-2 text-xs uppercase">
           Gallery
-          {(draft.gallery ?? []).map((item, index) => (
+          {(draft.gallery ?? []).map((_item, index) => (
             <div key={String(index)} className="border border-white/20 p-2">
               <input
                 type="file"
@@ -181,7 +266,7 @@ export const ProjectEditor: React.FC<Props> = ({ initialProject, email }) => {
                   if (file) void handleGalleryUpload(file, index);
                 }}
               />
-              {item.url.match(/\.(mp4|webm|mov)$/i) && (
+              {galleryIsVideo[index] && (
                 <div className="mt-2">
                   Poster image
                   <input
@@ -198,26 +283,33 @@ export const ProjectEditor: React.FC<Props> = ({ initialProject, email }) => {
           ))}
           <button
             type="button"
-            onClick={() =>
+            onClick={() => {
               updateField("gallery", [
                 ...(draft.gallery ?? []),
                 { url: "", alt: "" } as MediaType,
-              ])
-            }
+              ]);
+              setGalleryIsVideo((prev) => [...prev, false]);
+            }}
             className="border border-white/30 p-2"
           >
             Add gallery item
           </button>
         </div>
 
+        {error && (
+          <p className="text-red-400 text-xs" role="alert">
+            {error}
+          </p>
+        )}
+
         <div className="mt-auto flex gap-2">
           <button
             type="button"
             onClick={handleSave}
-            disabled={saving}
+            disabled={saving || pendingUploads > 0}
             className="flex-1 border border-white/30 p-2 uppercase disabled:opacity-50"
           >
-            {saving ? "Saving…" : "Save"}
+            {saving ? "Saving…" : pendingUploads > 0 ? "Uploading…" : "Save"}
           </button>
           {draft.id && (
             <button

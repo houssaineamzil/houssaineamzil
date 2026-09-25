@@ -11,6 +11,8 @@ export const AboutEditor: React.FC<{ initial: AboutContentType }> = ({
 }) => {
   const [draft, setDraft] = useState(initial);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [pendingUploads, setPendingUploads] = useState(0);
 
   const updateParagraph = (index: number, value: string) => {
     const paragraphs = [...draft.paragraphs];
@@ -24,14 +26,28 @@ export const AboutEditor: React.FC<{ initial: AboutContentType }> = ({
       ...prev,
       portrait: { ...prev.portrait, url: localUrl },
     }));
-    const { url } = await uploadMedia(file);
-    setDraft((prev) => ({ ...prev, portrait: { ...prev.portrait, url } }));
+    setPendingUploads((n) => n + 1);
+    try {
+      const { url } = await uploadMedia(file);
+      setDraft((prev) => ({ ...prev, portrait: { ...prev.portrait, url } }));
+    } catch (err) {
+      setDraft((prev) => ({
+        ...prev,
+        portrait: { ...prev.portrait, url: "" },
+      }));
+      setError(`Portrait upload failed: ${(err as Error).message}`);
+    } finally {
+      setPendingUploads((n) => n - 1);
+    }
   };
 
   const handleSave = async () => {
+    setError(null);
     setSaving(true);
     try {
       await saveAbout(draft);
+    } catch (err) {
+      setError((err as Error).message);
     } finally {
       setSaving(false);
     }
@@ -60,13 +76,18 @@ export const AboutEditor: React.FC<{ initial: AboutContentType }> = ({
             }}
           />
         </div>
+        {error && (
+          <p className="text-red-400 text-xs" role="alert">
+            {error}
+          </p>
+        )}
         <button
           type="button"
           onClick={handleSave}
-          disabled={saving}
+          disabled={saving || pendingUploads > 0}
           className="border border-white/30 p-2 uppercase disabled:opacity-50"
         >
-          {saving ? "Saving…" : "Save"}
+          {saving ? "Saving…" : pendingUploads > 0 ? "Uploading…" : "Save"}
         </button>
       </div>
 
