@@ -35,7 +35,7 @@ describe("projects service", () => {
     await upsertProject(baseInput);
     const all = await getProjects();
     expect(all).toHaveLength(1);
-    expect(all[0].slug).toBe("test-project");
+    expect(all[0]?.slug).toBe("test-project");
   });
 
   it("rejects an empty slug", async () => {

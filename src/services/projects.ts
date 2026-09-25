@@ -66,7 +66,7 @@ export async function upsertProject(
 
   if (
     existingBySlug.length > 0 &&
-    existingBySlug[0].id !== input.id
+    existingBySlug[0]?.id !== input.id
   ) {
     throw new Error(`slug "${input.slug}" is already in use`);
   }
@@ -92,17 +92,25 @@ export async function upsertProject(
       .set(values)
       .where(eq(projectsTable.id, input.id))
       .returning();
+    if (!row) {
+      throw new Error(`project "${input.id}" not found`);
+    }
     return { ...toProjectType(row), id: row.id };
   }
 
-  const [{ maxOrder }] = await db
+  const [maxOrderResult] = await db
     .select({ maxOrder: sql<number>`coalesce(max(${projectsTable.sortOrder}), -1)` })
     .from(projectsTable);
+  const maxOrder = maxOrderResult?.maxOrder ?? -1;
 
+  // A single-row insert() always returns exactly one row.
   const [row] = await db
     .insert(projectsTable)
     .values({ ...values, sortOrder: maxOrder + 1 })
     .returning();
+  if (!row) {
+    throw new Error("insert did not return a row");
+  }
 
   return { ...toProjectType(row), id: row.id };
 }
