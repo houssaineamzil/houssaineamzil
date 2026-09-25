@@ -10,6 +10,10 @@ services:
       - "5433:5432"
     volumes:
       - admin-cms-postgres:/var/lib/postgresql/data
+      # Creates the isolated houssaineamzil_test database (see
+      # vitest.config.ts) on first container init. Postgres only runs
+      # scripts in this directory against a fresh, empty data volume.
+      - ./docker/init-test-db.sh:/docker-entrypoint-initdb.d/init-test-db.sh
 
 volumes:
   admin-cms-postgres:
