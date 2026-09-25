@@ -3,7 +3,12 @@ import { assignWorksLayout } from "./worksLayout";
 
 describe("assignWorksLayout", () => {
   it("alternates two projects per row into columns 1 and 2", () => {
-    const projects = [{ slug: "a" }, { slug: "b" }, { slug: "c" }, { slug: "d" }];
+    const projects = [
+      { slug: "a" },
+      { slug: "b" },
+      { slug: "c" },
+      { slug: "d" },
+    ];
     const rows = assignWorksLayout(projects);
     expect(rows).toEqual([
       [

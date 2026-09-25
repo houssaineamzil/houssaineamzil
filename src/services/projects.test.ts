@@ -68,7 +68,10 @@ describe("projects service", () => {
     const c = await upsertProject({ ...baseInput, slug: "c" });
     await deleteProject(b.id as unknown as string);
 
-    await reorderProjects([c.id as unknown as string, a.id as unknown as string]);
+    await reorderProjects([
+      c.id as unknown as string,
+      a.id as unknown as string,
+    ]);
 
     const all = await getProjects();
     expect(all.map((p) => p.slug)).toEqual(["c", "a"]);

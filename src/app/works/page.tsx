@@ -1,61 +1,32 @@
 import type { NextPage } from "next";
 import { WorkCard } from "@/components/worksCard";
-import { projects } from "@/constants";
 import { cn } from "@/lib";
+import { assignWorksLayout } from "@/lib/worksLayout";
+import { getProjects } from "@/services/projects";
 
-// ============================================================================
-// Layout
-// ============================================================================
-
-/**
- * Which column each project sits in. Rows with a single entry leave the
- * other column empty, echoing the reference's asymmetric rhythm.
- */
-const rows: { index: number; column: 1 | 2 }[][] = [
-  [
-    { index: 0, column: 1 },
-    { index: 1, column: 2 },
-  ],
-  [
-    { index: 2, column: 1 },
-    { index: 3, column: 2 },
-  ],
-  [{ index: 4, column: 2 }],
-  [{ index: 5, column: 1 }],
-  [
-    { index: 6, column: 1 },
-    { index: 7, column: 2 },
-  ],
-];
-
-// ============================================================================
-// Component
-// ============================================================================
-
-const Page: NextPage = () => {
-  // Rows for projects that no longer exist would still take up a gap in the
-  // flex layout even with no children, so drop them instead of rendering
-  // empty space.
-  const visibleRows = rows.filter((row) =>
-    row.some(({ index }) => projects[index]),
+const Page: NextPage = async () => {
+  const projects = await getProjects();
+  const projectBySlug = new Map(projects.map((p) => [p.slug, p]));
+  const rows = assignWorksLayout(
+    projects.map((p) => ({ slug: p.slug, horizontal: p.works.horizontal })),
   );
 
   return (
     <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 pb-[15%]">
       <div className="works-grid flex flex-col gap-24 mt-36">
-        {visibleRows.map((row, rowIndex) => (
+        {rows.map((row, rowIndex) => (
           <div
             key={String(rowIndex)}
             className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-24 lg:gap-x-24"
           >
-            {row.map(({ index, column }) => {
-              const project = projects[index];
-
+            {row.map(({ slug, column }) => {
+              const project = projectBySlug.get(slug);
               if (!project) return null;
+              const index = projects.findIndex((p) => p.slug === slug);
 
               return (
                 <div
-                  key={project.slug}
+                  key={slug}
                   className={cn(column === 2 && "md:col-start-2")}
                 >
                   <WorkCard

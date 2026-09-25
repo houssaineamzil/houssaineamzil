@@ -1,6 +1,9 @@
 import { Link } from "@/components/link";
+import { getSiteLinks } from "@/services/settings";
 
-export const Navigation: React.FC = () => {
+export const Navigation: React.FC = async () => {
+  const links = await getSiteLinks();
+
   return (
     <header className="fixed inset-x-0 top-0 z-100 flex w-full justify-between gap-2 p-4">
       <div className="flex-1">
@@ -49,16 +52,16 @@ export const Navigation: React.FC = () => {
       </div>
       <div className="flex flex-1 justify-between md:w-96 md:flex-none">
         <div className="flex flex-col items-start">
-          <Link target="_blank" href="https://linkedin.com/in/houssaineamzil">
+          <Link target="_blank" href={links.linkedin}>
             LinkedIn
           </Link>
-          <Link target="_blank" href="https://instagram.com/houssaineamzil18">
+          <Link target="_blank" href={links.instagram}>
             Instagram
           </Link>
-          <Link target="_blank" href="https://behance.net/houssaineamzil">
+          <Link target="_blank" href={links.behance}>
             Behance
           </Link>
-          <Link target="_blank" href="mailto:houssaineamzil18@gmail.com">
+          <Link target="_blank" href={`mailto:${links.email}`}>
             Email
           </Link>
         </div>

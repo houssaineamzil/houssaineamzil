@@ -6,7 +6,7 @@ import { InertiaPlugin } from "gsap/InertiaPlugin";
 import { Observer } from "gsap/Observer";
 import type React from "react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { projects } from "@/constants";
+import type { ProjectType } from "@/types";
 import { ProjectCard } from "./projectCard";
 
 gsap.registerPlugin(Draggable, Observer, InertiaPlugin);
@@ -17,7 +17,7 @@ gsap.registerPlugin(Draggable, Observer, InertiaPlugin);
 // keeps this true no matter how few projects exist, with a comfortable margin.
 const MIN_VIEWPORT_MULTIPLE = 2;
 
-export const Slider: React.FC = () => {
+export const Slider: React.FC<{ projects: ProjectType[] }> = ({ projects }) => {
   const cardsRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const activeIndexRef = useRef<number | null>(null);
@@ -47,7 +47,7 @@ export const Slider: React.FC = () => {
     measure();
     window.addEventListener("resize", measure);
     return () => window.removeEventListener("resize", measure);
-  }, [repeatCount]);
+  }, [repeatCount, projects.length]);
 
   const items = Array.from({ length: repeatCount }, () => projects).flat();
 

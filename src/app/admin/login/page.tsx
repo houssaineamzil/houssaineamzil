@@ -13,12 +13,9 @@ const Page = () => {
           type="password"
           name="password"
           placeholder="Password"
-          autoFocus
           className="border border-white/30 bg-transparent p-2 text-sm outline-none"
         />
-        {state?.error && (
-          <p className="text-xs text-red-400">{state.error}</p>
-        )}
+        {state?.error && <p className="text-xs text-red-400">{state.error}</p>}
         <button
           type="submit"
           disabled={pending}
