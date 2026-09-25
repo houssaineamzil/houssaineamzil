@@ -17,5 +17,15 @@ export default defineConfig({
         "postgresql://postgres:postgres@localhost:5433/houssaineamzil_test",
     },
     setupFiles: ["./vitest.setup.ts"],
+    // Vitest's default excludes don't cover this — a git worktree checked
+    // out under .worktrees/ (or worktrees/) contains its own copy of every
+    // *.test.ts file, so without this every test runs twice, concurrently,
+    // against the same shared test database.
+    exclude: [
+      "**/node_modules/**",
+      "**/.git/**",
+      "**/.worktrees/**",
+      "**/worktrees/**",
+    ],
   },
 });
