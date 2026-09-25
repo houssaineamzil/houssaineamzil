@@ -31,6 +31,15 @@ describe("settings service", () => {
     expect(about.paragraphs).toEqual(["One.", "Two."]);
   });
 
+  it("rejects a local blob: URL as the portrait", async () => {
+    await expect(
+      updateAboutContent({
+        paragraphs: ["One."],
+        portrait: { url: "blob:http://localhost/abc-123", alt: "" },
+      }),
+    ).rejects.toThrow(/blob:/);
+  });
+
   it("returns default links when unset", async () => {
     const links = await getSiteLinks();
     expect(links.email).toContain("@");

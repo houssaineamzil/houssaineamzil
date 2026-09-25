@@ -2,6 +2,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import type { AboutContent, SiteLinks } from "@/lib/db/schema";
 import { siteSettings } from "@/lib/db/schema";
+import { assertPersistableUrl } from "@/lib/utils";
 
 const ABOUT_ID = "about";
 const LINKS_ID = "links";
@@ -33,6 +34,7 @@ export async function getAboutContent(): Promise<AboutContent> {
 }
 
 export async function updateAboutContent(content: AboutContent): Promise<void> {
+  assertPersistableUrl(content.portrait.url, "portrait image");
   await db
     .insert(siteSettings)
     .values({ id: ABOUT_ID, content, updatedAt: new Date() })

@@ -1,6 +1,7 @@
 import { asc, eq, inArray, sql } from "drizzle-orm";
 import { db } from "@/lib/db/client";
 import { projects as projectsTable } from "@/lib/db/schema";
+import { assertPersistableUrl } from "@/lib/utils";
 import type { MediaType, ProjectType } from "@/types";
 
 export interface ProjectInput {
@@ -70,6 +71,13 @@ export async function upsertProject(
   }
   if (!name) {
     throw new Error("name must not be empty");
+  }
+  assertPersistableUrl(input.image.url, "hero image");
+  for (const [index, item] of input.gallery.entries()) {
+    assertPersistableUrl(item.url, `gallery item ${index + 1}`);
+    if (item.poster) {
+      assertPersistableUrl(item.poster, `gallery item ${index + 1} poster`);
+    }
   }
 
   const existingBySlug = await db

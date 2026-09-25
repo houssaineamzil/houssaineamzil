@@ -67,6 +67,24 @@ describe("projects service", () => {
     expect(created.name).toBe("Test");
   });
 
+  it("rejects a local blob: URL as the hero image", async () => {
+    await expect(
+      upsertProject({
+        ...baseInput,
+        image: { url: "blob:http://localhost/abc-123", alt: "" },
+      }),
+    ).rejects.toThrow(/blob:/);
+  });
+
+  it("rejects a local blob: URL in the gallery", async () => {
+    await expect(
+      upsertProject({
+        ...baseInput,
+        gallery: [{ url: "blob:http://localhost/xyz-456", alt: "" }],
+      }),
+    ).rejects.toThrow(/blob:/);
+  });
+
   it("rejects a duplicate slug", async () => {
     await upsertProject(baseInput);
     await expect(upsertProject(baseInput)).rejects.toThrow(/slug/i);
