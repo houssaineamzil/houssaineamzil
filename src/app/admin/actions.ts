@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import {
   checkPassword,
   createSessionCookie,
+  requireAdmin,
   SESSION_COOKIE_MAX_AGE_SECONDS,
   SESSION_COOKIE_NAME,
 } from "@/lib/auth";
@@ -50,6 +51,7 @@ export async function logout(): Promise<void> {
 export async function saveProject(
   input: ProjectInput,
 ): Promise<{ id: string }> {
+  await requireAdmin();
   const saved = await upsertProject(input);
   revalidatePath("/works");
   revalidatePath(`/works/${saved.slug}`);
@@ -59,6 +61,7 @@ export async function saveProject(
 }
 
 export async function removeProject(id: string): Promise<void> {
+  await requireAdmin();
   await deleteProject(id);
   revalidatePath("/works");
   revalidatePath("/");
@@ -66,6 +69,7 @@ export async function removeProject(id: string): Promise<void> {
 }
 
 export async function saveProjectOrder(orderedIds: string[]): Promise<void> {
+  await requireAdmin();
   await reorderProjects(orderedIds);
   revalidatePath("/works");
   revalidatePath("/");
@@ -73,11 +77,13 @@ export async function saveProjectOrder(orderedIds: string[]): Promise<void> {
 }
 
 export async function saveAbout(content: AboutContent): Promise<void> {
+  await requireAdmin();
   await updateAboutContent(content);
   revalidatePath("/about");
 }
 
 export async function saveSiteLinks(links: SiteLinks): Promise<void> {
+  await requireAdmin();
   await updateSiteLinks(links);
   revalidatePath("/", "layout");
 }

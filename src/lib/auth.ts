@@ -1,4 +1,5 @@
 import { jwtVerify, SignJWT } from "jose";
+import { cookies } from "next/headers";
 
 const SESSION_COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 30;
 
@@ -41,3 +42,22 @@ export async function verifySession(token: string): Promise<boolean> {
 
 export const SESSION_COOKIE_NAME = "admin_session";
 export { SESSION_COOKIE_MAX_AGE_SECONDS };
+
+export async function assertValidSession(
+  token: string | undefined,
+): Promise<void> {
+  if (!token || !(await verifySession(token))) {
+    throw new Error("Unauthorized");
+  }
+}
+
+/**
+ * Server Actions are POST endpoints reachable directly (not just through the
+ * page that renders their form) and are NOT covered by proxy.ts's route
+ * matcher — a page-level redirect does not extend to the actions it calls.
+ * Every mutating action must call this first.
+ */
+export async function requireAdmin(): Promise<void> {
+  const cookieStore = await cookies();
+  await assertValidSession(cookieStore.get(SESSION_COOKIE_NAME)?.value);
+}
