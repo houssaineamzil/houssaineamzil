@@ -50,12 +50,18 @@ export const ProjectDetail: React.FC<Props> = ({
             <dd data-reveal-item>{project.role}</dd>
           </dl>
 
-          <p
-            data-reveal-lines
-            className="max-w-md text-xs leading-tight whitespace-pre-line uppercase"
-          >
-            {project.description}
-          </p>
+          <div className="flex max-w-md flex-col gap-2">
+            {project.description.split(/\n\s*\n/).map((paragraph, index) => (
+              <p
+                // biome-ignore lint/suspicious/noArrayIndexKey: paragraphs are static per project and never reordered
+                key={index}
+                data-reveal-lines
+                className="text-xs leading-tight uppercase"
+              >
+                {paragraph}
+              </p>
+            ))}
+          </div>
         </div>
 
         <div className="flex items-end justify-between text-[11px] uppercase">
