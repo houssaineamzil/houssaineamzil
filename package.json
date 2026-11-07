@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "docker compose up -d --wait && drizzle-kit migrate && next dev",
+    "predev": "docker compose up -d --wait && drizzle-kit migrate",
+    "dev": "next dev",
     "dev:next": "next dev",
+    "prebuild": "drizzle-kit migrate",
     "build": "next build",
     "start": "next start",
     "lint": "biome check",
