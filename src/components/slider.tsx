@@ -2,20 +2,31 @@
 
 import { gsap } from "gsap";
 import { Draggable } from "gsap/Draggable";
-import { InertiaPlugin } from "gsap/InertiaPlugin";
 import { Observer } from "gsap/Observer";
 import type React from "react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { ProjectType } from "@/types";
 import { ProjectCard } from "./projectCard";
 
-gsap.registerPlugin(Draggable, Observer, InertiaPlugin);
+gsap.registerPlugin(Draggable, Observer);
 
 // The per-item wrap trick only looks seamless when the physical track is at
 // least as wide as the viewport — otherwise there aren't enough real cards to
 // tile across the screen and a gap shows through. Repeating the project list
 // keeps this true no matter how few projects exist, with a comfortable margin.
 const MIN_VIEWPORT_MULTIPLE = 2;
+
+// Momentum model: input (wheel / drag-release) sets a velocity in px/s, and
+// every frame the track moves by velocity * dt while the velocity decays
+// exponentially. Faster input => higher velocity => it both travels faster
+// and takes longer to settle (decay time is the same, but it starts from a
+// bigger number, so it crosses the stop threshold later).
+const FRICTION_SECONDS = 0.9; // velocity falls by a factor of e every 0.9s
+const WHEEL_GAIN = 1.4; // px/s of velocity added per px of wheel delta
+const MAX_VELOCITY = 7000; // px/s
+const STOP_VELOCITY = 4; // px/s: below this the track is considered at rest
+// A drag that's held still this long before release shouldn't fling.
+const DRAG_HOLD_MS = 90;
 
 export const Slider: React.FC<{ projects: ProjectType[] }> = ({ projects }) => {
   // Desktop only: below lg the page shows a normal vertical list, so none of
@@ -89,7 +100,12 @@ const SliderTrack: React.FC<{ projects: ProjectType[] }> = ({ projects }) => {
     // UNIFIED POSITION TRACKER
     // proxy.x holds our continuous, unbounded scroll position
     const proxy = { x: 0 };
-    let targetX = 0;
+    let velocity = 0; // px/s
+    let dragging = false;
+    let lastDragMoveAt = 0;
+
+    const clampVelocity = (v: number) =>
+      Math.max(-MAX_VELOCITY, Math.min(MAX_VELOCITY, v));
 
     // Calculates and updates the loop coordinates dynamically
     const updatePositions = () => {
@@ -139,14 +155,20 @@ const SliderTrack: React.FC<{ projects: ProjectType[] }> = ({ projects }) => {
       window.dispatchEvent(new CustomEvent("slider-move"));
     };
 
-    // Smooth interpolation controller
-    const catchUp = gsap.to(proxy, {
-      x: () => targetX,
-      duration: reducedMotion ? 0 : 0.6,
-      ease: "power2.out",
-      paused: true,
-      onUpdate: updatePositions,
-    });
+    // Per-frame momentum integrator. Idle (no velocity) costs one comparison.
+    const tick = (_time: number, deltaMs: number) => {
+      if (dragging || velocity === 0) return;
+      if (Math.abs(velocity) < STOP_VELOCITY) {
+        velocity = 0;
+        return;
+      }
+      // Cap dt so a stalled frame (background tab) doesn't teleport the track.
+      const dt = Math.min(deltaMs, 50) / 1000;
+      proxy.x += velocity * dt;
+      velocity *= Math.exp(-dt / FRICTION_SECONDS);
+      updatePositions();
+    };
+    gsap.ticker.add(tick);
 
     // Initialize layout positions on mount
     updatePositions();
@@ -162,19 +184,24 @@ const SliderTrack: React.FC<{ projects: ProjectType[] }> = ({ projects }) => {
         trigger: container,
         type: "x",
         onDragStart() {
-          targetX = proxy.x;
-          catchUp.pause();
+          dragging = true;
+          velocity = 0;
+          lastDragMoveAt = performance.now();
         },
         onDrag() {
-          targetX += this.deltaX; // Directly maps physical dragging pixels
-          catchUp.invalidate().restart();
+          // The track follows the finger 1:1 while dragging; meanwhile a
+          // smoothed instantaneous velocity is tracked for the release.
+          const now = performance.now();
+          const dt = Math.max(1, now - lastDragMoveAt) / 1000;
+          lastDragMoveAt = now;
+          proxy.x += this.deltaX;
+          updatePositions();
+          velocity = clampVelocity(velocity * 0.6 + (this.deltaX / dt) * 0.4);
         },
         onDragEnd() {
-          if (!reducedMotion) {
-            const velocity = InertiaPlugin.getVelocity(virtualTarget, "x");
-            targetX += velocity * 0.25; // Kinetic glide/inertia throw
-          }
-          catchUp.invalidate().restart();
+          dragging = false;
+          const heldStill = performance.now() - lastDragMoveAt > DRAG_HOLD_MS;
+          if (reducedMotion || heldStill) velocity = 0;
         },
       });
 
@@ -196,8 +223,13 @@ const SliderTrack: React.FC<{ projects: ProjectType[] }> = ({ projects }) => {
               Math.abs(self.deltaX) > Math.abs(self.deltaY)
                 ? self.deltaX
                 : self.deltaY;
-            targetX -= delta * 0.8; // Normalized wheel sensitivity multiplier
-            catchUp.invalidate().restart();
+            if (reducedMotion) {
+              proxy.x -= delta * 0.8;
+              updatePositions();
+            } else {
+              // Accumulate: scrolling harder or longer keeps adding speed.
+              velocity = clampVelocity(velocity - delta * WHEEL_GAIN);
+            }
           }
         },
       });
@@ -205,7 +237,7 @@ const SliderTrack: React.FC<{ projects: ProjectType[] }> = ({ projects }) => {
 
     // Cleanup tracks cleanly to prevent SPA memory leaks
     return () => {
-      catchUp.kill();
+      gsap.ticker.remove(tick);
       draggableInstance?.[0]?.kill();
       observerInstance?.kill();
     };
