@@ -117,6 +117,12 @@ export const ProjectEditor: React.FC<Props> = ({ initialProject, email }) => {
     }
   };
 
+  const self = {
+    slug: draft.slug,
+    name: draft.name,
+    imageUrl: draft.image.url,
+  };
+
   const handleSave = async () => {
     setError(null);
     setSaving(true);
@@ -130,6 +136,7 @@ export const ProjectEditor: React.FC<Props> = ({ initialProject, email }) => {
         labels: draft.labels,
         year: draft.year,
         role: draft.role,
+        result: draft.result ?? "",
         image: draft.image,
         gallery: draft.gallery ?? [],
         horizontal: draft.works.horizontal ?? false,
@@ -204,6 +211,15 @@ export const ProjectEditor: React.FC<Props> = ({ initialProject, email }) => {
             value={draft.role}
             onChange={(e) => updateField("role", e.target.value)}
             className="border border-white/30 bg-transparent p-2"
+          />
+        </label>
+        <label className="flex flex-col gap-1 text-xs uppercase">
+          Result chip (optional)
+          <input
+            value={draft.result ?? ""}
+            onChange={(e) => updateField("result", e.target.value)}
+            placeholder="+30% conversion rate"
+            className="border border-white/30 bg-transparent p-2 normal-case"
           />
         </label>
         <label className="flex flex-col gap-1 text-xs uppercase">
@@ -330,7 +346,7 @@ export const ProjectEditor: React.FC<Props> = ({ initialProject, email }) => {
           this div a containing block for fixed descendants, so the preview
           stays confined to its column. */}
       <div className="relative overflow-y-auto bg-white [contain:layout]">
-        <ProjectDetail project={draft} nextSlug={draft.slug} email={email} />
+        <ProjectDetail project={draft} prev={self} next={self} email={email} />
       </div>
     </div>
   );

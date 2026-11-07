@@ -10,6 +10,7 @@ const blankProject: ProjectType = {
   labels: [],
   year: "",
   role: "",
+  result: "",
   image: { url: "", alt: "" },
   gallery: [],
   works: {},

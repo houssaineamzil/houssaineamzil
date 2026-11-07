@@ -2,27 +2,36 @@ import { DragScroll } from "@/components/dragScroll";
 import { GalleryMinimap } from "@/components/galleryMinimap";
 import { Image } from "@/components/image";
 import { Link } from "@/components/link";
+import { ProjectNavLink } from "@/components/projectNavLink";
 import { Reveal } from "@/components/reveal";
 import type { ProjectType } from "@/types";
 
+export interface ProjectNeighbour {
+  slug: string;
+  name: string;
+  imageUrl: string;
+}
+
 interface Props {
   project: ProjectType;
-  nextSlug: string;
+  prev: ProjectNeighbour;
+  next: ProjectNeighbour;
   email: string;
 }
 
 export const ProjectDetail: React.FC<Props> = ({
   project,
-  nextSlug,
+  prev,
+  next,
   email,
 }) => {
   const galleryImages = [project.image, ...(project.gallery ?? [])];
 
   return (
     <div className="w-full">
-      <Reveal className="flex w-full flex-col justify-end gap-16 p-4 pt-60 md:fixed md:inset-y-0 md:left-0 md:w-[42%] md:overflow-hidden md:p-4 md:pt-20">
+      <Reveal className="flex w-full flex-col justify-end gap-16 p-4 pt-28 md:fixed md:inset-y-0 md:left-0 md:w-[42%] md:overflow-hidden md:p-4 md:pt-24">
         <div className="flex flex-col gap-10">
-          <dl className="grid grid-cols-[auto_1fr] gap-x-10 gap-y-1 text-[11px] uppercase">
+          <dl className="grid grid-cols-[auto_1fr] gap-x-10 gap-y-1 text-xs font-medium uppercase text-neutral-950">
             <dt data-reveal-item className="text-muted">
               Client
             </dt>
@@ -56,7 +65,7 @@ export const ProjectDetail: React.FC<Props> = ({
                 // biome-ignore lint/suspicious/noArrayIndexKey: paragraphs are static per project and never reordered
                 key={index}
                 data-reveal-lines
-                className="text-xs leading-tight uppercase"
+                className="text-sm leading-snug"
               >
                 {paragraph}
               </p>
@@ -64,19 +73,41 @@ export const ProjectDetail: React.FC<Props> = ({
           </div>
         </div>
 
-        <div className="flex items-end justify-between text-[11px] uppercase">
-          <Link data-reveal-item href={`/works/${nextSlug}`}>
-            Next
+        <div className="flex flex-col gap-6 text-xs">
+          <Link
+            data-reveal-item
+            href={`mailto:${email}`}
+            className="self-start text-base font-medium"
+          >
+            Let’s work together
           </Link>
-          <Link data-reveal-item href={`mailto:${email}`}>
-            {email}
-          </Link>
+          <div className="flex items-center justify-between font-medium uppercase text-neutral-950">
+            <div data-reveal-item className="flex">
+              <ProjectNavLink
+                href={`/works/${prev.slug}`}
+                label="Prev"
+                name={prev.name}
+                imageUrl={prev.imageUrl}
+              />
+            </div>
+            <div data-reveal-item className="flex">
+              <Link href="/works">All projects</Link>
+            </div>
+            <div data-reveal-item className="flex">
+              <ProjectNavLink
+                href={`/works/${next.slug}`}
+                label="Next"
+                name={next.name}
+                imageUrl={next.imageUrl}
+              />
+            </div>
+          </div>
         </div>
       </Reveal>
 
       <GalleryMinimap images={galleryImages} />
 
-      <DragScroll className="flex w-full flex-col gap-2 p-4 md:pt-60 md:pl-[calc(42%+0.5rem)]">
+      <DragScroll className="flex w-full flex-col gap-2 p-4 md:pt-24 md:pl-[calc(42%+0.5rem)]">
         <div
           data-gallery-image={0}
           className="relative aspect-3/4 md:aspect-square w-full bg-neutral-200"

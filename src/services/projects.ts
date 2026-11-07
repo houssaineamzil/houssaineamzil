@@ -12,6 +12,7 @@ export interface ProjectInput {
   labels: string[];
   year: string;
   role: string;
+  result?: string;
   image: MediaType;
   gallery: MediaType[];
   horizontal: boolean;
@@ -28,6 +29,7 @@ function toProjectType(row: typeof projectsTable.$inferSelect): ProjectType {
     labels: row.labels,
     year: row.year,
     role: row.role,
+    result: row.result,
     image: { url: row.imageUrl, alt: row.imageAlt },
     gallery: row.gallery,
     works: { horizontal: row.horizontal },
@@ -98,6 +100,7 @@ export async function upsertProject(
     labels: input.labels,
     year: input.year,
     role: input.role,
+    result: (input.result ?? "").trim(),
     imageUrl: input.image.url,
     imageAlt: input.image.alt,
     gallery: input.gallery,

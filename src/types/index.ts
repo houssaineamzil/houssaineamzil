@@ -14,6 +14,8 @@ export interface ProjectType {
   description: string;
   year: string;
   role: string;
+  /** Short outcome shown as a chip on the project image, e.g. "+30% conversion". Empty = no chip. */
+  result?: string;
   image: MediaType;
   gallery?: MediaType[];
   works: {

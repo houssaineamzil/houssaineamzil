@@ -18,6 +18,23 @@ gsap.registerPlugin(Draggable, Observer, InertiaPlugin);
 const MIN_VIEWPORT_MULTIPLE = 2;
 
 export const Slider: React.FC<{ projects: ProjectType[] }> = ({ projects }) => {
+  // Desktop only: below lg the page shows a normal vertical list, so none of
+  // the drag/wheel listeners or the tick audio should exist at all.
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 1024px)");
+    const update = () => setIsDesktop(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+
+  if (!isDesktop) return null;
+  return <SliderTrack projects={projects} />;
+};
+
+const SliderTrack: React.FC<{ projects: ProjectType[] }> = ({ projects }) => {
   const cardsRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const activeIndexRef = useRef<number | null>(null);

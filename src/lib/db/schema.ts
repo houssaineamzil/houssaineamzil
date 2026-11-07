@@ -18,6 +18,7 @@ export const projects = pgTable("projects", {
   labels: jsonb("labels").$type<string[]>().notNull().default([]),
   year: text("year").notNull().default(""),
   role: text("role").notNull().default(""),
+  result: text("result").notNull().default(""),
   imageUrl: text("image_url").notNull().default(""),
   imageAlt: text("image_alt").notNull().default(""),
   gallery: jsonb("gallery").$type<MediaType[]>().notNull().default([]),

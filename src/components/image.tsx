@@ -70,6 +70,9 @@ export const Image: React.FC<Props> = ({
 
     if (!parallax || !container || !media) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Parallax is desktop-only: on touch/small screens it reads as too much
+    // movement and costs a scroll listener per image.
+    if (!window.matchMedia("(min-width: 1024px)").matches) return;
 
     const handleSliderMove = () => {
       // Calculate where this specific image sits relative to the viewport window bounds
@@ -80,12 +83,12 @@ export const Image: React.FC<Props> = ({
       if (horizontal) {
         // Horizontal track calculation
         const progress = (rect.left + rect.width) / (viewWidth + rect.width);
-        const shiftX = gsap.utils.mapRange(0, 1, -15, 15, progress);
+        const shiftX = gsap.utils.mapRange(0, 1, -4.5, 4.5, progress);
         gsap.set(media, { xPercent: shiftX });
       } else {
         // Fallback standard vertical page scroll track calculation
         const progress = (rect.top + rect.height) / (viewHeight + rect.height);
-        const shiftY = gsap.utils.mapRange(0, 1, -15, 15, progress);
+        const shiftY = gsap.utils.mapRange(0, 1, -4.5, 4.5, progress);
         gsap.set(media, { yPercent: shiftY });
       }
     };
@@ -118,8 +121,8 @@ export const Image: React.FC<Props> = ({
           "backface-hidden absolute inset-0 overflow-hidden",
           parallax &&
             (horizontal
-              ? "left-[-15%] w-[130%] h-full"
-              : "top-[-15%] h-[130%] w-full"),
+              ? "lg:left-[-5%] lg:w-[110%] lg:h-full"
+              : "lg:top-[-5%] lg:h-[110%] lg:w-full"),
         )}
       >
         {video ? (
@@ -130,10 +133,7 @@ export const Image: React.FC<Props> = ({
             loop
             muted
             playsInline
-            className={cn(
-              "absolute inset-0 h-full w-full object-cover",
-              parallax && "scale-110",
-            )}
+            className="absolute inset-0 h-full w-full object-cover"
           />
         ) : (
           <NextImage
@@ -146,7 +146,7 @@ export const Image: React.FC<Props> = ({
               typeof src === "string" &&
               (src.startsWith("blob:") || src.startsWith("data:"))
             }
-            className="object-cover scale-110"
+            className="object-cover"
           />
         )}
       </div>
