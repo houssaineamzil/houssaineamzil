@@ -8,6 +8,11 @@ services:
       POSTGRES_DB: houssaineamzil
     ports:
       - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d houssaineamzil"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
     volumes:
       - admin-cms-postgres:/var/lib/postgresql/data
       # Creates the isolated houssaineamzil_test database (see

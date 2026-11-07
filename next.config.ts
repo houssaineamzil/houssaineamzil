@@ -2,10 +2,13 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   // Lets the dev server serve HMR/chunks when opened from another device on
-  // the LAN (e.g. a phone at http://192.168.11.105:3000) instead of
-  // localhost — without this, Next.js silently blocks those cross-origin
-  // dev requests and the page loads but no client JS ever runs.
-  allowedDevOrigins: ["192.168.11.105"],
+  // the LAN (e.g. a phone at http://192.168.x.x:3000) instead of localhost —
+  // without this, Next.js silently blocks those cross-origin dev requests
+  // and the page loads but no client JS ever runs (so anything revealed by a
+  // client animation, like /archive, stays invisible). The machine's LAN IP
+  // changes between networks/DHCP leases, so match the whole private range
+  // instead of pinning one address.
+  allowedDevOrigins: ["192.168.*.*", "10.*.*.*"],
   images: {
     remotePatterns: [
       {
