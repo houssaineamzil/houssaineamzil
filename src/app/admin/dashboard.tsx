@@ -2,11 +2,14 @@
 
 import { useState } from "react";
 import { saveProjectOrder } from "@/app/admin/actions";
+import { type CollectionKind, collections } from "@/lib/collections";
 import type { ProjectType } from "@/types";
 
 export const Dashboard: React.FC<{
+  kind: CollectionKind;
   initialProjects: (ProjectType & { id: string })[];
-}> = ({ initialProjects }) => {
+}> = ({ kind, initialProjects }) => {
+  const { adminPath, title } = collections[kind];
   const [projects, setProjects] = useState(initialProjects);
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -18,7 +21,10 @@ export const Dashboard: React.FC<{
     setError(null);
     setProjects(next);
     try {
-      await saveProjectOrder(next.map((p) => p.id));
+      await saveProjectOrder(
+        kind,
+        next.map((p) => p.id),
+      );
     } catch (err) {
       setProjects(previous);
       setError((err as Error).message);
@@ -40,9 +46,9 @@ export const Dashboard: React.FC<{
   return (
     <div className="p-6">
       <div className="mb-4 flex justify-between">
-        <h1 className="text-sm uppercase">Projects</h1>
-        <a href="/admin/projects/new" className="text-sm uppercase underline">
-          Add project
+        <h1 className="text-sm uppercase">{title}</h1>
+        <a href={`${adminPath}/new`} className="text-sm uppercase underline">
+          Add {kind === "works" ? "project" : "experiment"}
         </a>
       </div>
       {error && (
@@ -67,7 +73,7 @@ export const Dashboard: React.FC<{
               {project.name || "(untitled)"}
             </span>
             <a
-              href={`/admin/projects/${project.slug}`}
+              href={`${adminPath}/${project.slug}`}
               className="text-xs uppercase underline"
             >
               Edit

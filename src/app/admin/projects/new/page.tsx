@@ -5,12 +5,16 @@ import type { ProjectType } from "@/types";
 const blankProject: ProjectType = {
   slug: "",
   name: "",
-  type: "",
   description: "",
-  labels: [],
+  strategy: "",
+  result: "",
+  impact: "",
   year: "",
   role: "",
-  result: "",
+  projectType: "",
+  url: "",
+  designer: "",
+  developer: "",
   image: { url: "", alt: "" },
   gallery: [],
   works: {},
@@ -22,7 +26,13 @@ export const dynamic = "force-dynamic";
 
 const Page = async () => {
   const links = await getSiteLinks();
-  return <ProjectEditor initialProject={blankProject} email={links.email} />;
+  return (
+    <ProjectEditor
+      kind="works"
+      initialProject={blankProject}
+      email={links.email}
+    />
+  );
 };
 
 export default Page;

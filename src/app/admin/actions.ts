@@ -10,13 +10,9 @@ import {
   SESSION_COOKIE_MAX_AGE_SECONDS,
   SESSION_COOKIE_NAME,
 } from "@/lib/auth";
+import { type CollectionKind, collections } from "@/lib/collections";
 import type { AboutContent, SiteLinks } from "@/lib/db/schema";
-import {
-  deleteProject,
-  type ProjectInput,
-  reorderProjects,
-  upsertProject,
-} from "@/services/projects";
+import { getCollection, type ProjectInput } from "@/services/projects";
 import { updateAboutContent, updateSiteLinks } from "@/services/settings";
 
 const FAILED_LOGIN_DELAY_MS = 750;
@@ -54,32 +50,40 @@ export async function logout(): Promise<void> {
   redirect("/admin/login");
 }
 
+// The home page shows works only, so only works revalidate it.
+function revalidateCollection(kind: CollectionKind, slug?: string) {
+  const { publicPath } = collections[kind];
+  revalidatePath(publicPath);
+  if (slug) revalidatePath(`${publicPath}/${slug}`);
+  if (kind === "works") revalidatePath("/");
+}
+
 export async function saveProject(
+  kind: CollectionKind,
   input: ProjectInput,
 ): Promise<{ id: string }> {
   await requireAdmin();
-  const saved = await upsertProject(input);
-  revalidatePath("/works");
-  revalidatePath(`/works/${saved.slug}`);
-  revalidatePath("/");
-  revalidatePath("/archive");
+  const saved = await getCollection(kind).upsert(input);
+  revalidateCollection(kind, saved.slug);
   return { id: saved.id };
 }
 
-export async function removeProject(id: string): Promise<void> {
+export async function removeProject(
+  kind: CollectionKind,
+  id: string,
+): Promise<void> {
   await requireAdmin();
-  await deleteProject(id);
-  revalidatePath("/works");
-  revalidatePath("/");
-  revalidatePath("/archive");
+  await getCollection(kind).remove(id);
+  revalidateCollection(kind);
 }
 
-export async function saveProjectOrder(orderedIds: string[]): Promise<void> {
+export async function saveProjectOrder(
+  kind: CollectionKind,
+  orderedIds: string[],
+): Promise<void> {
   await requireAdmin();
-  await reorderProjects(orderedIds);
-  revalidatePath("/works");
-  revalidatePath("/");
-  revalidatePath("/archive");
+  await getCollection(kind).reorder(orderedIds);
+  revalidateCollection(kind);
 }
 
 export async function saveAbout(content: AboutContent): Promise<void> {

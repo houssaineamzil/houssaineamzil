@@ -9,13 +9,21 @@ export interface ProjectType {
   id?: string;
   name: string;
   slug: string;
-  type: string;
-  labels: string[];
   description: string;
+  /** Optional case-study sections; empty string hides the section. */
+  strategy: string;
+  result: string;
+  impact: string;
   year: string;
+  /** One of ROLES (src/lib/projectOptions.ts), or empty. */
   role: string;
-  /** Short outcome shown as a chip on the project image, e.g. "+30% conversion". Empty = no chip. */
-  result?: string;
+  /** One of PROJECT_TYPES, or empty. */
+  projectType: string;
+  /** Live site or case-study link; empty hides it. */
+  url: string;
+  /** Optional names of collaborators who designed / built part of it. */
+  designer: string;
+  developer: string;
   image: MediaType;
   gallery?: MediaType[];
   works: {

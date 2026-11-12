@@ -1,0 +1,20 @@
+{
+  "projects": {
+    "allunan": ["Art Direction", "Web Design"],
+    "cineway": ["Art Direction", "Web Design"],
+    "ceinty": ["Web Design", "Web Development"],
+    "geofile": ["Branding", "Visual Identity"],
+    "haial": ["E-commerce Design", "Web Development"],
+    "volta": ["Web Design", "Web Development"],
+    "ormeo": ["Art Direction", "Web Design"]
+  },
+  "experiments": {
+    "synthetictheatre": ["Web Development", "Front-end"],
+    "emmaissocial": ["Web Development", "Front-end"],
+    "metalab": ["Web Development", "Front-end"],
+    "windows98": ["Web Development", "Front-end"],
+    "nanocopy": ["Web Design", "Web Development"],
+    "finwind": ["Branding", "Logo Design"],
+    "mystic": ["Branding", "Visual Identity"]
+  }
+}

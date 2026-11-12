@@ -11,6 +11,7 @@ const Page = async () => {
   const projects = await getProjects();
   return (
     <Dashboard
+      kind="works"
       initialProjects={
         projects as ((typeof projects)[number] & { id: string })[]
       }

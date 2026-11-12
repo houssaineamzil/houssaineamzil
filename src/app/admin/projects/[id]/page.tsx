@@ -11,7 +11,9 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
   ]);
   if (!project) notFound();
 
-  return <ProjectEditor initialProject={project} email={links.email} />;
+  return (
+    <ProjectEditor kind="works" initialProject={project} email={links.email} />
+  );
 };
 
 export default Page;

@@ -5,10 +5,14 @@ const nextConfig: NextConfig = {
   // the LAN (e.g. a phone at http://192.168.x.x:3000) instead of localhost —
   // without this, Next.js silently blocks those cross-origin dev requests
   // and the page loads but no client JS ever runs (so anything revealed by a
-  // client animation, like /archive, stays invisible). The machine's LAN IP
+  // client animation, like /playground, stays invisible). The machine's LAN IP
   // changes between networks/DHCP leases, so match the whole private range
   // instead of pinning one address.
   allowedDevOrigins: ["192.168.*.*", "10.*.*.*"],
+  // The playground replaced /archive; keep old links working.
+  redirects: async () => [
+    { source: "/archive", destination: "/playground", permanent: true },
+  ],
   images: {
     remotePatterns: [
       {

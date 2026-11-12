@@ -140,10 +140,10 @@ export const NavigationView: React.FC<Props> = ({ links }) => {
               Projects
             </Link>
             <Link
-              href="/archive"
+              href="/playground"
               className="uppercase text-xs font-medium leading-4"
             >
-              Archive
+              Playground
             </Link>
           </div>
         </div>

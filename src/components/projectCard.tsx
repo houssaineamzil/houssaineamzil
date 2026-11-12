@@ -8,48 +8,40 @@ interface Props
   extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "type" | "role">,
     ProjectType {
   index: number;
+  /** 1-based number of the project in the list, shown in the header. The slider repeats projects to fill the track, so this isn't `index`. */
+  number: number;
 }
 
 export const ProjectCard = React.forwardRef<HTMLAnchorElement, Props>(
-  ({ index, name, slug, type, labels, image, ...props }, ref) => {
+  ({ index, number, name, slug, projectType, image, ...props }, ref) => {
     return (
       <Link
         {...props}
         ref={ref}
         data-cindex={index}
         href={`/works/${slug}`}
-        className="drag-none block h-full w-dvw md:w-96 cursor-grab active:cursor-grabbing select-none"
+        className="drag-none block h-full w-dvw md:w-(--card-size) cursor-grab active:cursor-grabbing select-none"
       >
         <article className="flex h-full w-full flex-col">
           {/* Desktop Metadata Layout */}
-          <header className="hidden h-40 w-full lg:block">
-            <Reveal className="flex h-full w-full justify-between items-start pt-5">
-              <div className="ml-5">
-                <h1
-                  data-reveal-item
-                  className="mb-4 font-semibold text-xs uppercase tracking-wider"
-                >
+          <header className="hidden h-32 w-full lg:block">
+            <Reveal className="flex h-full w-full items-start gap-6 pt-4 pl-5 text-[11px]">
+              <span data-reveal-item className="text-muted">
+                {String(number).padStart(3, "0")}
+              </span>
+              <div>
+                <h1 data-reveal-item className="mb-1 font-medium">
                   {name}
                 </h1>
-                <div className="font-normal text-muted text-xs leading-relaxed">
-                  {labels.map((label) => (
-                    <p key={label} data-reveal-item>
-                      {label}
-                    </p>
-                  ))}
-                </div>
+                <p data-reveal-item className="text-muted">
+                  {projectType}
+                </p>
               </div>
-              <p
-                data-reveal-item
-                className="mt-0 mr-16 ml-5 text-muted text-xs font-medium uppercase tracking-wider"
-              >
-                {type}
-              </p>
             </Reveal>
           </header>
 
           {/* Visual Container Asset Block */}
-          <div className="relative h-128 w-full overflow-hidden bg-neutral-900">
+          <div className="relative h-128 w-full overflow-hidden md:h-(--card-size) bg-neutral-900">
             <div className="absolute inset-0 pointer-events-none z-0">
               <Image
                 fill
@@ -71,29 +63,15 @@ export const ProjectCard = React.forwardRef<HTMLAnchorElement, Props>(
                 >
                   {name}
                 </h1>
-                <h2
-                  data-reveal-item
-                  className="text-xs uppercase tracking-widest opacity-80"
-                >
-                  {type}
-                </h2>
               </div>
 
               <div className="flex justify-between items-end w-full mt-auto">
-                <div className="text-xs font-normal leading-relaxed">
-                  {labels.map((label, idx) => (
-                    <div
-                      key={label}
-                      data-reveal-item
-                      className="flex items-baseline gap-1.5"
-                    >
-                      <span className="text-[10px] font-mono opacity-60">
-                        {String(idx).padStart(2, "0")}
-                      </span>
-                      <span>{label}</span>
-                    </div>
-                  ))}
-                </div>
+                <p
+                  data-reveal-item
+                  className="text-xs font-normal leading-relaxed"
+                >
+                  {projectType}
+                </p>
                 <p
                   data-reveal-item
                   className="text-xs font-medium underline underline-offset-4 tracking-wide"

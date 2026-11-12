@@ -11,8 +11,7 @@ export const WorkCard: React.FC<Props> = ({
   name,
   slug,
   image,
-  labels,
-  result,
+  projectType,
 }) => {
   return (
     <div className="works-card group flex w-full flex-col">
@@ -30,17 +29,12 @@ export const WorkCard: React.FC<Props> = ({
             sizes="(max-width: 1024px) 100vw, 25vw"
           />
         </div>
-        {result && (
-          <span className="absolute bottom-3 left-3 z-10 rounded-full bg-white/90 px-3 py-1 text-[11px] font-medium text-neutral-900 backdrop-blur transition-opacity duration-300 group-focus-within:opacity-100 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-hover:opacity-100">
-            {result}
-          </span>
-        )}
       </Link>
       <div className="mt-3 flex gap-6 text-[11px]">
         <span className="text-muted">{String(index + 1).padStart(3, "0")}</span>
         <div>
           <h2 className="mb-1 font-medium">{name}</h2>
-          <p className="text-muted">{labels.slice(0, 2).join(", ")}</p>
+          <p className="text-muted">{projectType}</p>
         </div>
       </div>
     </div>

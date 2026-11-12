@@ -21,10 +21,22 @@ const MIN_VIEWPORT_MULTIPLE = 2;
 // exponentially. Faster input => higher velocity => it both travels faster
 // and takes longer to settle (decay time is the same, but it starts from a
 // bigger number, so it crosses the stop threshold later).
-const FRICTION_SECONDS = 0.9; // velocity falls by a factor of e every 0.9s
+const FRICTION_SECONDS = 0.5; // velocity falls by a factor of e every 0.9s
 const WHEEL_GAIN = 1.4; // px/s of velocity added per px of wheel delta
 const MAX_VELOCITY = 7000; // px/s
 const STOP_VELOCITY = 4; // px/s: below this the track is considered at rest
+// Tick model: like a knob with detents, one tick per TICK_SPACING_PX of
+// travel, so the faster the track moves the more ticks per second you get.
+// Ticks are rate-limited (a fling can cross 7000 px/s) and play from a small
+// pool of audio elements so rapid ticks overlap instead of cutting each other
+// off. Louder = faster: volume rises with speed up to TICK_FULL_VOLUME_SPEED.
+const TICK_SPACING_PX = 120;
+const MIN_TICK_INTERVAL_MS = 25;
+const TICK_POOL_SIZE = 6;
+const TICK_MIN_VOLUME = 0.12;
+const TICK_MAX_VOLUME = 0.5;
+const TICK_FULL_VOLUME_SPEED = 3000; // px/s
+
 // A drag that's held still this long before release shouldn't fling.
 const DRAG_HOLD_MS = 90;
 
@@ -48,13 +60,15 @@ export const Slider: React.FC<{ projects: ProjectType[] }> = ({ projects }) => {
 const SliderTrack: React.FC<{ projects: ProjectType[] }> = ({ projects }) => {
   const cardsRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
-  const activeIndexRef = useRef<number | null>(null);
-  const tickAudioRef = useRef<HTMLAudioElement | null>(null);
+  const tickPoolRef = useRef<HTMLAudioElement[]>([]);
+  const tickPoolIndexRef = useRef(0);
   const [repeatCount, setRepeatCount] = useState(1);
 
   useEffect(() => {
-    tickAudioRef.current = new Audio("/audio/knob_tick.webm");
-    tickAudioRef.current.volume = 0.3;
+    tickPoolRef.current = Array.from(
+      { length: TICK_POOL_SIZE },
+      () => new Audio("/audio/knob_tick.webm"),
+    );
   }, []);
 
   // Grow the repeat count until the track comfortably out-spans the viewport.
@@ -107,14 +121,47 @@ const SliderTrack: React.FC<{ projects: ProjectType[] }> = ({ projects }) => {
     const clampVelocity = (v: number) =>
       Math.max(-MAX_VELOCITY, Math.min(MAX_VELOCITY, v));
 
+    // Travel since the last tick, in px, and when we last ticked / moved.
+    let tickTravel = 0;
+    let lastTickX = proxy.x;
+    let lastTickAt = 0;
+    let lastMoveAt = performance.now();
+
+    const playTick = (speed: number) => {
+      const pool = tickPoolRef.current;
+      const audio = pool[tickPoolIndexRef.current % pool.length];
+      tickPoolIndexRef.current += 1;
+      if (!audio) return;
+      const force = Math.min(1, speed / TICK_FULL_VOLUME_SPEED);
+      audio.volume =
+        TICK_MIN_VOLUME + (TICK_MAX_VOLUME - TICK_MIN_VOLUME) * force;
+      audio.currentTime = 0;
+      audio.play().catch(() => {});
+    };
+
+    // Called on every position update: turns distance travelled into ticks.
+    const updateTicks = () => {
+      const now = performance.now();
+      const moved = Math.abs(proxy.x - lastTickX);
+      lastTickX = proxy.x;
+      tickTravel += moved;
+      const speed = moved / (Math.max(1, now - lastMoveAt) / 1000);
+      lastMoveAt = now;
+
+      if (tickTravel < TICK_SPACING_PX) return;
+      // One tick per update at most; leftover travel past a tick is dropped
+      // so a rate-limited fling doesn't queue up a burst afterwards.
+      if (now - lastTickAt >= MIN_TICK_INTERVAL_MS) {
+        playTick(speed);
+        lastTickAt = now;
+      }
+      tickTravel %= TICK_SPACING_PX;
+    };
+
     // Calculates and updates the loop coordinates dynamically
     const updatePositions = () => {
       // Read total track width directly from the DOM container
       const totalWidth = container.scrollWidth;
-      const viewportCenter = window.innerWidth / 2;
-
-      let activeItem: HTMLAnchorElement | null = null;
-      let activeDistance = Infinity;
 
       for (const item of trackItems) {
         const itemWidth = item.offsetWidth;
@@ -128,27 +175,9 @@ const SliderTrack: React.FC<{ projects: ProjectType[] }> = ({ projects }) => {
 
         // Apply translation delta relative to its natural CSS position
         gsap.set(item, { x: wrappedX - item.offsetLeft });
-
-        // Track whichever card is nearest the viewport's horizontal center —
-        // that's the "active" one for tick-sound purposes.
-        const distance = Math.abs(wrappedX + itemWidth / 2 - viewportCenter);
-        if (distance < activeDistance) {
-          activeDistance = distance;
-          activeItem = item;
-        }
       }
 
-      if (activeItem) {
-        const activeIndex = Number(activeItem.dataset.cindex);
-        if (activeIndex !== activeIndexRef.current) {
-          activeIndexRef.current = activeIndex;
-          const audio = tickAudioRef.current;
-          if (audio) {
-            audio.currentTime = 0;
-            audio.play().catch(() => {});
-          }
-        }
-      }
+      updateTicks();
 
       // --- BROADCAST MOVE EVENT ---
       // Notifies child components that the slider coordinates updated
@@ -255,6 +284,7 @@ const SliderTrack: React.FC<{ projects: ProjectType[] }> = ({ projects }) => {
       {items.map((project, index) => (
         <ProjectCard
           index={index}
+          number={(index % projects.length) + 1}
           // biome-ignore lint/suspicious/noArrayIndexKey: the project list repeats to fill the track, so slug alone collides across copies — index disambiguates them
           key={`${project.slug || index}-${index}`}
           ref={(el) => {

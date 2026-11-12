@@ -4,6 +4,7 @@ import { Image } from "@/components/image";
 import { Link } from "@/components/link";
 import { ProjectNavLink } from "@/components/projectNavLink";
 import { Reveal } from "@/components/reveal";
+import { type CollectionKind, collections } from "@/lib/collections";
 import type { ProjectType } from "@/types";
 
 export interface ProjectNeighbour {
@@ -13,23 +14,33 @@ export interface ProjectNeighbour {
 }
 
 interface Props {
+  kind: CollectionKind;
   project: ProjectType;
   prev: ProjectNeighbour;
   next: ProjectNeighbour;
   email: string;
 }
 
+const paragraphs = (text: string) => text.split(/\n\s*\n/).filter(Boolean);
+
 export const ProjectDetail: React.FC<Props> = ({
+  kind,
   project,
   prev,
   next,
   email,
 }) => {
+  const { publicPath, backLabel } = collections[kind];
+  const sections = [
+    { label: "Strategy", text: project.strategy },
+    { label: "Result", text: project.result },
+    { label: "Impact", text: project.impact },
+  ].filter((section) => section.text.trim());
   const galleryImages = [project.image, ...(project.gallery ?? [])];
 
   return (
     <div className="w-full">
-      <Reveal className="flex w-full flex-col justify-end gap-16 p-4 pt-28 md:fixed md:inset-y-0 md:left-0 md:w-[42%] md:overflow-hidden md:p-4 md:pt-24">
+      <Reveal className="flex w-full flex-col justify-end gap-16 p-4 pt-28 md:fixed md:inset-y-0 md:left-0 md:w-[42%] md:overflow-y-auto md:p-4 md:pt-24">
         <div className="flex flex-col gap-10">
           <dl className="grid grid-cols-[auto_1fr] gap-x-10 gap-y-1 text-xs font-medium uppercase text-neutral-950">
             <dt data-reveal-item className="text-muted">
@@ -37,40 +48,108 @@ export const ProjectDetail: React.FC<Props> = ({
             </dt>
             <dd data-reveal-item>{project.name}</dd>
 
-            {project.labels.length > 0 && (
-              <>
-                <dt data-reveal-item className="text-muted">
-                  Mission
-                </dt>
-                <dd data-reveal-item>
-                  {project.labels.slice(0, 2).join(", ")}
-                </dd>
-              </>
-            )}
-
             <dt data-reveal-item className="text-muted">
               Year
             </dt>
             <dd data-reveal-item>{project.year}</dd>
 
-            <dt data-reveal-item className="text-muted">
-              Role
-            </dt>
-            <dd data-reveal-item>{project.role}</dd>
+            {project.projectType && (
+              <>
+                <dt data-reveal-item className="text-muted">
+                  Type
+                </dt>
+                <dd data-reveal-item>{project.projectType}</dd>
+              </>
+            )}
+
+            {project.role && (
+              <>
+                <dt data-reveal-item className="text-muted">
+                  Role
+                </dt>
+                <dd data-reveal-item>{project.role}</dd>
+              </>
+            )}
+
+            {project.designer && (
+              <>
+                <dt data-reveal-item className="text-muted">
+                  Design
+                </dt>
+                <dd data-reveal-item>{project.designer}</dd>
+              </>
+            )}
+
+            {project.developer && (
+              <>
+                <dt data-reveal-item className="text-muted">
+                  Development
+                </dt>
+                <dd data-reveal-item>{project.developer}</dd>
+              </>
+            )}
+
+            {project.url && (
+              <>
+                <dt data-reveal-item className="text-muted">
+                  Link
+                </dt>
+                <dd data-reveal-item>
+                  <a
+                    href={project.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="normal-case underline underline-offset-2"
+                  >
+                    {project.url
+                      .replace(/^https?:\/\/(www\.)?/, "")
+                      .replace(/\/$/, "")}
+                  </a>
+                </dd>
+              </>
+            )}
           </dl>
 
-          <div className="flex max-w-md flex-col gap-2">
-            {project.description.split(/\n\s*\n/).map((paragraph, index) => (
-              <p
-                // biome-ignore lint/suspicious/noArrayIndexKey: paragraphs are static per project and never reordered
-                key={index}
-                data-reveal-lines
-                className="text-sm leading-snug"
-              >
-                {paragraph}
-              </p>
-            ))}
-          </div>
+          {/* The three case-study sections replace the description; it
+              only shows for projects that don't have them (e.g. experiments). */}
+          {sections.length === 0 && (
+            <div className="flex max-w-md flex-col gap-2">
+              {paragraphs(project.description).map((paragraph) => (
+                <p
+                  key={paragraph}
+                  data-reveal-lines
+                  className="text-sm leading-snug"
+                >
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          )}
+
+          {sections.length > 0 && (
+            <div className="flex max-w-md flex-col gap-6">
+              {sections.map(({ label, text }) => (
+                <section key={label} className="flex flex-col gap-2">
+                  <h2
+                    data-reveal-item
+                    className="text-muted flex items-center gap-2 text-[11px] font-medium uppercase"
+                  >
+                    <span aria-hidden className="size-2 bg-current" />
+                    {label}
+                  </h2>
+                  {paragraphs(text).map((paragraph) => (
+                    <p
+                      key={paragraph}
+                      data-reveal-lines
+                      className="text-sm leading-snug"
+                    >
+                      {paragraph}
+                    </p>
+                  ))}
+                </section>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="flex flex-col gap-6 text-xs">
@@ -84,18 +163,18 @@ export const ProjectDetail: React.FC<Props> = ({
           <div className="flex items-center justify-between font-medium uppercase text-neutral-950">
             <div data-reveal-item className="flex">
               <ProjectNavLink
-                href={`/works/${prev.slug}`}
+                href={`${publicPath}/${prev.slug}`}
                 label="Prev"
                 name={prev.name}
                 imageUrl={prev.imageUrl}
               />
             </div>
             <div data-reveal-item className="flex">
-              <Link href="/works">All projects</Link>
+              <Link href={publicPath}>{backLabel}</Link>
             </div>
             <div data-reveal-item className="flex">
               <ProjectNavLink
-                href={`/works/${next.slug}`}
+                href={`${publicPath}/${next.slug}`}
                 label="Next"
                 name={next.name}
                 imageUrl={next.imageUrl}
@@ -110,7 +189,7 @@ export const ProjectDetail: React.FC<Props> = ({
       <DragScroll className="flex w-full flex-col gap-2 p-4 md:pt-24 md:pl-[calc(42%+0.5rem)]">
         <div
           data-gallery-image={0}
-          className="relative aspect-3/4 md:aspect-square w-full bg-neutral-200"
+          className="relative aspect-3/4 md:aspect-square w-full"
         >
           {project.image.url && (
             <Image

@@ -9,9 +9,11 @@ import type { ProjectType } from "@/types";
 
 interface Props {
   projects: ProjectType[];
+  /** Where each row links: `${basePath}/${slug}`. */
+  basePath: string;
 }
 
-export const ArchiveList: React.FC<Props> = ({ projects }) => {
+export const ArchiveList: React.FC<Props> = ({ projects, basePath }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -93,7 +95,7 @@ export const ArchiveList: React.FC<Props> = ({ projects }) => {
 
           <NextLink
             data-row
-            href={`/works/${project.slug}`}
+            href={`${basePath}/${project.slug}`}
             className="group pointer-events-none flex items-center gap-6 py-6 text-[11px] uppercase"
           >
             <span data-reveal-item className="text-muted">
@@ -106,7 +108,7 @@ export const ArchiveList: React.FC<Props> = ({ projects }) => {
               {project.name}
             </h1>
             <p data-reveal-item className="text-muted hidden sm:block">
-              {project.role}
+              {project.projectType}
             </p>
             <p data-reveal-item className="text-muted">
               {project.year}
@@ -114,12 +116,12 @@ export const ArchiveList: React.FC<Props> = ({ projects }) => {
 
             {/* Hover preview — fixed at the same spot for every row, so only
             the actively hovered row's image is ever visible. */}
-            <div className="pointer-events-none fixed top-1/2 right-8 z-10 hidden w-80 aspect-3/4 -translate-y-1/2 bg-neutral-200 opacity-0 transition-opacity duration-300 group-hover:opacity-100 lg:block xl:right-16">
+            <div className="pointer-events-none fixed top-1/2 right-8 z-10 hidden size-(--card-size) -translate-y-1/2 bg-neutral-200 opacity-0 transition-opacity duration-300 group-hover:opacity-100 lg:block xl:right-16">
               <Image
                 fill
                 src={project.image.url}
                 alt={project.image.alt}
-                sizes="320px"
+                sizes="25vw"
                 className="object-cover"
               />
             </div>

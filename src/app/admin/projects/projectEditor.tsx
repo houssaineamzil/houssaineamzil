@@ -5,15 +5,23 @@ import { useState } from "react";
 import { removeProject, saveProject } from "@/app/admin/actions";
 import { uploadMedia } from "@/app/admin/upload";
 import { ProjectDetail } from "@/components/projectDetail";
+import { type CollectionKind, collections } from "@/lib/collections";
+import { PROJECT_TYPES, ROLES } from "@/lib/projectOptions";
 import { isVideoSrc } from "@/lib/utils";
 import type { MediaType, ProjectType } from "@/types";
 
 interface Props {
+  kind: CollectionKind;
   initialProject: ProjectType & { id?: string };
   email: string;
 }
 
-export const ProjectEditor: React.FC<Props> = ({ initialProject, email }) => {
+export const ProjectEditor: React.FC<Props> = ({
+  kind,
+  initialProject,
+  email,
+}) => {
+  const { adminPath, adminListPath } = collections[kind];
   const router = useRouter();
   const [draft, setDraft] = useState(initialProject);
   const [saving, setSaving] = useState(false);
@@ -127,23 +135,27 @@ export const ProjectEditor: React.FC<Props> = ({ initialProject, email }) => {
     setError(null);
     setSaving(true);
     try {
-      await saveProject({
+      await saveProject(kind, {
         id: draft.id,
         slug: draft.slug,
         name: draft.name,
-        type: draft.type,
         description: draft.description,
-        labels: draft.labels,
+        strategy: draft.strategy,
+        result: draft.result,
+        impact: draft.impact,
         year: draft.year,
         role: draft.role,
-        result: draft.result ?? "",
+        projectType: draft.projectType,
+        url: draft.url,
+        designer: draft.designer,
+        developer: draft.developer,
         image: draft.image,
         gallery: draft.gallery ?? [],
         horizontal: draft.works.horizontal ?? false,
       });
       // The [id] route looks projects up by slug (see
       // src/app/admin/projects/[id]/page.tsx), not the DB id.
-      router.push(`/admin/projects/${draft.slug}`);
+      router.push(`${adminPath}/${draft.slug}`);
       router.refresh();
     } catch (err) {
       setError((err as Error).message);
@@ -163,8 +175,8 @@ export const ProjectEditor: React.FC<Props> = ({ initialProject, email }) => {
     }
     setError(null);
     try {
-      await removeProject(draft.id);
-      router.push("/admin");
+      await removeProject(kind, draft.id);
+      router.push(adminListPath);
     } catch (err) {
       setError((err as Error).message);
     }
@@ -190,14 +202,6 @@ export const ProjectEditor: React.FC<Props> = ({ initialProject, email }) => {
           />
         </label>
         <label className="flex flex-col gap-1 text-xs uppercase">
-          Type
-          <input
-            value={draft.type}
-            onChange={(e) => updateField("type", e.target.value)}
-            className="border border-white/30 bg-transparent p-2"
-          />
-        </label>
-        <label className="flex flex-col gap-1 text-xs uppercase">
           Year
           <input
             value={draft.year}
@@ -206,20 +210,58 @@ export const ProjectEditor: React.FC<Props> = ({ initialProject, email }) => {
           />
         </label>
         <label className="flex flex-col gap-1 text-xs uppercase">
-          Role
+          Type
+          <select
+            value={draft.projectType}
+            onChange={(e) => updateField("projectType", e.target.value)}
+            className="border border-white/30 bg-black p-2"
+          >
+            <option value="">—</option>
+            {PROJECT_TYPES.map((type) => (
+              <option key={type} value={type}>
+                {type}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="flex flex-col gap-1 text-xs uppercase">
+          Link (https://…)
           <input
-            value={draft.role}
-            onChange={(e) => updateField("role", e.target.value)}
+            type="url"
+            value={draft.url}
+            onChange={(e) => updateField("url", e.target.value)}
             className="border border-white/30 bg-transparent p-2"
           />
         </label>
         <label className="flex flex-col gap-1 text-xs uppercase">
-          Result chip (optional)
+          Role
+          <select
+            value={draft.role}
+            onChange={(e) => updateField("role", e.target.value)}
+            className="border border-white/30 bg-black p-2"
+          >
+            <option value="">—</option>
+            {ROLES.map((role) => (
+              <option key={role} value={role}>
+                {role}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="flex flex-col gap-1 text-xs uppercase">
+          Designer (optional, if someone else designed)
           <input
-            value={draft.result ?? ""}
-            onChange={(e) => updateField("result", e.target.value)}
-            placeholder="+30% conversion rate"
-            className="border border-white/30 bg-transparent p-2 normal-case"
+            value={draft.designer}
+            onChange={(e) => updateField("designer", e.target.value)}
+            className="border border-white/30 bg-transparent p-2"
+          />
+        </label>
+        <label className="flex flex-col gap-1 text-xs uppercase">
+          Developer (optional, if someone else built)
+          <input
+            value={draft.developer}
+            onChange={(e) => updateField("developer", e.target.value)}
+            className="border border-white/30 bg-transparent p-2"
           />
         </label>
         <label className="flex flex-col gap-1 text-xs uppercase">
@@ -231,22 +273,17 @@ export const ProjectEditor: React.FC<Props> = ({ initialProject, email }) => {
             className="border border-white/30 bg-transparent p-2"
           />
         </label>
-        <label className="flex flex-col gap-1 text-xs uppercase">
-          Labels (comma separated)
-          <input
-            value={draft.labels.join(", ")}
-            onChange={(e) =>
-              updateField(
-                "labels",
-                e.target.value
-                  .split(",")
-                  .map((l) => l.trim())
-                  .filter(Boolean),
-              )
-            }
-            className="border border-white/30 bg-transparent p-2"
-          />
-        </label>
+        {(["strategy", "result", "impact"] as const).map((field) => (
+          <label key={field} className="flex flex-col gap-1 text-xs uppercase">
+            {field} (optional)
+            <textarea
+              value={draft[field]}
+              onChange={(e) => updateField(field, e.target.value)}
+              rows={4}
+              className="border border-white/30 bg-transparent p-2"
+            />
+          </label>
+        ))}
         <label className="flex items-center gap-2 text-xs uppercase">
           <input
             type="checkbox"
@@ -346,7 +383,13 @@ export const ProjectEditor: React.FC<Props> = ({ initialProject, email }) => {
           this div a containing block for fixed descendants, so the preview
           stays confined to its column. */}
       <div className="relative overflow-y-auto bg-white [contain:layout]">
-        <ProjectDetail project={draft} prev={self} next={self} email={email} />
+        <ProjectDetail
+          kind={kind}
+          project={draft}
+          prev={self}
+          next={self}
+          email={email}
+        />
       </div>
     </div>
   );
