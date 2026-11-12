@@ -101,9 +101,7 @@ export const ProjectDetail: React.FC<Props> = ({
                     rel="noopener noreferrer"
                     className="underline underline-offset-2"
                   >
-                    {project.url
-                      .replace(/^https?:\/\/(www\.)?/, "")
-                      .replace(/\/$/, "")}
+                    Visit
                   </a>
                 </dd>
               </>

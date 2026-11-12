@@ -279,6 +279,7 @@ const SliderTrack: React.FC<{ projects: ProjectType[] }> = ({ projects }) => {
       // it competes with the Draggable below for the same touch gesture and
       // the horizontal swipe stops working.
       data-lenis-prevent-touch
+      data-cursor="Scroll / Drag"
       className="fixed bottom-0 flex select-none touch-none will-change-transform"
     >
       {items.map((project, index) => (

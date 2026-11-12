@@ -46,11 +46,15 @@ export const DragScroll: React.FC<Props> = ({ children, className }) => {
     // Dragging down should reveal content above, like a native touch scroll.
     // `lenis.stop()` is in effect for the whole drag + inertia glide below,
     // and Lenis silently ignores scrollTo while stopped unless forced.
+    //
+    // The position is accumulated here as a float instead of being re-read
+    // from `lenis.scroll` on every move: each write is snapped by the browser
+    // (and Lenis re-syncs from the snapped value), so small per-move deltas
+    // get rounded away in one direction and the drag feels sluggish that way.
+    let position = lenis.scroll;
     const applyDelta = function (this: Draggable) {
-      lenis.scrollTo(lenis.scroll - this.deltaY, {
-        immediate: true,
-        force: true,
-      });
+      position = Math.max(0, Math.min(lenis.limit, position - this.deltaY));
+      lenis.scrollTo(position, { immediate: true, force: true });
     };
 
     const draggableInstance = Draggable.create(virtualTarget, {
@@ -58,6 +62,7 @@ export const DragScroll: React.FC<Props> = ({ children, className }) => {
       type: "y",
       inertia: !reducedMotion,
       onDragStart() {
+        position = lenis.scroll;
         lenis.stop();
       },
       onDrag: applyDelta,
@@ -82,6 +87,7 @@ export const DragScroll: React.FC<Props> = ({ children, className }) => {
   return (
     <div
       ref={containerRef}
+      data-cursor="Scroll / Drag"
       className={cn(
         isFinePointer && "cursor-grab touch-none active:cursor-grabbing",
         className,

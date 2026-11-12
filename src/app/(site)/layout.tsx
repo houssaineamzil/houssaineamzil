@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { CursorTail } from "@/components/cursorTail";
 import { Navigation } from "@/components/navigation";
 
 // Scopes the public marketing nav (social links, Home/About/Projects/
@@ -9,6 +10,7 @@ const SiteLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <Navigation />
+      <CursorTail />
       {children}
     </>
   );
