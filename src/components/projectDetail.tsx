@@ -92,14 +92,14 @@ export const ProjectDetail: React.FC<Props> = ({
             {project.url && (
               <>
                 <dt data-reveal-item className="text-muted">
-                  Link
+                  Live
                 </dt>
                 <dd data-reveal-item>
                   <a
                     href={project.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="normal-case underline underline-offset-2"
+                    className="underline underline-offset-2"
                   >
                     {project.url
                       .replace(/^https?:\/\/(www\.)?/, "")

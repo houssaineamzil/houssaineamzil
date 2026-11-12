@@ -24,8 +24,8 @@ export const ProjectCard = React.forwardRef<HTMLAnchorElement, Props>(
       >
         <article className="flex h-full w-full flex-col">
           {/* Desktop Metadata Layout */}
-          <header className="hidden h-32 w-full lg:block">
-            <Reveal className="flex h-full w-full items-start gap-6 pt-4 pl-5 text-[11px]">
+          <header className="hidden w-full lg:block">
+            <Reveal className="flex w-full items-start gap-6 pb-3 pl-5 text-[11px]">
               <span data-reveal-item className="text-muted">
                 {String(number).padStart(3, "0")}
               </span>
