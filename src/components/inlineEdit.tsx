@@ -88,6 +88,8 @@ export const MediaSlot: React.FC<{
   filled: boolean;
   onFile: (file: File) => void;
   label: string;
+  /** Adds a "Remove" button; empty slots get one too, so they can be dropped. */
+  onRemove?: () => void;
   accept?: string;
   className?: string;
   children?: React.ReactNode;
@@ -95,6 +97,7 @@ export const MediaSlot: React.FC<{
   filled,
   onFile,
   label,
+  onRemove,
   accept = "image/*,video/*",
   className,
   children,
@@ -118,6 +121,21 @@ export const MediaSlot: React.FC<{
       <span className="absolute inset-0 z-10 flex items-center justify-center text-[11px] text-neutral-500 uppercase">
         {label}
       </span>
+    )}
+    {onRemove && (
+      <button
+        type="button"
+        onClick={(e) => {
+          e.preventDefault();
+          onRemove();
+        }}
+        className={cn(
+          "absolute z-20 bg-white px-2 py-1 text-[11px] text-black uppercase hover:bg-red-600 hover:text-white",
+          filled ? "right-2 bottom-2" : "top-2 right-2",
+        )}
+      >
+        Remove
+      </button>
     )}
     <input
       type="file"

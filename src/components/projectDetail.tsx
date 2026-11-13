@@ -16,6 +16,8 @@ export interface ProjectEditApi {
   update: <K extends keyof ProjectType>(key: K, value: ProjectType[K]) => void;
   uploadHero: (file: File) => void;
   uploadGallery: (index: number, file: File) => void;
+  removeHero: () => void;
+  removeGallery: (index: number) => void;
   /** Still image shown in the minimap in place of a video. */
   uploadPoster: (index: number, file: File) => void;
 }
@@ -246,6 +248,7 @@ export const ProjectDetail: React.FC<Props> = ({
               filled={!!project.image.url}
               label="Upload image"
               onFile={edit.uploadHero}
+              onRemove={project.image.url ? edit.removeHero : undefined}
               className="size-full"
             >
               {project.image.url && (
@@ -289,6 +292,7 @@ export const ProjectDetail: React.FC<Props> = ({
                     filled={!!image.url}
                     label="Upload image"
                     onFile={(file) => edit.uploadGallery(imageIndex, file)}
+                    onRemove={() => edit.removeGallery(imageIndex)}
                     className="size-full"
                   >
                     {image.url && (

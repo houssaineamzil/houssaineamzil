@@ -49,6 +49,16 @@ export const ProjectEditor: React.FC<Props> = ({
       void upload(file, "Hero image", (url) =>
         setDraft((prev) => ({ ...prev, image: { url, alt: prev.image.alt } })),
       ),
+    removeHero: () =>
+      setDraft((prev) => ({
+        ...prev,
+        image: { url: "", alt: prev.image.alt },
+      })),
+    removeGallery: (index) =>
+      setDraft((prev) => ({
+        ...prev,
+        gallery: prev.gallery.filter((_, i) => i !== index),
+      })),
     uploadGallery: (index, file) =>
       void upload(file, `Gallery item ${index + 1}`, (url) =>
         patchGallery(index, { url }),
@@ -64,7 +74,11 @@ export const ProjectEditor: React.FC<Props> = ({
 
   const handleSave = () =>
     save(async () => {
-      await saveProject(kind, draft);
+      // Empty slots (added but never filled) aren't saved.
+      await saveProject(kind, {
+        ...draft,
+        gallery: draft.gallery.filter((item) => item.url),
+      });
       // Admin edit routes are keyed by slug, not the DB id.
       router.push(`${adminPath}/${draft.slug}`);
       router.refresh();
