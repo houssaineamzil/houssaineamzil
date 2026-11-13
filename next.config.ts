@@ -20,7 +20,21 @@ const nextConfig: NextConfig = {
       permanent: false,
     },
   ],
+  headers: async () => [
+    {
+      // The tick sound never changes under the same name; browsers can keep it.
+      source: "/audio/:path*",
+      headers: [
+        { key: "Cache-Control", value: "public, max-age=2592000, immutable" },
+      ],
+    },
+  ],
   images: {
+    // Uploads are AVIF already; without this Next re-encodes them as WebP,
+    // which is larger. Uploaded files get a random name per upload, so a
+    // transformed image can be cached for a year.
+    formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 60 * 60 * 24 * 365,
     remotePatterns: [
       {
         // Vercel Blob serves uploads from https://$storeId.public.blob.vercel-storage.com/...

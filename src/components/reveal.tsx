@@ -50,6 +50,9 @@ export const Reveal: React.FC<Props> = ({ children, className }) => {
         const split = new SplitText(marker, {
           type: "lines",
           linesClass: "reveal-line",
+          // The default adds aria-label to the paragraph, which is not allowed
+          // on a plain <p>; the text stays readable as it is.
+          aria: "none",
         });
         splits.push(split);
         gsap.set(marker, { opacity: 1 });

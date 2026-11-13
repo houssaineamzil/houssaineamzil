@@ -263,11 +263,13 @@ export const ProjectDetail: React.FC<Props> = ({
             </MediaSlot>
           ) : (
             project.image.url && (
+              // The main image is the page's largest paint: fetched first, and
+              // shown as soon as it arrives instead of waiting for a reveal.
               <Image
                 fill
                 parallax
-                priority
-                revealOnScroll
+                loading="eager"
+                fetchPriority="high"
                 src={project.image.url}
                 alt={project.image.alt}
                 sizes="(max-width: 768px) 100vw, 58vw"

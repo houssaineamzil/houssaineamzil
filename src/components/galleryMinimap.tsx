@@ -188,6 +188,7 @@ export const GalleryMinimap: React.FC<Props> = ({ images, onAdd }) => {
               // biome-ignore lint/suspicious/noArrayIndexKey: empty slots (editor) have no url, and the list is only appended to
               key={imageIndex}
               type="button"
+              aria-label={`Show image ${imageIndex + 1}`}
               data-thumb
               onClick={() =>
                 document

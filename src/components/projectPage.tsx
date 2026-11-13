@@ -10,7 +10,13 @@ export const projectMetadata = async (
   slug: string,
 ): Promise<Metadata> => {
   const project = await getCollection(kind).getBySlug(slug);
-  return { title: project?.name ?? "Not found" };
+  if (!project) return { title: "Not found" };
+  // The first words of the story make the best search snippet.
+  const summary = (project.strategy || project.description).slice(0, 160);
+  return {
+    title: project.name,
+    ...(summary && { description: summary }),
+  };
 };
 
 /** Full project page shared by /works/[slug] and /playground/[slug]. */

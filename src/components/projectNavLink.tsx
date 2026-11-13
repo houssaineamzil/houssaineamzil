@@ -1,7 +1,7 @@
 "use client";
 
 import NextImage from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "@/components/link";
 
@@ -26,6 +26,12 @@ export const ProjectNavLink: React.FC<Props> = ({
 }) => {
   const tooltipRef = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(false);
+  // The tooltip is portalled into <body>, which the server can't render, so it
+  // only mounts after hydration (rendering it during hydration is a mismatch).
+  // Its thumbnail is fetched on the first hover, not up front.
+  const [mounted, setMounted] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const move = (e: React.PointerEvent) => {
     if (e.pointerType !== "mouse") return;
@@ -46,6 +52,7 @@ export const ProjectNavLink: React.FC<Props> = ({
         : e.clientY + gap;
     el.style.transform = `translate(${Math.max(0, x)}px, ${Math.max(0, y)}px)`;
     setVisible(true);
+    setHovered(true);
   };
 
   return (
@@ -58,7 +65,7 @@ export const ProjectNavLink: React.FC<Props> = ({
       onBlur={() => setVisible(false)}
     >
       {label}
-      {typeof document !== "undefined" &&
+      {mounted &&
         createPortal(
           <div
             ref={tooltipRef}
@@ -67,7 +74,7 @@ export const ProjectNavLink: React.FC<Props> = ({
               visible ? "opacity-100" : "opacity-0"
             }`}
           >
-            {imageUrl && (
+            {imageUrl && hovered && (
               <NextImage
                 alt=""
                 src={imageUrl}
