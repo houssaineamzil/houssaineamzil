@@ -21,8 +21,10 @@ export const AboutContent: React.FC<Props> = ({ about, edit, className }) => {
   const portrait = about.portrait.url && (
     <Image
       fill
-      priority
-      revealOnScroll={!edit}
+      // The portrait is the page's largest paint: fetched first and shown
+      // straight away, with no reveal animation in front of it.
+      loading="eager"
+      fetchPriority="high"
       alt={about.portrait.alt}
       className="object-cover"
       src={about.portrait.url}

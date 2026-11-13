@@ -40,6 +40,8 @@ export const ProjectCard: React.FC<{
             horizontal
             src={image.url}
             alt={image.alt}
+            loading={number <= 4 ? "eager" : undefined}
+            fetchPriority={number === 1 ? "high" : undefined}
             sizes="25vw"
             className="object-cover"
           />

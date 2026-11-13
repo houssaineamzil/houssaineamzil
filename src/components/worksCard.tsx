@@ -9,10 +9,14 @@ export const WorkCard: React.FC<{
   /** 1-based position in the list. */
   number: number;
 }> = ({ project: { name, slug, image, projectType }, number }) => {
+  // The first row is above the fold on every screen, and the first image is
+  // usually the page's largest paint, so those are fetched first, not lazily.
+  const aboveFold = number <= 4;
   return (
     <div className="works-card group flex w-full flex-col">
       <Link
         href={`${collections.works.publicPath}/${slug}`}
+        aria-label={name}
         className="relative aspect-3/4 w-full overflow-hidden bg-neutral-200 sm:aspect-square"
       >
         {/* Fine zoom on hover, only on devices that can actually hover. */}
@@ -22,6 +26,8 @@ export const WorkCard: React.FC<{
             parallax
             src={image.url}
             alt={image.alt}
+            loading={aboveFold ? "eager" : undefined}
+            fetchPriority={number === 1 ? "high" : undefined}
             sizes="(max-width: 1024px) 100vw, 25vw"
           />
         </div>
