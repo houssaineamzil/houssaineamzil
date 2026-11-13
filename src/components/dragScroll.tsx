@@ -5,8 +5,10 @@ import { Draggable } from "gsap/Draggable";
 import { InertiaPlugin } from "gsap/InertiaPlugin";
 import { useLenis } from "lenis/react";
 import type React from "react";
-import { useEffect, useRef, useState } from "react";
-import { cn } from "@/lib";
+import { useEffect, useRef } from "react";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { prefersReducedMotion } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(Draggable, InertiaPlugin);
 
@@ -25,11 +27,7 @@ interface Props {
 export const DragScroll: React.FC<Props> = ({ children, className }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const lenis = useLenis();
-  const [isFinePointer, setIsFinePointer] = useState(false);
-
-  useEffect(() => {
-    setIsFinePointer(window.matchMedia("(pointer: fine)").matches);
-  }, []);
+  const isFinePointer = useMediaQuery("(pointer: fine)");
 
   useEffect(() => {
     const container = containerRef.current;
@@ -39,9 +37,7 @@ export const DragScroll: React.FC<Props> = ({ children, className }) => {
 
     // Dragging itself stays fully interactive either way — this only
     // removes the post-release momentum coast.
-    const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
+    const reducedMotion = prefersReducedMotion();
 
     // Dragging down should reveal content above, like a native touch scroll.
     // `lenis.stop()` is in effect for the whole drag + inertia glide below,

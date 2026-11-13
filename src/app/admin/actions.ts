@@ -50,11 +50,13 @@ export async function logout(): Promise<void> {
   redirect("/admin/login");
 }
 
-// The home page shows works only, so only works revalidate it.
-function revalidateCollection(kind: CollectionKind, slug?: string) {
+// Any change can reach every project page: neighbours' prev/next links move
+// on reorder, and a rename or delete changes which URLs exist. The home page
+// shows works only, so only works revalidate it.
+function revalidateCollection(kind: CollectionKind) {
   const { publicPath } = collections[kind];
   revalidatePath(publicPath);
-  if (slug) revalidatePath(`${publicPath}/${slug}`);
+  revalidatePath(`${publicPath}/[slug]`, "page");
   if (kind === "works") revalidatePath("/");
 }
 
@@ -64,7 +66,7 @@ export async function saveProject(
 ): Promise<{ id: string }> {
   await requireAdmin();
   const saved = await getCollection(kind).upsert(input);
-  revalidateCollection(kind, saved.slug);
+  revalidateCollection(kind);
   return { id: saved.id };
 }
 

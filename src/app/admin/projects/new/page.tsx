@@ -1,38 +1,5 @@
-import { ProjectEditor } from "@/app/admin/projects/projectEditor";
-import { getSiteLinks } from "@/services/settings";
-import type { ProjectType } from "@/types";
+import { NewProjectPage } from "@/app/admin/projectPages";
 
-const blankProject: ProjectType = {
-  slug: "",
-  name: "",
-  description: "",
-  strategy: "",
-  result: "",
-  impact: "",
-  year: "",
-  role: "",
-  projectType: "",
-  url: "",
-  designer: "",
-  developer: "",
-  image: { url: "", alt: "" },
-  gallery: [],
-  works: {},
-};
-
-// The prefilled email comes straight from the DB (getSiteLinks) — without
-// this, a settings change wouldn't show up here until the next deploy.
 export const dynamic = "force-dynamic";
 
-const Page = async () => {
-  const links = await getSiteLinks();
-  return (
-    <ProjectEditor
-      kind="works"
-      initialProject={blankProject}
-      email={links.email}
-    />
-  );
-};
-
-export default Page;
+export default () => <NewProjectPage kind="works" />;

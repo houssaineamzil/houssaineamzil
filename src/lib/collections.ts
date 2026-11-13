@@ -11,6 +11,8 @@ interface CollectionConfig {
   /** Admin list page. */
   adminListPath: string;
   title: string;
+  /** One entry, as in "Add project". */
+  singular: string;
   /** Link back to the list from a project page. */
   backLabel: string;
 }
@@ -21,6 +23,7 @@ export const collections: Record<CollectionKind, CollectionConfig> = {
     adminPath: "/admin/projects",
     adminListPath: "/admin",
     title: "Projects",
+    singular: "project",
     backLabel: "All projects",
   },
   experiments: {
@@ -28,6 +31,7 @@ export const collections: Record<CollectionKind, CollectionConfig> = {
     adminPath: "/admin/experiments",
     adminListPath: "/admin/experiments",
     title: "Experiments",
+    singular: "experiment",
     backLabel: "Playground",
   },
 };

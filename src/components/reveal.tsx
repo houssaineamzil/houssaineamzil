@@ -4,7 +4,8 @@ import { gsap } from "gsap";
 import { SplitText } from "gsap/SplitText";
 import type React from "react";
 import { useEffect, useRef } from "react";
-import { cn } from "@/lib";
+import { prefersReducedMotion } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 
 gsap.registerPlugin(SplitText);
 
@@ -62,7 +63,7 @@ export const Reveal: React.FC<Props> = ({ children, className }) => {
       for (const split of splits) split.revert();
     };
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (prefersReducedMotion()) {
       gsap.set(targets, { opacity: 1 });
       return revert;
     }

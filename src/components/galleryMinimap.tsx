@@ -3,30 +3,41 @@
 import gsap from "gsap";
 import NextImage from "next/image";
 import { useEffect, useRef } from "react";
-import { cn, isVideoSrc } from "@/lib";
+import { prefersReducedMotion } from "@/lib/motion";
+import { cn, isVideoSrc } from "@/lib/utils";
 import type { MediaType } from "@/types";
 
 interface Props {
   images: MediaType[];
+  /** Live editor only: adds an empty gallery slot, and shows empty ones as targets. */
+  onAdd?: (() => void) | undefined;
 }
 
 /** How far the highlight frame extends beyond a thumbnail's own edges, in px. */
 const OUTSET = 8;
 
-export const GalleryMinimap: React.FC<Props> = ({ images }) => {
+export const GalleryMinimap: React.FC<Props> = ({ images, onAdd }) => {
+  // Re-measure when the set of images changes, not on every render.
+  const signature = images.map((image) => image.url).join("|");
   const railRef = useRef<HTMLDivElement | null>(null);
   const indicatorRef = useRef<HTMLDivElement | null>(null);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: images isn't read directly, it's a re-run trigger so the rail re-measures fresh DOM nodes after client-side navigation to a different project
+  // biome-ignore lint/correctness/useExhaustiveDependencies: signature isn't read directly, it's a re-run trigger so the rail re-measures fresh DOM nodes after client-side navigation to a different project
   useEffect(() => {
     const indicator = indicatorRef.current;
     const buttons =
-      railRef.current?.querySelectorAll<HTMLButtonElement>("button");
-    if (!indicator || !buttons?.length) return;
+      railRef.current?.querySelectorAll<HTMLButtonElement>("[data-thumb]");
+    // The gallery images this rail mirrors: queried once per run, not per
+    // scroll event.
+    const sections = document.querySelectorAll<HTMLElement>(
+      "[data-gallery-image]",
+    );
+    const first = sections[0];
+    const last = sections[sections.length - 1];
+    if (!indicator || !buttons?.length || !first || !last) return;
+    if (buttons.length !== sections.length) return;
 
-    const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
+    const reducedMotion = prefersReducedMotion();
 
     // Kept hidden (and collapsed to height 0) until the thumbnails finish
     // their own intro below, so the indicator doesn't flash into view as a
@@ -34,19 +45,6 @@ export const GalleryMinimap: React.FC<Props> = ({ images }) => {
     let revealed = reducedMotion;
 
     const handleScroll = () => {
-      const rail = railRef.current;
-      const sections = document.querySelectorAll<HTMLElement>(
-        "[data-gallery-image]",
-      );
-
-      if (!rail || !buttons?.length) return;
-      if (buttons.length !== sections.length) return;
-
-      const first = sections[0];
-      const last = sections[sections.length - 1];
-
-      if (!first || !last) return;
-
       // Each real image can be a different height, so the fraction of total
       // scroll it "owns" varies too — weight the breakpoints by actual height
       // rather than assuming every image takes an equal share.
@@ -127,7 +125,7 @@ export const GalleryMinimap: React.FC<Props> = ({ images }) => {
       });
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
 
     // Reveals the indicator once the thumbnails have finished animating in:
@@ -172,9 +170,9 @@ export const GalleryMinimap: React.FC<Props> = ({ images }) => {
       window.removeEventListener("scroll", handleScroll);
       buttonsTween?.kill();
     };
-  }, [images]);
+  }, [signature]);
 
-  if (images.length < 2) return null;
+  if (images.length < 2 && !onAdd) return null;
 
   return (
     <div className="fixed top-60 z-20 hidden md:left-[calc(42%-4.5rem)] md:block">
@@ -187,8 +185,10 @@ export const GalleryMinimap: React.FC<Props> = ({ images }) => {
 
           return (
             <button
-              key={image.url}
+              // biome-ignore lint/suspicious/noArrayIndexKey: empty slots (editor) have no url, and the list is only appended to
+              key={imageIndex}
               type="button"
+              data-thumb
               onClick={() =>
                 document
                   .querySelector(`[data-gallery-image="${imageIndex}"]`)
@@ -197,6 +197,7 @@ export const GalleryMinimap: React.FC<Props> = ({ images }) => {
               className={cn(
                 "relative block cursor-pointer overflow-hidden bg-neutral-200 opacity-0",
                 imageIndex === 0 ? "aspect-square" : "aspect-video p-[6%]",
+                !image.url && "border border-dashed border-neutral-400",
               )}
             >
               <div className="group relative size-full">
@@ -210,9 +211,24 @@ export const GalleryMinimap: React.FC<Props> = ({ images }) => {
                   />
                 )}
               </div>
+              {!image.url && (
+                <span className="absolute inset-0 flex items-center justify-center text-center text-[9px] text-neutral-500 uppercase leading-tight">
+                  {imageIndex === 0 ? "Upload thumb" : "Image"}
+                </span>
+              )}
             </button>
           );
         })}
+
+        {onAdd && (
+          <button
+            type="button"
+            onClick={onAdd}
+            className="flex aspect-video cursor-pointer items-center justify-center border border-dashed border-neutral-400 text-[9px] text-neutral-500 uppercase hover:bg-neutral-100"
+          >
+            + Image
+          </button>
+        )}
 
         <div
           ref={indicatorRef}

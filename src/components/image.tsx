@@ -4,7 +4,8 @@ import gsap from "gsap";
 import NextImage, { type ImageProps } from "next/image";
 import type React from "react";
 import { useEffect, useRef } from "react";
-import { cn, isVideoSrc } from "@/lib";
+import { prefersReducedMotion } from "@/lib/motion";
+import { cn, isLocalPreviewUrl, isVideoSrc } from "@/lib/utils";
 
 interface Props extends ImageProps {
   parallax?: boolean;
@@ -34,7 +35,7 @@ export const Image: React.FC<Props> = ({
     const container = containerRef.current;
     if (!revealOnScroll || !container) return;
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (prefersReducedMotion()) {
       gsap.set(container, { opacity: 1 });
       return;
     }
@@ -69,41 +70,34 @@ export const Image: React.FC<Props> = ({
     const media = imageRef.current ?? videoRef.current;
 
     if (!parallax || !container || !media) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
     // Parallax is desktop-only: on touch/small screens it reads as too much
     // movement and costs a scroll listener per image.
     if (!window.matchMedia("(min-width: 1024px)").matches) return;
 
-    const handleSliderMove = () => {
-      // Calculate where this specific image sits relative to the viewport window bounds
+    // Where this image sits in the viewport along the parallax axis
+    // (0 = just entering, 1 = just left) maps to a +/-4.5% shift.
+    const update = () => {
       const rect = container.getBoundingClientRect();
-      const viewWidth = window.innerWidth;
-      const viewHeight = window.innerHeight;
-
-      if (horizontal) {
-        // Horizontal track calculation
-        const progress = (rect.left + rect.width) / (viewWidth + rect.width);
-        const shiftX = gsap.utils.mapRange(0, 1, -4.5, 4.5, progress);
-        gsap.set(media, { xPercent: shiftX });
-      } else {
-        // Fallback standard vertical page scroll track calculation
-        const progress = (rect.top + rect.height) / (viewHeight + rect.height);
-        const shiftY = gsap.utils.mapRange(0, 1, -4.5, 4.5, progress);
-        gsap.set(media, { yPercent: shiftY });
-      }
+      const [start, size, view] = horizontal
+        ? [rect.left, rect.width, window.innerWidth]
+        : [rect.top, rect.height, window.innerHeight];
+      const shift = gsap.utils.mapRange(
+        0,
+        1,
+        -4.5,
+        4.5,
+        (start + size) / (view + size),
+      );
+      gsap.set(media, horizontal ? { xPercent: shift } : { yPercent: shift });
     };
 
-    // Listen to both custom slider moves and native vertical window scrolling
-    window.addEventListener("slider-move", handleSliderMove);
-    window.addEventListener("scroll", handleSliderMove);
+    // The slider announces every move itself; vertical pages scroll natively.
+    const event = horizontal ? "slider-move" : "scroll";
+    window.addEventListener(event, update);
+    update();
 
-    // Run initial frame setup placement calculation
-    handleSliderMove();
-
-    return () => {
-      window.removeEventListener("slider-move", handleSliderMove);
-      window.removeEventListener("scroll", handleSliderMove);
-    };
+    return () => window.removeEventListener(event, update);
   }, [parallax, horizontal]);
 
   return (
@@ -142,10 +136,7 @@ export const Image: React.FC<Props> = ({
             src={src}
             alt={alt}
             fill
-            unoptimized={
-              typeof src === "string" &&
-              (src.startsWith("blob:") || src.startsWith("data:"))
-            }
+            unoptimized={typeof src === "string" && isLocalPreviewUrl(src)}
             className="object-cover"
           />
         )}

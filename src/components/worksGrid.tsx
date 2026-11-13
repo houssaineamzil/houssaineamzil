@@ -1,4 +1,4 @@
-import { cn } from "@/lib";
+import { cn } from "@/lib/utils";
 import { assignWorksLayout, type WorksColumn } from "@/lib/worksLayout";
 import type { ProjectType } from "@/types";
 import { WorkCard } from "./worksCard";
@@ -17,37 +17,22 @@ const COLUMN_START: Record<WorksColumn, string> = {
  */
 export const WorksGrid: React.FC<{ projects: ProjectType[] }> = ({
   projects,
-}) => {
-  const bySlug = new Map(projects.map((p) => [p.slug, p]));
-  const rows = assignWorksLayout(
-    projects.map((p) => ({ slug: p.slug, horizontal: p.works.horizontal })),
-  );
-
-  return (
-    <div className="mx-auto flex w-full max-w-[1920px] flex-col gap-10 px-4 pt-24 pb-[15%] lg:gap-16 lg:px-4 lg:pt-28">
-      {rows.map((row) => (
-        <div
-          key={row.map((e) => e.slug).join("|")}
-          className="grid grid-cols-1 gap-10 lg:grid-cols-4 lg:gap-4"
-        >
-          {row.map(({ slug, column, span }) => {
-            const project = bySlug.get(slug);
-            if (!project) return null;
-            const index = projects.findIndex((p) => p.slug === slug);
-            return (
-              <div
-                key={slug}
-                className={cn(
-                  COLUMN_START[column],
-                  span === 2 && "lg:col-span-2",
-                )}
-              >
-                <WorkCard index={index} {...project} />
-              </div>
-            );
-          })}
-        </div>
-      ))}
-    </div>
-  );
-};
+}) => (
+  <div className="mx-auto flex w-full max-w-[1920px] flex-col gap-10 px-4 pt-24 pb-[15%] lg:gap-16 lg:pt-28">
+    {assignWorksLayout(projects).map((row) => (
+      <div
+        key={row.map((e) => e.item.slug).join("|")}
+        className="grid grid-cols-1 gap-10 lg:grid-cols-4 lg:gap-4"
+      >
+        {row.map(({ item, index, column, span }) => (
+          <div
+            key={item.slug}
+            className={cn(COLUMN_START[column], span === 2 && "lg:col-span-2")}
+          >
+            <WorkCard project={item} number={index + 1} />
+          </div>
+        ))}
+      </div>
+    ))}
+  </div>
+);

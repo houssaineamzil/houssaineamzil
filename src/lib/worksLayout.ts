@@ -1,12 +1,9 @@
 export type WorksColumn = 1 | 2 | 3 | 4;
 
-interface LayoutInput {
-  slug: string;
-  horizontal?: boolean;
-}
-
-export interface LayoutEntry {
-  slug: string;
+export interface LayoutEntry<T> {
+  item: T;
+  /** Position of the item in the input list. */
+  index: number;
   column: WorksColumn;
   /** How many of the four columns the card spans (a horizontal project takes 2). */
   span: 1 | 2;
@@ -21,52 +18,48 @@ export interface LayoutEntry {
  */
 const PATTERN: WorksColumn[][] = [[3, 4], [1, 4], [3], [1]];
 
-export function assignWorksLayout(projects: LayoutInput[]): LayoutEntry[][] {
-  const rows: LayoutEntry[][] = [];
+const isHorizontal = (item: object) =>
+  "horizontal" in item && item.horizontal === true;
+
+export function assignWorksLayout<T extends object>(
+  items: T[],
+): LayoutEntry<T>[][] {
+  const rows: LayoutEntry<T>[][] = [];
   let patternIndex = 0;
-  let pending: LayoutInput[] = [];
+  let pending: { item: T; index: number }[] = [];
 
-  const takeRow = (): WorksColumn[] => {
-    const row = PATTERN[patternIndex % PATTERN.length] as WorksColumn[];
+  const patternRow = () =>
+    PATTERN[patternIndex % PATTERN.length] as WorksColumn[];
+
+  const fillRow = () => {
+    const columns = patternRow();
     patternIndex += 1;
-    return row;
-  };
-
-  const fillRow = (items: LayoutInput[]) => {
-    const columns = takeRow();
     rows.push(
-      items.map((item, i) => ({
-        slug: item.slug,
+      pending.map((entry, i) => ({
+        ...entry,
         column: columns[i] as WorksColumn,
         span: 1,
       })),
     );
+    pending = [];
   };
 
   // A row wants as many cards as its pattern has columns; if only some are
   // pending when a horizontal project (or the end) arrives, the row is
   // flushed with fewer cards and keeps the leading columns of its pattern.
   const flush = () => {
-    if (pending.length > 0) {
-      fillRow(pending);
-      pending = [];
-    }
+    if (pending.length > 0) fillRow();
   };
 
-  for (const project of projects) {
-    if (project.horizontal) {
+  for (const [index, item] of items.entries()) {
+    if (isHorizontal(item)) {
       flush();
-      rows.push([{ slug: project.slug, column: 2, span: 2 }]);
+      rows.push([{ item, index, column: 2, span: 2 }]);
       continue;
     }
 
-    pending.push(project);
-    const wanted = (PATTERN[patternIndex % PATTERN.length] as WorksColumn[])
-      .length;
-    if (pending.length === wanted) {
-      fillRow(pending);
-      pending = [];
-    }
+    pending.push({ item, index });
+    if (pending.length === patternRow().length) fillRow();
   }
 
   flush();

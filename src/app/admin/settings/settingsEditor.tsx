@@ -2,68 +2,49 @@
 
 import { useState } from "react";
 import { saveSiteLinks } from "@/app/admin/actions";
-import { NavigationView } from "@/components/navigationView";
+import { EditorBar, useSave } from "@/app/admin/editorKit";
+import { InlineText } from "@/components/inlineEdit";
 import type { SiteLinks } from "@/lib/db/schema";
 
+const FIELDS: [keyof SiteLinks, string, string][] = [
+  ["linkedin", "LinkedIn", "https://linkedin.com/in/…"],
+  ["instagram", "Instagram", "https://instagram.com/…"],
+  ["behance", "Behance", "https://behance.net/…"],
+  ["email", "Email", "you@example.com"],
+];
+
+/** The links in the site header, edited in place in the style of a project's facts. */
 export const SettingsEditor: React.FC<{ initial: SiteLinks }> = ({
   initial,
 }) => {
   const [draft, setDraft] = useState(initial);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const handleSave = async () => {
-    setError(null);
-    setSaving(true);
-    try {
-      await saveSiteLinks(draft);
-    } catch (err) {
-      setError((err as Error).message);
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const field = (key: keyof SiteLinks, label: string) => (
-    <label className="flex flex-col gap-1 text-xs uppercase" key={key}>
-      {label}
-      <input
-        value={draft[key]}
-        onChange={(e) => setDraft({ ...draft, [key]: e.target.value })}
-        className="border border-white/30 bg-transparent p-2"
-      />
-    </label>
-  );
+  const { save, saving, error } = useSave();
 
   return (
-    <div className="grid min-h-screen grid-cols-1 md:grid-cols-2">
-      <div className="flex flex-col gap-4 border-r border-white/10 bg-black p-6 text-white">
-        {field("linkedin", "LinkedIn URL")}
-        {field("instagram", "Instagram URL")}
-        {field("behance", "Behance URL")}
-        {field("email", "Email")}
-        {error && (
-          <p className="text-red-400 text-xs" role="alert">
-            {error}
-          </p>
-        )}
-        <button
-          type="button"
-          onClick={handleSave}
-          disabled={saving}
-          className="border border-white/30 p-2 uppercase disabled:opacity-50"
-        >
-          {saving ? "Saving…" : "Save"}
-        </button>
+    <>
+      <div className="p-4 pt-24">
+        <dl className="grid max-w-xl grid-cols-[auto_1fr] gap-x-10 gap-y-1 text-xs font-medium uppercase text-neutral-950">
+          {FIELDS.map(([key, label, placeholder]) => (
+            <div key={key} className="contents">
+              <dt className="text-muted">{label}</dt>
+              <dd>
+                <InlineText
+                  value={draft[key]}
+                  onChange={(value) => setDraft({ ...draft, [key]: value })}
+                  placeholder={placeholder}
+                  className="normal-case"
+                />
+              </dd>
+            </div>
+          ))}
+        </dl>
       </div>
-
-      {/* NavigationView uses `fixed inset-x-0 top-0` internally (correct for
-          the real site header). Same as ProjectDetail's `md:fixed` in the
-          project editor, that escapes a plain column, so this wrapper needs
-          `contain: layout` to keep the preview confined to its column. */}
-      <div className="relative min-h-screen bg-white [contain:layout]">
-        <NavigationView links={draft} />
-      </div>
-    </div>
+      <EditorBar
+        spacer={false}
+        error={error}
+        saving={saving}
+        onSave={() => save(() => saveSiteLinks(draft))}
+      />
+    </>
   );
 };

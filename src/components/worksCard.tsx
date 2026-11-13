@@ -1,22 +1,18 @@
 import Link from "next/link";
+import { collections } from "@/lib/collections";
+import { pad } from "@/lib/utils";
 import type { ProjectType } from "@/types";
 import { Image } from "./image";
 
-interface Props extends ProjectType {
-  index: number;
-}
-
-export const WorkCard: React.FC<Props> = ({
-  index,
-  name,
-  slug,
-  image,
-  projectType,
-}) => {
+export const WorkCard: React.FC<{
+  project: ProjectType;
+  /** 1-based position in the list. */
+  number: number;
+}> = ({ project: { name, slug, image, projectType }, number }) => {
   return (
     <div className="works-card group flex w-full flex-col">
       <Link
-        href={`/works/${slug}`}
+        href={`${collections.works.publicPath}/${slug}`}
         className="relative aspect-3/4 w-full overflow-hidden bg-neutral-200 sm:aspect-square"
       >
         {/* Fine zoom on hover, only on devices that can actually hover. */}
@@ -31,9 +27,9 @@ export const WorkCard: React.FC<Props> = ({
         </div>
       </Link>
       <div className="mt-3 flex gap-6 text-[11px]">
-        <span className="text-muted">{String(index + 1).padStart(3, "0")}</span>
+        <span className="text-muted">{pad(number)}</span>
         <div>
-          <h2 className="mb-1 font-medium">{name}</h2>
+          <h2 className="mb-1 font-semibold uppercase">{name}</h2>
           <p className="text-muted">{projectType}</p>
         </div>
       </div>

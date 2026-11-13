@@ -2,21 +2,27 @@
 
 import { useState } from "react";
 import { saveProjectOrder } from "@/app/admin/actions";
+import { Image } from "@/components/image";
 import { type CollectionKind, collections } from "@/lib/collections";
-import type { ProjectType } from "@/types";
+import { pad } from "@/lib/utils";
+import type { StoredProject } from "@/types";
 
+/**
+ * The admin list: every project as a card in a six-column grid, with a
+ * "new" tile at the end. Drag a card onto another to reorder.
+ */
 export const Dashboard: React.FC<{
   kind: CollectionKind;
-  initialProjects: (ProjectType & { id: string })[];
+  initialProjects: StoredProject[];
 }> = ({ kind, initialProjects }) => {
-  const { adminPath, title } = collections[kind];
+  const { adminPath, singular } = collections[kind];
   const [projects, setProjects] = useState(initialProjects);
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const commitOrder = async (
-    previous: (ProjectType & { id: string })[],
-    next: (ProjectType & { id: string })[],
+    previous: StoredProject[],
+    next: StoredProject[],
   ) => {
     setError(null);
     setProjects(next);
@@ -33,53 +39,66 @@ export const Dashboard: React.FC<{
 
   const handleDrop = (targetIndex: number) => {
     if (dragIndex === null || dragIndex === targetIndex) return;
-    const previous = projects;
     const next = [...projects];
-    const moved = next[dragIndex];
+    const [moved] = next.splice(dragIndex, 1);
     if (!moved) return;
-    next.splice(dragIndex, 1);
     next.splice(targetIndex, 0, moved);
     setDragIndex(null);
-    void commitOrder(previous, next);
+    void commitOrder(projects, next);
   };
 
   return (
-    <div className="p-6">
-      <div className="mb-4 flex justify-between">
-        <h1 className="text-sm uppercase">{title}</h1>
-        <a href={`${adminPath}/new`} className="text-sm uppercase underline">
-          Add {kind === "works" ? "project" : "experiment"}
-        </a>
-      </div>
+    <div className="p-4">
       {error && (
         <p className="mb-4 text-red-600 text-xs" role="alert">
           {error}
         </p>
       )}
-      <ul className="flex flex-col gap-2">
+      <ul className="grid grid-cols-2 gap-4 md:grid-cols-4 xl:grid-cols-6">
         {projects.map((project, index) => (
           <li
             key={project.id}
             draggable
             onDragStart={() => setDragIndex(index)}
+            onDragEnd={() => setDragIndex(null)}
             onDragOver={(e) => e.preventDefault()}
             onDrop={() => handleDrop(index)}
-            className="flex items-center gap-4 border border-black/10 p-2"
+            className={dragIndex === index ? "opacity-40" : undefined}
           >
-            <span className="w-6 text-xs text-neutral-400">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-            <span className="flex-1 text-sm">
-              {project.name || "(untitled)"}
-            </span>
             <a
               href={`${adminPath}/${project.slug}`}
-              className="text-xs uppercase underline"
+              draggable={false}
+              className="relative block aspect-square overflow-hidden bg-neutral-200"
             >
-              Edit
+              {project.image.url && (
+                <Image
+                  fill
+                  src={project.image.url}
+                  alt={project.image.alt}
+                  sizes="(max-width: 768px) 50vw, (max-width: 1280px) 25vw, 17vw"
+                />
+              )}
             </a>
+            <div className="mt-3 flex gap-6 text-[11px]">
+              <span className="text-muted">{pad(index + 1)}</span>
+              <div>
+                <h2 className="mb-1 font-semibold uppercase">
+                  {project.name || "(untitled)"}
+                </h2>
+                <p className="text-muted">{project.projectType}</p>
+              </div>
+            </div>
           </li>
         ))}
+
+        <li>
+          <a
+            href={`${adminPath}/new`}
+            className="flex aspect-square items-center justify-center border border-neutral-400 border-dashed text-[11px] text-neutral-500 uppercase hover:bg-neutral-100"
+          >
+            + New {singular}
+          </a>
+        </li>
       </ul>
     </div>
   );

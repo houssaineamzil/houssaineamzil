@@ -40,6 +40,7 @@ export const CursorTail: React.FC = () => {
     let lastTarget: EventTarget | null = null;
     let shownLabel = "";
     let visible = false;
+    let flippedX = false;
 
     // Reading offsetWidth/Height on every pointer move forces a layout while
     // a drag is also scrolling the page, which makes dragging stutter. The
@@ -79,9 +80,15 @@ export const CursorTail: React.FC = () => {
         event.clientY + OFFSET + height + EDGE_MARGIN > window.innerHeight;
       x(flipX ? event.clientX - OFFSET - width : event.clientX + OFFSET);
       y(flipY ? event.clientY - OFFSET - height : event.clientY + OFFSET);
-      tail.style.flexDirection = flipX ? "row-reverse" : "row";
-      lastTarget = event.target;
-      show(labelFor(event.target, soundReady));
+      if (flipX !== flippedX) {
+        flippedX = flipX;
+        tail.style.flexDirection = flipX ? "row-reverse" : "row";
+      }
+      // Pointer events fire far faster than the target changes.
+      if (event.target !== lastTarget) {
+        lastTarget = event.target;
+        show(labelFor(event.target, soundReady));
+      }
       if (!visible) {
         visible = true;
         gsap.to(tail, { opacity: 1, duration: 0.2, overwrite: "auto" });

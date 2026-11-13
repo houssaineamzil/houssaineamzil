@@ -2,98 +2,50 @@
 
 import { useState } from "react";
 import { saveAbout } from "@/app/admin/actions";
-import { uploadMedia } from "@/app/admin/upload";
+import { EditorBar, useSave } from "@/app/admin/editorKit";
+import { useUploads } from "@/app/admin/useUploads";
 import { AboutContent } from "@/components/aboutContent";
 import type { AboutContent as AboutContentType } from "@/lib/db/schema";
 
+/** The About page itself, with its text and portrait editable in place. */
 export const AboutEditor: React.FC<{ initial: AboutContentType }> = ({
   initial,
 }) => {
   const [draft, setDraft] = useState(initial);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [pendingUploads, setPendingUploads] = useState(0);
-
-  const updateParagraph = (index: number, value: string) => {
-    const paragraphs = [...draft.paragraphs];
-    paragraphs[index] = value;
-    setDraft({ ...draft, paragraphs });
-  };
-
-  const handlePortraitUpload = async (file: File) => {
-    const localUrl = URL.createObjectURL(file);
-    setDraft((prev) => ({
-      ...prev,
-      portrait: { ...prev.portrait, url: localUrl },
-    }));
-    setPendingUploads((n) => n + 1);
-    try {
-      const { url } = await uploadMedia(file);
-      setDraft((prev) => ({ ...prev, portrait: { ...prev.portrait, url } }));
-    } catch (err) {
-      setDraft((prev) => ({
-        ...prev,
-        portrait: { ...prev.portrait, url: "" },
-      }));
-      setError(`Portrait upload failed: ${(err as Error).message}`);
-    } finally {
-      setPendingUploads((n) => n - 1);
-    }
-  };
-
-  const handleSave = async () => {
-    setError(null);
-    setSaving(true);
-    try {
-      await saveAbout(draft);
-    } catch (err) {
-      setError((err as Error).message);
-    } finally {
-      setSaving(false);
-    }
-  };
+  const { save, saving, error, setError } = useSave();
+  const { pending, upload } = useUploads(setError);
 
   return (
-    <div className="grid min-h-screen grid-cols-1 md:grid-cols-2">
-      <div className="flex flex-col gap-4 border-r border-white/10 bg-black p-6 text-white">
-        {draft.paragraphs.map((paragraph, index) => (
-          <textarea
-            key={String(index)}
-            value={paragraph}
-            onChange={(e) => updateParagraph(index, e.target.value)}
-            rows={4}
-            className="border border-white/30 bg-transparent p-2 text-sm"
-          />
-        ))}
-        <div className="flex flex-col gap-1 text-xs uppercase">
-          Portrait
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) void handlePortraitUpload(file);
-            }}
-          />
-        </div>
-        {error && (
-          <p className="text-red-400 text-xs" role="alert">
-            {error}
-          </p>
-        )}
-        <button
-          type="button"
-          onClick={handleSave}
-          disabled={saving || pendingUploads > 0}
-          className="border border-white/30 p-2 uppercase disabled:opacity-50"
-        >
-          {saving ? "Saving…" : pendingUploads > 0 ? "Uploading…" : "Save"}
-        </button>
-      </div>
-
-      <div className="overflow-y-auto bg-white">
-        <AboutContent about={draft} />
-      </div>
-    </div>
+    <>
+      <AboutContent
+        // Exactly the space between the admin header and the bar, so the
+        // page fits the window with no scrolling.
+        className="h-[calc(100dvh-5rem)] min-h-0"
+        about={draft}
+        edit={{
+          updateParagraph: (index, value) =>
+            setDraft((prev) => ({
+              ...prev,
+              paragraphs: prev.paragraphs.map((p, i) =>
+                i === index ? value : p,
+              ),
+            })),
+          uploadPortrait: (file) =>
+            void upload(file, "Portrait", (url) =>
+              setDraft((prev) => ({
+                ...prev,
+                portrait: { ...prev.portrait, url },
+              })),
+            ),
+        }}
+      />
+      <EditorBar
+        spacer={false}
+        error={error}
+        saving={saving}
+        uploading={pending > 0}
+        onSave={() => save(() => saveAbout(draft))}
+      />
+    </>
   );
 };

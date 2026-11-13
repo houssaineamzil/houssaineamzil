@@ -5,6 +5,8 @@ import NextLink from "next/link";
 import type React from "react";
 import { useEffect, useRef } from "react";
 import { Image } from "@/components/image";
+import { prefersReducedMotion } from "@/lib/motion";
+import { pad } from "@/lib/utils";
 import type { ProjectType } from "@/types";
 
 interface Props {
@@ -12,6 +14,13 @@ interface Props {
   /** Where each row links: `${basePath}/${slug}`. */
   basePath: string;
 }
+
+// Each row's own divider draws in, then its own text follows, with the next
+// row's divider already starting before this one's text finishes (ROW_STAGGER
+// is shorter than a row's own duration), so the reveal reads as one
+// continuous wave moving down the page rather than two big
+// all-dividers-then-all-text phases.
+const ROW_STAGGER = 0.08;
 
 export const ArchiveList: React.FC<Props> = ({ projects, basePath }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -25,7 +34,7 @@ export const ArchiveList: React.FC<Props> = ({ projects, basePath }) => {
     );
     if (rows.length === 0) return;
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (prefersReducedMotion()) {
       const dividers =
         container.querySelectorAll<HTMLElement>("[data-divider]");
       const textItems =
@@ -35,13 +44,6 @@ export const ArchiveList: React.FC<Props> = ({ projects, basePath }) => {
       gsap.set(rows, { pointerEvents: "auto" });
       return;
     }
-
-    // Each row's own divider draws in, then its own text follows — with
-    // the next row's divider already starting before this one's text
-    // finishes (ROW_STAGGER is shorter than a row's own duration), so the
-    // reveal reads as one continuous wave moving down the page rather than
-    // two big all-dividers-then-all-text phases.
-    const ROW_STAGGER = 0.08;
 
     const tl = gsap.timeline();
     for (const [index, row] of rows.entries()) {
@@ -99,14 +101,14 @@ export const ArchiveList: React.FC<Props> = ({ projects, basePath }) => {
             className="group pointer-events-none flex items-center gap-6 py-6 text-[11px] uppercase"
           >
             <span data-reveal-item className="text-muted">
-              {String(index + 1).padStart(3, "0")}
+              {pad(index + 1)}
             </span>
-            <h1
+            <h2
               data-reveal-item
               className="flex-1 font-semibold transition-opacity group-hover:opacity-60"
             >
               {project.name}
-            </h1>
+            </h2>
             <p data-reveal-item className="text-muted hidden sm:block">
               {project.projectType}
             </p>

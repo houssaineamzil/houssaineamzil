@@ -37,8 +37,12 @@ const projectColumns = () => ({
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
-export const projects = pgTable("projects", projectColumns());
-export const experiments = pgTable("experiments", projectColumns());
+// Taking the name as a plain string keeps both tables the same TypeScript
+// type, so one collection implementation serves either without a cast.
+const projectTable = (name: string) => pgTable(name, projectColumns());
+
+export const projects = projectTable("projects");
+export const experiments = projectTable("experiments");
 
 export interface AboutContent {
   paragraphs: string[];

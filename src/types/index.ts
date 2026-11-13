@@ -25,8 +25,16 @@ export interface ProjectType {
   designer: string;
   developer: string;
   image: MediaType;
-  gallery?: MediaType[];
-  works: {
-    horizontal?: boolean;
-  };
+  gallery: MediaType[];
+  /** Wide card in the works grid. */
+  horizontal: boolean;
 }
+
+/** What a project card needs: sent to the client instead of the whole project. */
+export type ProjectSummary = Pick<
+  ProjectType,
+  "slug" | "name" | "projectType" | "image"
+>;
+
+/** A project as stored: always has its database id. */
+export type StoredProject = ProjectType & { id: string };

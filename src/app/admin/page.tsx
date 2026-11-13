@@ -1,22 +1,7 @@
-import { Dashboard } from "@/app/admin/dashboard";
-import { getProjects } from "@/services/projects";
+import { ProjectListPage } from "@/app/admin/projectPages";
 
-// Without this, the dashboard prerenders statically at build time and
-// mutations that don't explicitly revalidatePath("/admin") (project
-// save/delete/reorder only revalidate the public routes) would never be
-// reflected here in production.
+// Admin pages read the DB on every request; without this they would
+// prerender at build time and show a stale snapshot.
 export const dynamic = "force-dynamic";
 
-const Page = async () => {
-  const projects = await getProjects();
-  return (
-    <Dashboard
-      kind="works"
-      initialProjects={
-        projects as ((typeof projects)[number] & { id: string })[]
-      }
-    />
-  );
-};
-
-export default Page;
+export default () => <ProjectListPage kind="works" />;

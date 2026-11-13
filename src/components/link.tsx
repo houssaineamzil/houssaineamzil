@@ -4,10 +4,12 @@ import gsap from "gsap";
 import NextLink from "next/link";
 import type React from "react";
 import { useRef } from "react";
-import { cn } from "@/lib";
+import { prefersReducedMotion } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 
 type Props = React.ComponentProps<typeof NextLink>;
 
+/** A link with an underline that sweeps in from the left and out to the right on hover. */
 export const Link: React.FC<Props> = ({
   className,
   children,
@@ -17,49 +19,29 @@ export const Link: React.FC<Props> = ({
 }) => {
   const underlineRef = useRef<HTMLSpanElement | null>(null);
 
-  const handleMouseEnter: React.MouseEventHandler<HTMLAnchorElement> = (
-    event,
-  ) => {
-    const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-
-    // Force reset position to off-screen left (-100%) before animating across
-    gsap.set(underlineRef.current, { xPercent: 0 });
-
+  // The underline rests off-screen left (-100%); one sweep takes it across
+  // (0 -> 100%) and out of the right edge (-> 200%).
+  const sweep = (xPercent: number) =>
     gsap.to(underlineRef.current, {
-      xPercent: 100,
-      duration: reducedMotion ? 0 : 0.7,
+      xPercent,
+      duration: prefersReducedMotion() ? 0 : 0.7,
       ease: "power2.inOut",
       overwrite: "auto",
     });
-
-    onMouseEnter?.(event);
-  };
-
-  const handleMouseLeave: React.MouseEventHandler<HTMLAnchorElement> = (
-    event,
-  ) => {
-    const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-
-    gsap.to(underlineRef.current, {
-      xPercent: 200,
-      duration: reducedMotion ? 0 : 0.7,
-      ease: "power2.inOut",
-      overwrite: "auto",
-    });
-
-    onMouseLeave?.(event);
-  };
 
   return (
     <NextLink
       {...props}
       className={cn("relative inline-block overflow-hidden", className)}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={(event) => {
+        gsap.set(underlineRef.current, { xPercent: 0 });
+        sweep(100);
+        onMouseEnter?.(event);
+      }}
+      onMouseLeave={(event) => {
+        sweep(200);
+        onMouseLeave?.(event);
+      }}
     >
       {children}
       <span

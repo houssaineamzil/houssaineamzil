@@ -1,4 +1,5 @@
 import { eq } from "drizzle-orm";
+import { cache } from "react";
 import { db } from "@/lib/db/client";
 import type { AboutContent, SiteLinks } from "@/lib/db/schema";
 import { siteSettings } from "@/lib/db/schema";
@@ -24,41 +25,45 @@ const DEFAULT_LINKS: SiteLinks = {
   email: "houssaineamzil18@gmail.com",
 };
 
-export async function getAboutContent(): Promise<AboutContent> {
+// `content` is one jsonb column shared by every setting, so each id is tied
+// to its shape here and callers never cast.
+async function readSetting<T extends AboutContent | SiteLinks>(
+  id: string,
+  fallback: T,
+): Promise<T> {
   const [row] = await db
     .select()
     .from(siteSettings)
-    .where(eq(siteSettings.id, ABOUT_ID))
+    .where(eq(siteSettings.id, id))
     .limit(1);
-  return row ? (row.content as AboutContent) : DEFAULT_ABOUT;
+  return row ? (row.content as T) : fallback;
 }
+
+async function writeSetting(
+  id: string,
+  content: AboutContent | SiteLinks,
+): Promise<void> {
+  const updatedAt = new Date();
+  await db
+    .insert(siteSettings)
+    .values({ id, content, updatedAt })
+    .onConflictDoUpdate({
+      target: siteSettings.id,
+      set: { content, updatedAt },
+    });
+}
+
+export const getAboutContent = cache(() =>
+  readSetting(ABOUT_ID, DEFAULT_ABOUT),
+);
 
 export async function updateAboutContent(content: AboutContent): Promise<void> {
   assertPersistableUrl(content.portrait.url, "portrait image");
-  await db
-    .insert(siteSettings)
-    .values({ id: ABOUT_ID, content, updatedAt: new Date() })
-    .onConflictDoUpdate({
-      target: siteSettings.id,
-      set: { content, updatedAt: new Date() },
-    });
+  await writeSetting(ABOUT_ID, content);
 }
 
-export async function getSiteLinks(): Promise<SiteLinks> {
-  const [row] = await db
-    .select()
-    .from(siteSettings)
-    .where(eq(siteSettings.id, LINKS_ID))
-    .limit(1);
-  return row ? (row.content as SiteLinks) : DEFAULT_LINKS;
-}
+// Read by the nav on every page and again by project pages: once per request.
+export const getSiteLinks = cache(() => readSetting(LINKS_ID, DEFAULT_LINKS));
 
-export async function updateSiteLinks(links: SiteLinks): Promise<void> {
-  await db
-    .insert(siteSettings)
-    .values({ id: LINKS_ID, content: links, updatedAt: new Date() })
-    .onConflictDoUpdate({
-      target: siteSettings.id,
-      set: { content: links, updatedAt: new Date() },
-    });
-}
+export const updateSiteLinks = (links: SiteLinks) =>
+  writeSetting(LINKS_ID, links);

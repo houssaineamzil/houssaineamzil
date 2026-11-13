@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import {
-  ProjectDetail,
-  type ProjectNeighbour,
-} from "@/components/projectDetail";
+import { ProjectDetail } from "@/components/projectDetail";
 import type { CollectionKind } from "@/lib/collections";
 import { getCollection } from "@/services/projects";
 import { getSiteLinks } from "@/services/settings";
-import type { ProjectType } from "@/types";
 
 export const projectMetadata = async (
   kind: CollectionKind,
@@ -25,31 +21,24 @@ export const ProjectPage = async ({
   kind: CollectionKind;
   slug: string;
 }) => {
-  const collection = getCollection(kind);
-  const [project, all, links] = await Promise.all([
-    collection.getBySlug(slug),
-    collection.getAll(),
+  const [all, links] = await Promise.all([
+    getCollection(kind).getAll(),
     getSiteLinks(),
   ]);
-
+  const index = all.findIndex((p) => p.slug === slug);
+  const project = all[index];
   if (!project) notFound();
 
-  const index = all.findIndex((p) => p.slug === slug);
-  const count = all.length;
-  const toNeighbour = (p: ProjectType): ProjectNeighbour => ({
-    slug: p.slug,
-    name: p.name,
-    imageUrl: p.image.url,
-  });
-  const prev = all[(index - 1 + count) % count] ?? project;
-  const next = all[(index + 1) % count] ?? project;
+  // Prev/next wrap around the list.
+  const prev = all[(index - 1 + all.length) % all.length] ?? project;
+  const next = all[(index + 1) % all.length] ?? project;
 
   return (
     <ProjectDetail
       kind={kind}
       project={project}
-      prev={toNeighbour(prev)}
-      next={toNeighbour(next)}
+      prev={prev}
+      next={next}
       email={links.email}
     />
   );

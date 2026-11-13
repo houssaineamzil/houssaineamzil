@@ -1,7 +1,7 @@
 import { jwtVerify, SignJWT } from "jose";
 import { cookies } from "next/headers";
 
-const SESSION_COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 30;
+export const SESSION_COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 30;
 
 function getSecretKey(): Uint8Array {
   const secret = process.env.SESSION_SECRET;
@@ -41,7 +41,6 @@ export async function verifySession(token: string): Promise<boolean> {
 }
 
 export const SESSION_COOKIE_NAME = "admin_session";
-export { SESSION_COOKIE_MAX_AGE_SECONDS };
 
 export async function assertValidSession(
   token: string | undefined,
