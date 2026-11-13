@@ -8,6 +8,17 @@ const nextConfig: NextConfig = {
   // The playground replaced /archive; keep old links working.
   redirects: async () => [
     { source: "/archive", destination: "/playground", permanent: true },
+    // The admin sections used to be named projects / experiments.
+    {
+      source: "/admin/projects/:path*",
+      destination: "/admin/works/:path*",
+      permanent: false,
+    },
+    {
+      source: "/admin/experiments/:path*",
+      destination: "/admin/playground/:path*",
+      permanent: false,
+    },
   ],
   images: {
     remotePatterns: [

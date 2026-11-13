@@ -21,8 +21,8 @@ describe("admin middleware", () => {
     );
   });
 
-  it("redirects a nested admin route (/admin/projects/new) with no session", async () => {
-    const response = await proxy(requestFor("/admin/projects/new"));
+  it("redirects a nested admin route (/admin/works/new) with no session", async () => {
+    const response = await proxy(requestFor("/admin/works/new"));
     expect(new URL(response.headers.get("location") ?? "").pathname).toBe(
       "/admin/login",
     );

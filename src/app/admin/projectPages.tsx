@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { Dashboard } from "@/app/admin/dashboard";
-import { ProjectEditor } from "@/app/admin/projects/projectEditor";
+import { ProjectEditor } from "@/app/admin/projectEditor";
 import type { CollectionKind } from "@/lib/collections";
 import { getCollection } from "@/services/projects";
 import { getSiteLinks } from "@/services/settings";

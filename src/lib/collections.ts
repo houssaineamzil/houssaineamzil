@@ -20,7 +20,7 @@ interface CollectionConfig {
 export const collections: Record<CollectionKind, CollectionConfig> = {
   works: {
     publicPath: "/works",
-    adminPath: "/admin/projects",
+    adminPath: "/admin/works",
     adminListPath: "/admin",
     title: "Projects",
     singular: "project",
@@ -28,8 +28,8 @@ export const collections: Record<CollectionKind, CollectionConfig> = {
   },
   experiments: {
     publicPath: "/playground",
-    adminPath: "/admin/experiments",
-    adminListPath: "/admin/experiments",
+    adminPath: "/admin/playground",
+    adminListPath: "/admin/playground",
     title: "Experiments",
     singular: "experiment",
     backLabel: "Playground",
